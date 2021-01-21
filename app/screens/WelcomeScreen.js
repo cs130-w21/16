@@ -17,6 +17,7 @@ function WelcomeScreen(props) {
         image={require("../assets/potluck_logo_small.jpg")}
         description={"Classic spaghetti recipe with marinara sauce!"}
         rating={4.5}
+        price={"$10.11"}
       />
     </SafeAreaView>
   );
