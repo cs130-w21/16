@@ -7,7 +7,7 @@ function WelcomeScreen(props) {
     return (
         <View style={styles.container}>
             <View style={styles.logoContainer}>
-                <Image style={styles.logo} source={require("../assets/potluck_logo_small.jpg")}/>
+                <Image style={styles.logo} source={require("../assets/potluck_logo_small_transparent_orange.png")}/>
                 <Text style={styles.text}>Potluck</Text>
             </View>  
         </View>
