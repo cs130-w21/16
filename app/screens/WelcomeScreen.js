@@ -4,7 +4,7 @@ import MenuCard from "../components/dish";
 
 import colors from "../config/colors";
 
-function WelcomeScreen(props) {
+function WelcomeScreen({ navigation }) {
   return (
     <SafeAreaView style={styles.container}>
       {/* <View style={styles.logoContainer}>
@@ -18,6 +18,7 @@ function WelcomeScreen(props) {
         description={"Classic spaghetti recipe with marinara sauce!"}
         rating={4.5}
         price={"$10.11"}
+        onPress={() => navigation.push("Details")}
       />
     </SafeAreaView>
   );
