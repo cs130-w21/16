@@ -1,7 +1,5 @@
 import React from "react";
-import { Image, Text, View } from "react-native";
-
-import colors from "../config/colors";
+import { Text, View } from "react-native";
 
 function DishScreen(props) {
   return (
