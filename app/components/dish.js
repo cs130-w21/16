@@ -1,13 +1,6 @@
 import React from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
-import {
-  Card,
-  Image,
-  Button,
-  Rating,
-  Avatar,
-  Icon
-} from "react-native-elements";
+import { Card, Rating, Avatar, Icon } from "react-native-elements";
 import colors from "../config/colors";
 import PropTypes, { any } from "prop-types";
 
@@ -21,36 +14,32 @@ import PropTypes, { any } from "prop-types";
 export default function MenuCard(props) {
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={props.onPress}>
-        <Card>
+      <Card containerStyle={styles.cardContainer}>
+        <TouchableOpacity onPress={props.onPress}>
           <Card.Title>{props.title}</Card.Title>
           <Card.Divider />
-          <View>
-            <Card.Image source={props.image} style={styles.image} />
-            <Text style={styles.price}>{props.price}</Text>
-            <Rating
-              style={styles.rating}
-              readonly={true}
-              imageSize={13}
-              fractions={1}
-              startingValue={props.rating ? props.rating : 0}
-            />
-            {/* <Avatar
-            size="small"
-            icon={{ name: "user", type: "font-awesome" }}
-            // title="SM"
-            // onPress={() => console.log("pressed")}
-            // rounded={true}
-            // icon={{ name: "user", type: "font-awesome" }}
-          /> */}
-            <View style={styles.card}>
-              <Icon name="android" size={10} />
-              <Text style={styles.text}>{props.subtitle}</Text>
+          <View style={styles.cardlayout}>
+            <View style={styles.horizontal}>
+              <Card.Image source={props.image} style={styles.image} />
             </View>
-            <Text style={styles.desc}>{props.description}</Text>
+            <View style={styles.horizontal}>
+              <Text style={styles.desc}>{props.description}</Text>
+              <Text style={styles.price}>{props.price}</Text>
+              <Rating
+                readonly={true}
+                imageSize={13}
+                fractions={1}
+                startingValue={props.rating ? props.rating : 0}
+              />
+              <View style={styles.card}>
+                <Icon name="android" size={12} />
+                {/* <Avatar rounded title="Initials" size="small" /> */}
+                <Text style={styles.text}>{props.subtitle}</Text>
+              </View>
+            </View>
           </View>
-        </Card>
-      </TouchableOpacity>
+        </TouchableOpacity>
+      </Card>
     </View>
   );
 }
@@ -67,14 +56,12 @@ MenuCard.propTypes = {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    padding: 4,
-    maxWidth: "50%"
-    // maxHeight: "30%",
-    // justifyContent: "center"
+    minWidth: "100%"
   },
-  image: {
-    alignSelf: "center"
+  cardContainer: {
+    alignItems: "flex-end",
+    alignContent: "stretch",
+    maxHeight: "40%"
   },
   text: {
     paddingVertical: 4,
@@ -83,15 +70,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   },
   desc: {
-    fontSize: 10,
-    flexDirection: "column",
-    flexGrow: 2
-  },
-  rating: {},
-  avatar: {
-    flex: 1,
-    flexWrap: "wrap",
-    flexDirection: "row"
+    fontSize: 12
   },
   card: {
     flexDirection: "row",
@@ -102,6 +81,18 @@ const styles = StyleSheet.create({
     fontSize: 10,
     alignSelf: "center",
     paddingVertical: 4,
-    color: colors.black
+    color: colors.black,
+    fontWeight: "bold"
+  },
+  horizontal: {
+    width: "50%",
+    justifyContent: "space-around",
+    padding: 8,
+    alignItems: "stretch"
+  },
+  cardlayout: {
+    flex: 1,
+    flexWrap: "wrap",
+    flexDirection: "row"
   }
 });
