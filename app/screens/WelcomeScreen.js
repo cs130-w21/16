@@ -20,6 +20,7 @@ function WelcomeScreen({ navigation }) {
         price={"$10.11"}
         onPress={() => navigation.push("Details")}
       />
+      <ChefMenu/>
     </SafeAreaView>
   );
 }
@@ -30,7 +31,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     alignItems: "center",
     justifyContent: "center",
-    flexDirection: "row"
+    flexDirection: "column"
   },
 
   logo: {

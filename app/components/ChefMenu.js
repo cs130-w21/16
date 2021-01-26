@@ -1,44 +1,47 @@
 import React from 'react';
 import {View, StyleSheet, Text, Image} from 'react-native';
+import MenuCard from './dish';
 import colors from '../config/colors';
 
 const dummyDishCards = [
     {
-        name: 'Pad Kee Mao',
+        title: 'Pad Kee Mao',
+        chef: 'Sarthak',
         photo: 'https://thewoksoflife.com/wp-content/uploads/2016/02/drunken-noodles-4.jpg',
-        ingredients: "Noodles, Chicken, Sauce, Veggies",
+        description: 'Drunkard noodles or pad kee mao is a stir fried noodle dish very similar to phat si-io, but with a slightly different flavor.',
+        rating: 4.5,
         price: "$12.99"
     },
     {
-        name: 'Pad Kee Mao',
+        title: 'Pad Kee Mao',
+        chef: 'Sarthak',
         photo: 'https://thewoksoflife.com/wp-content/uploads/2016/02/drunken-noodles-4.jpg',
-        ingredients: "Noodles, Chicken, Sauce, Veggies",
+        description: 'Drunkard noodles or pad kee mao is a stir fried noodle dish very similar to phat si-io, but with a slightly different flavor.',
+        rating: 4.5,
         price: "$12.99"
     },
     {
-        name: 'Pad Kee Mao',
+        title: 'Pad Kee Mao',
+        chef: 'Sarthak',
         photo: 'https://thewoksoflife.com/wp-content/uploads/2016/02/drunken-noodles-4.jpg',
-        ingredients: "Noodles, Chicken, Sauce, Veggies",
+        description: 'Drunkard noodles or pad kee mao is a stir fried noodle dish very similar to phat si-io, but with a slightly different flavor.',
+        rating: 4.5,
         price: "$12.99"
     }
 ];
 
-function DishCard(props) {
-    const { name, photo, ingredients, price } = props.data;
-    return (
-        <View style={styles.dishcard}>
-            <Text style={styles.name}>{name}</Text>
-            <Image source={{uri: photo}} style={{width: 75, height: 75}} />
-            <Text style={styles.ingredients}>Ingredients: {ingredients}</Text>
-            <Text style={styles.price}>Price: {price}</Text>
-        </View>
-    )
-}
-
 export default function ChefMenu(props){
     return(
         <View style={styles.container}>
-            {dummyDishCards.map((dish, index) => <DishCard data={dish}/>)}
+            {dummyDishCards.map((dish, index) => <MenuCard
+                title={dish.title}
+                subtitle={dish.chef}
+                image={dish.photo}
+                description={dish.description}
+                rating={dish.rating}
+                price={dish.price}
+                onPress={() => navigation.push("Details")}
+            />)}
         </View>
     );
 }
@@ -48,6 +51,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         flexWrap: 'wrap',
+        minWidth: "100%"
     },
     dishcard: {
         width: 200,
