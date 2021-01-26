@@ -1,3 +1,25 @@
+# Potluck
+
+## Development Environment
+#### Requirements
+- Node
+- expo-cli (`$ npm install -g expo-cli`)
+- Xcode (on Mac) for testing on simulator
+- Expo Client on iOS or Android for testing on device
+
+## To Test on Simulator on Mac
+- Open Xcode and go to Xcode -> Open Developer Tool -> Simulator
+- Wait for simulator to start (only one simulator open at a time)
+- In project directory: `$ npm start` then after it starts, press 'i'
+- https://youtu.be/0-S5a0eXPoc?t=878  
+
+## To Test on Android Simulator
+https://youtu.be/0-S5a0eXPoc?t=1087  
+
+## To Test on Physical Device
+- Make sure Expo Client is installed from App Store/Google Play Store
+- Scan QR code from Metro Bundler either opened in your browser or terminal which you npm started from
+
 # Repository Template
 
 [![Build Status](https://travis-ci.org/cs130-w21/template.svg?branch=master)](https://travis-ci.org/cs130-w21/template)
