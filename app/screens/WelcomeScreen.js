@@ -1,15 +1,13 @@
 import React from 'react';
 import {View, StyleSheet, Image, Text} from "react-native";
+import ChefMenu from '../components/ChefMenu';
 
 import colors from '../config/colors';
 
 function WelcomeScreen(props) {
     return (
         <View style={styles.container}>
-            <View style={styles.logoContainer}>
-                <Image style={styles.logo} source={require("../assets/potluck_logo_small.jpg")}/>
-                <Text style={styles.text}>Potluck</Text>
-            </View>  
+            <ChefMenu/>
         </View>
     );
 }
