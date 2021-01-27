@@ -56,7 +56,7 @@ MenuCard.propTypes = {
 
 const styles = StyleSheet.create({
   container: {
-    minWidth: "100%"
+    width: "100%"
   },
   cardContainer: {
     alignItems: "flex-end",
