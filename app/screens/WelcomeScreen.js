@@ -18,7 +18,7 @@ function WelcomeScreen({ navigation }) {
         description={"Classic spaghetti recipe with marinara sauce!"}
         rating={4.5}
         price={"$10.11"}
-        onPress={() => navigation.push("Details")}
+        onPress={() => navigation.push("Chef")}
       />
     </SafeAreaView>
   );
