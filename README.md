@@ -1,33 +1,38 @@
 # Potluck
 
 ## Development Environment
+
 #### Requirements
+
 - Node
 - expo-cli (`$ npm install -g expo-cli`)
 - Xcode (on Mac) for testing on simulator
 - Expo Client on iOS or Android for testing on device
 
 ## To Test on Simulator on Mac
+
 - Open Xcode and go to Xcode -> Open Developer Tool -> Simulator
 - Wait for simulator to start (only one simulator open at a time)
 - In project directory: `$ npm start` then after it starts, press 'i'
-- https://youtu.be/0-S5a0eXPoc?t=878  
+- https://youtu.be/0-S5a0eXPoc?t=878
 
 ## To Test on Android Simulator
-https://youtu.be/0-S5a0eXPoc?t=1087  
+
+https://youtu.be/0-S5a0eXPoc?t=1087
 
 ## To Test on Physical Device
+
 - Make sure Expo Client is installed from App Store/Google Play Store
 - Scan QR code from Metro Bundler either opened in your browser or terminal which you npm started from
 
 # Repository Template
 
-[![Build Status](https://travis-ci.com/cs130-w21/16.svg?branch=ci_testing)](https://travis-ci.org/cs130-w21/16)
+[![Build Status](https://travis-ci.com/cs130-w21/16.svg?branch=dev)](https://travis-ci.org/cs130-w21/16)
 [![Release](https://img.shields.io/github/v/release/cs130-w21/template?label=release)](https://github.com/cs130-w21/16/releases/latest)
 
 This repo serves as a template for repositories in this organization. The following information describes how the native features/workflows of Github can be customized to work in a scrum development process.
 
-*To update the build/release status badge, go to the Travis CI page of the build or branch that you want to update, and click on the badge in the top right of the Travis CI page. A dialog box should show up with the branch information and a URL. Replace the URL in the README with the updated one. Then, your branch's README should have the build badge information based on previous builds.*
+_To update the build/release status badge, go to the Travis CI page of the build or branch that you want to update, and click on the badge in the top right of the Travis CI page. A dialog box should show up with the branch information and a URL. Replace the URL in the README with the updated one. Then, your branch's README should have the build badge information based on previous builds._
 
 ## Issues
 
@@ -111,7 +116,7 @@ It is recommended to [create periodic releases](https://docs.github.com/en/free-
 
 Every repository needs to have a way to build its artifacts headlessly. It is a good idea to run tests as part of such build. Instructions on how to build the components in a repository needs to be documented in the repository's README.md.
 
-A repository can also be setup to build continuously whenever a commit is pushed to the `master` branch by setting up a CI script (e.g., [Travis CI](https://www.travis-ci.com/)) in its root folder. Such script will configure the build environment (as a virtual machine) and invoke the build script on the `master` branch. If the script fails for some reason, the committer will be notified to fix it. It is a good practice to add a build [badge](https://shields.io/category/version) to the README.md file to visibly indicate the status of the last CI build (Travis CI provides such badges). 
+A repository can also be setup to build continuously whenever a commit is pushed to the `master` branch by setting up a CI script (e.g., [Travis CI](https://www.travis-ci.com/)) in its root folder. Such script will configure the build environment (as a virtual machine) and invoke the build script on the `master` branch. If the script fails for some reason, the committer will be notified to fix it. It is a good practice to add a build [badge](https://shields.io/category/version) to the README.md file to visibly indicate the status of the last CI build (Travis CI provides such badges).
 
 The CI script will also be run when a new pull request is created or when more commits are pushed to its linked `issue` branch. Such build assures peer reviewers that the new commits when accepted will not break the build. In fact, a successful CI build can be a prerequisute for peer reviewers to look at the changes.
 
