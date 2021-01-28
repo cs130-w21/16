@@ -3,4 +3,5 @@ install:
   - npm install
 node_js:
   - 14
-script: npm test
+script:
+  - npm test
