@@ -27,6 +27,8 @@ https://youtu.be/0-S5a0eXPoc?t=1087
 
 This repo serves as a template for repositories in this organization. The following information describes how the native features/workflows of Github can be customized to work in a scrum development process.
 
+*To update the build/release status badge, go to the Travis CI page of the build or branch that you want to update, and click on the badge in the top right of the Travis CI page. A dialog box should show up with the branch information and a URL. Replace the URL in the README with the updated one. Then, your branch's README should have the build badge information based on previous builds.*
+
 ## Issues
 
 An issue is a unit of tracking work. Issues can be classified into different classes using `labels`. This can be used to classify issues in the scrum process as follows.
