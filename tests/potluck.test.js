@@ -9,7 +9,7 @@ test("adds 1 + 2 to equal 3 - sanity check", () => {
   expect(sum(1, 2)).toBe(3);
 });
 
-it("renders menu card", () => {
+it("renders test component", () => {
   const tree = renderer.create(<TestComponent />).toJSON();
   expect(tree).toMatchSnapshot();
 });
