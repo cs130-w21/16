@@ -4,6 +4,7 @@ import {View, StyleSheet, Image, Text} from "react-native";
 import colors from '../config/colors';
 
 function WelcomeScreen(props) {
+    const {navigation, route} = props;
     return (
         <View style={styles.container}>
             <View style={styles.logoContainer}>
