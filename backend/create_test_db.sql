@@ -1,0 +1,5 @@
+CREATE DATABASE Potluck;
+USE Potluck;
+CREATE TABLE Chefs(chefid INT PRIMARY KEY, name VARCHAR(100));
+INSERT INTO Chefs VALUES(1, "Jivan");
+INSERT INTO Chefs VALUES(2, "Gordon Ramsey");

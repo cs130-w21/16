@@ -15,7 +15,7 @@ const connection = mysql.createPool({
 const app = express();
 
 // Creating a GET route that returns data from the 'users' table.
-app.get('/chefs', function (req, res) {
+app.get('/Chefs', function (req, res) {
     // Connecting to the database.
     connection.getConnection(function (err, connection) {
         // Executing the MySQL query (select all data from the 'users' table).
@@ -32,4 +32,5 @@ app.get('/chefs', function (req, res) {
 // Starting our server.
 app.listen(3000, () => {
  console.log('Go to http://localhost:3000/Chefs so you can see the data.');
+ // Use fetch('http://<ip where db is hosted or localhost>:3000/Chefs') to fetch
 });

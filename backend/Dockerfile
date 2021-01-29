@@ -1,14 +1,14 @@
 FROM junghoo/mysql-apache
 
-EXPOSE 19000
-EXPOSE 19001
-EXPOSE 19002
-EXPOSE 19003
+EXPOSE 3000
 
-RUN apt update && apt install -y git
+RUN sudo apt update && sudo apt install -y git
+
+RUN sudo apt install -y nodejs npm
 
 RUN npm install express
 RUN npm install body-parser
 RUN npm install mysql
 
-RUN git clone --single-branch --branch issue#12 https://github.com/cs130-w21/16.git
+COPY create_test_db.sql /home/cs143/
+#ENTRYPOINT sudo mysql < /home/cs143/create_test_db.sql
