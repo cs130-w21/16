@@ -4,9 +4,9 @@ const mysql = require('mysql');
 
 const connection = mysql.createPool({
     host     : 'localhost',
-    user     : 'root',
-    password : '',
-    database : 'potluck'
+    user     : 'cs143',
+    password : 'password',
+    database : 'Potluck'
 });
 
 // We're still in routes.js! Right below everything else.
@@ -30,6 +30,6 @@ app.get('/chefs', function (req, res) {
 });
 
 // Starting our server.
-app.listen(19003, () => {
- console.log('Go to http://localhost:19003/Chefs so you can see the data.');
+app.listen(3000, () => {
+ console.log('Go to http://localhost:3000/Chefs so you can see the data.');
 });
