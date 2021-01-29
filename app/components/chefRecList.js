@@ -21,6 +21,7 @@ import ChefRec from "./chefRec"
 export default function ChefRecList(props) {
     return (
       <FlatList 
+            style={{minHeight: "100%"}}
             horizontal={true}
             data={props.data}
             renderItem={ChefRec}

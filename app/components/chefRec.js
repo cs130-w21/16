@@ -14,14 +14,16 @@ import PropTypes, { any } from "prop-types"
 export default function ChefRec(props) {
   console.log(props)
     return (
-        <View style={styles.container}>
+        // <View style={styles.container}>
           <Card containerStyle={styles.cardContainer}>
             <TouchableOpacity onPress={props.item.onPress}>
                     <Card.Title>{props.item.name}</Card.Title>
                     <Card.Divider />
                     <View style={styles.horizontal}>
                         <Card.Image source={{uri: props.item.image}} style={styles.image} />
-                        <Text style={styles.bio}>{props.item.bio}</Text>
+                    </View>
+                    <View style={styles.horizontal}>
+                        <Text numberOfLines={2} style={styles.bio}>{props.item.bio}</Text>
                         <Rating
                             readonly={true}
                             imageSize={13}
@@ -32,7 +34,7 @@ export default function ChefRec(props) {
                     </View>
               </TouchableOpacity>
             </Card>
-        </View>
+        // </View>
     )
 }
 
@@ -48,33 +50,29 @@ ChefRec.PropTypes = {
 const styles = StyleSheet.create({
     container: {
       maxWidth: "50%",
-      minWidth: "50%",
       minHeight: "100%"
     },
     cardContainer: {
       alignItems: "center",
       alignContent: "center",
-      maxHeight: "100%"
+      maxHeight: "100%",
+      maxWidth: "100%",
+      width: 150,
+      flex: 1
     },
     image: {
       maxHeight: "60%",
-      alignSelf: "center"
+      alignContent: "stretch"
     },
     bio: {
-      fontSize: 10,
+      fontSize: 12,
+      flexWrap: "wrap",
       flexDirection: "column",
       alignSelf: "center",
-      flexGrow: 2
-    },
-    cardlayout: {
-      flex: 1,
-      flexWrap: "wrap",
-      flexDirection: "row"
     },
     horizontal: {
-      width: "100%",
-      justifyContent: "space-around",
-      padding: 0,
+      width: 120,
+      padding: 2,
       alignItems: "stretch"
     }
   });

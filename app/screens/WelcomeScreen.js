@@ -14,35 +14,35 @@ const DATA = [
     "name": "Chef Remy",
     "image": "https://theperceptionalist.files.wordpress.com/2012/03/remy_ratatouille.jpeg",
     "rating": 5,
-    "bio": "I'm 1."
+    "bio": "I'm a rat."
   },
   {
     id: "2",
     "name": "Chef Remy",
     "image": "https://theperceptionalist.files.wordpress.com/2012/03/remy_ratatouille.jpeg",
     "rating": 5,
-    "bio": "I'm a 2"
+    "bio": "I'm a rat"
   },
   {
     id: "3",
     "name": "Chef Remy",
     "image": "https://theperceptionalist.files.wordpress.com/2012/03/remy_ratatouille.jpeg",
     "rating": 5,
-    "bio": "I'm a 3"
+    "bio": "I'm a rat"
   },
   {
     id: "4",
     "name": "Chef Remy",
     "image": "https://theperceptionalist.files.wordpress.com/2012/03/remy_ratatouille.jpeg",
     "rating": 5,
-    "bio": "I'm a 4"
+    "bio": "I'm a rat"
   },
   {
     id: "5",
     "name": "Chef Remy",
     "image": "https://theperceptionalist.files.wordpress.com/2012/03/remy_ratatouille.jpeg",
     "rating": 5,
-    "bio": "I'm a r5at"
+    "bio": "I'm a rat"
   }
 ]
 
