@@ -18,6 +18,7 @@ const app = express();
 app.get('/Chefs', function (req, res) {
     // Connecting to the database.
     connection.getConnection(function (err, connection) {
+        if(err) throw err;
         // Executing the MySQL query (select all data from the 'users' table).
         connection.query('SELECT * FROM Chefs', function (error, results, fields) {
         // If some error occurs, we throw an error.
@@ -26,6 +27,7 @@ app.get('/Chefs', function (req, res) {
         // Getting the 'response' from the database and sending it to our route. This is were the data is.
         res.send(results)
         });
+        connection.release();
     });
 });
 
