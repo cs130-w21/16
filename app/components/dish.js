@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
   cardContainer: {
     alignItems: "flex-end",
     alignContent: "stretch",
-    maxHeight: "40%"
+    maxHeight: "100%"
   },
   text: {
     paddingVertical: 4,
