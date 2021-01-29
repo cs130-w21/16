@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
-import {Image, View, Text, StyleSheet} from 'react-native';
+import {Image, View, Text, ScrollView, StyleSheet, TouchableOpacity} from 'react-native';
 import {Button, Card, Icon, Divider} from 'react-native-elements'
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 import colors from '../config/colors';
 
@@ -16,17 +17,22 @@ function DishPage(props) {
             <View style={styles.image}>
                 <Image source={require("../assets/spaghetti.jpg")}/>
             </View>
+            <View style={{alignSelf:'flex-end', position:'absolute', top:40, right: 0}} >
+                    <Button buttonStyle={{backgroundColor: 'transparent'}} icon={<Icon name='close' type="simple-line-icon" size='30' color='black'/>} />
+            </View>
             <View style={styles.textContainer}>
                 <View style ={styles.title}> 
                     <Text style={styles.titleText}>{props.name}</Text>
                     <Text style={styles.price}>${props.price}</Text>
                 </View>
                 <Divider style={styles.divider} />
-                <Text style={styles.descriptionText}>{props.description}</Text>
-                <Divider style={styles.divider} />
-                <Text style={styles.descriptionText}>Ingredients: {props.ingredients}</Text>
-                <Divider style={styles.divider} />
-                <Text style={styles.descriptionText}>Estimated Time: {props.time}</Text>
+                <ScrollView>
+                    <Text style={styles.descriptionText}>{props.description}</Text>
+                    <Divider style={styles.divider} />
+                    <Text style={styles.descriptionText}>Ingredients: {props.ingredients}</Text>
+                    <Divider style={styles.divider} />
+                    <Text style={styles.descriptionText}>Estimated Time: {props.time}</Text>
+                </ScrollView>
             </View>
             <View style={styles.checkout}>
                 <Button type='solid' title=' - ' onPress={() => remove(count, setCount)} titleStyle={{fontWeight: 'bold'}} buttonStyle={{borderBottomLeftRadius:20,borderTopLeftRadius:20, backgroundColor: colors.secondary}}/>
@@ -52,6 +58,15 @@ const styles = StyleSheet.create({
         flexDirection: 'column'
     },
 
+    closeButton:{
+        justifyContent:'center',
+        alignItems:'center',
+        width:30,
+        height:30,
+        borderWidth:10,
+        borderRadius:10,
+    },
+
     textContainer: {
         flex: 5,
         backgroundColor: "white",
@@ -63,9 +78,8 @@ const styles = StyleSheet.create({
 
     image: {
         flex: 3,
-        // width: '100%',
-        // height: '100%',
-        alignItems: 'center',
+        width: '100%',
+        height: '100%',
         justifyContent: 'center',
         paddingBottom: '18%'
     },
