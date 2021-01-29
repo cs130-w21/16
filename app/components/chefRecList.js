@@ -18,28 +18,11 @@ import ChefRec from "./chefRec"
 * every now an then within the Featured Menu
 */
 
-const DATA = [
-  {
-    id: "1",
-    name: "Chef Remy",
-    image: "https://theperceptionalist.files.wordpress.com/2012/03/remy_ratatouille.jpeg",
-    rating: 4.5,
-    bio: "I'm a rat"
-  },
-  {
-    id: "2",
-    name: "Chef Remy",
-    image: "https://theperceptionalist.files.wordpress.com/2012/03/remy_ratatouille.jpeg",
-    rating: 4.5,
-    bio: "I'm a rat"
-  },
-]
-
 export default function ChefRecList(props) {
     return (
       <FlatList 
             horizontal={true}
-            data={DATA}
+            data={props.data}
             renderItem={ChefRec}
             keyExtractor={(item) => item.id}
         />

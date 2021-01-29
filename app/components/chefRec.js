@@ -12,21 +12,23 @@ import PropTypes, { any } from "prop-types"
 */
 
 export default function ChefRec(props) {
+  console.log(props)
     return (
         <View style={styles.container}>
           <Card containerStyle={styles.cardContainer}>
-            <TouchableOpacity onPress={props.onPress}>
-                    <Card.Title>{props.name}</Card.Title>
+            <TouchableOpacity onPress={props.item.onPress}>
+                    <Card.Title>{props.item.name}</Card.Title>
                     <Card.Divider />
-                    <View style={styles.cardlayout}>
-                        <Card.Image source={props.image} style={styles.image} />
+                    <View style={styles.horizontal}>
+                        <Card.Image source={{uri: props.item.image}} style={styles.image} />
+                        <Text style={styles.bio}>{props.item.bio}</Text>
                         <Rating
                             readonly={true}
                             imageSize={13}
                             fractions={1}
-                            startingValue={props.rating ? props.rating : 0}
+                            startingValue={props.item.rating ? props.item.rating : 0}
                         />
-                        <Text style={styles.bio}>{props.bio}</Text>
+                        
                     </View>
               </TouchableOpacity>
             </Card>
@@ -45,38 +47,34 @@ ChefRec.PropTypes = {
 
 const styles = StyleSheet.create({
     container: {
-      maxWidth: "100%",
+      maxWidth: "50%",
+      minWidth: "50%",
       minHeight: "100%"
-      // maxHeight: "30%",
-      // justifyContent: "center"
     },
     cardContainer: {
-      alignItems: "flex-end",
-      alignContent: "stretch",
+      alignItems: "center",
+      alignContent: "center",
       maxHeight: "100%"
     },
     image: {
+      maxHeight: "60%",
       alignSelf: "center"
     },
     bio: {
       fontSize: 10,
       flexDirection: "column",
+      alignSelf: "center",
       flexGrow: 2
-    },
-    rating: {},
-    avatar: {
-      flex: 1,
-      flexWrap: "wrap",
-      flexDirection: "row"
-    },
-    card: {
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-evenly"
     },
     cardlayout: {
       flex: 1,
       flexWrap: "wrap",
       flexDirection: "row"
+    },
+    horizontal: {
+      width: "100%",
+      justifyContent: "space-around",
+      padding: 0,
+      alignItems: "stretch"
     }
   });
