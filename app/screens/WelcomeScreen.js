@@ -8,50 +8,60 @@ import Constants from 'expo-constants';
 import colors from "../config/colors";
 import ChefRec from "../components/chefRec";
 
-const DATA = [
-  {
-    id: "1",
-    "name": "Chef Remy",
-    "image": "https://theperceptionalist.files.wordpress.com/2012/03/remy_ratatouille.jpeg",
-    "rating": 5,
-    "location": "2 miles away",
-    "bio": "I'm a rat. I've always been a rat. How could I not have been a rat. I'm the worlds best chef of course I'm a rat."
-  },
-  {
-    id: "2",
-    "name": "Chef Remy",
-    "image": "https://theperceptionalist.files.wordpress.com/2012/03/remy_ratatouille.jpeg",
-    "rating": 5,
-    "location": "2 miles away",
-    "bio": "I'm a rat"
-  },
-  {
-    id: "3",
-    "name": "Chef Remy",
-    "image": "https://theperceptionalist.files.wordpress.com/2012/03/remy_ratatouille.jpeg",
-    "rating": 5,
-    "location": "2 miles away",
-    "bio": "I'm a rat"
-  },
-  {
-    id: "4",
-    "name": "Chef Remy",
-    "image": "https://theperceptionalist.files.wordpress.com/2012/03/remy_ratatouille.jpeg",
-    "rating": 5,
-    "location": "2 miles away",
-    "bio": "I'm a rat"
-  },
-  {
-    id: "5",
-    "name": "Chef Remy",
-    "image": "https://theperceptionalist.files.wordpress.com/2012/03/remy_ratatouille.jpeg",
-    "rating": 5,
-    "location": "2 miles away",
-    "bio": "I'm a rat"
-  }
-]
-
 function WelcomeScreen({ navigation }) {
+  const DATA = [
+    {
+      id: "1",
+      "name": "Chef Remy",
+      "image": "https://theperceptionalist.files.wordpress.com/2012/03/remy_ratatouille.jpeg",
+      "rating": 5,
+      "location": "2 miles away",
+      "bio": "I'm a rat.",
+      "cuisine": "Ratatouille",
+      onPress: () => navigation.push("Chef")
+    },
+    {
+      id: "2",
+      "name": "Chef Remy",
+      "image": "https://theperceptionalist.files.wordpress.com/2012/03/remy_ratatouille.jpeg",
+      "rating": 5,
+      "location": "2 miles away",
+      "bio": "I'm a rat",
+      "cuisine": "Ratatouille",
+      onPress: () => navigation.push("Chef")
+    },
+    {
+      id: "3",
+      "name": "Chef Remy",
+      "image": "https://theperceptionalist.files.wordpress.com/2012/03/remy_ratatouille.jpeg",
+      "rating": 5,
+      "location": "2 miles away",
+      "bio": "I'm a rat",
+      "cuisine": "Ratatouille",
+      onPress: () => navigation.push("Chef")
+    },
+    {
+      id: "4",
+      "name": "Chef Remy",
+      "image": "https://theperceptionalist.files.wordpress.com/2012/03/remy_ratatouille.jpeg",
+      "rating": 5,
+      "location": "2 miles away",
+      "bio": "I'm a rat",
+      "cuisine": "Ratatouille",
+      onPress: () => navigation.push("Chef")
+    },
+    {
+      id: "5",
+      "name": "Chef Remy",
+      "image": "https://theperceptionalist.files.wordpress.com/2012/03/remy_ratatouille.jpeg",
+      "rating": 5,
+      "location": "2 miles away",
+      "bio": "I'm a rat",
+      "cuisine": "Ratatouille",
+      onPress: () => navigation.push("Chef")
+    }
+  ]
+
   return (
       <SafeAreaView style={styles.scrollContainer}>
         {/* <View style={styles.logoContainer}>
