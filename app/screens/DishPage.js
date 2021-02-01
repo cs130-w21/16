@@ -22,7 +22,7 @@ const CarouselCardItem = ({ item, index }) => {
           style={styles.carouselItem}
         />
     )
-  }
+}
 function DishPage(props) {
     const [count, setCount] = useState(0);
     const [modalVisible, setVisible] = useState(true);
@@ -239,6 +239,6 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         flexDirection: 'row',
     }
-  });
+});
 
 export default DishPage;
