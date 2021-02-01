@@ -19,10 +19,12 @@ export default function ChefRec(props) {
           <TouchableOpacity style={styles.button} onPress={props.item.onPress}>
             <View containerStyle={styles.title}>
                 <Card.Title>{props.item.name}</Card.Title>
-                <Card.Divider />
+                <Text numberOfLines={1} style={styles.cuisine}>{props.item.cuisine}</Text>
+                {/* <Card.Divider /> */}
                 <Card.Image source={{uri: props.item.image}} style={styles.image} />
             </View>
             <Text numberOfLines={2} style={styles.bio}>{props.item.bio}</Text>
+            {/* <Text numberOfLines={1} style={styles.cuisine}>{props.item.cuisine}</Text> */}
             <View containerStyle={styles.footer}>
                 <View style={styles.location}>
                   <Icon name="location-pin" size={11} />
@@ -43,13 +45,16 @@ export default function ChefRec(props) {
 }
 
 ChefRec.PropTypes = {
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    image: any,
-    rating: PropTypes.number,
-    bio: PropTypes.string.isRequired,
-    location: PropTypes.string.isRequired,
-    onPress: PropTypes.func
+    item: {
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      image: any,
+      rating: PropTypes.number,
+      bio: PropTypes.string.isRequired,
+      location: PropTypes.string.isRequired,
+      cuisine: PropTypes.string.isRequired,
+      onPress: PropTypes.func
+    }
 }
 
 const styles = StyleSheet.create({
@@ -62,6 +67,9 @@ const styles = StyleSheet.create({
       width: 130
     },
     image: {
+      alignSelf: "center",
+      alignItems: "center",
+      alignContent: "center",
       height: 50,
       width: 100
     },
@@ -72,6 +80,14 @@ const styles = StyleSheet.create({
       flexShrink: 1,
       flexDirection: "column",
       alignSelf: "center",
+    },
+    cuisine: {
+      fontSize: 11,
+      paddingBottom: 8,
+      paddingStart: 0,
+      textAlign: "center",
+      color: colors.secondary,
+      fontWeight: "bold"
     },
     text: {
       fontSize: 10,
@@ -93,9 +109,17 @@ const styles = StyleSheet.create({
       bottom: 0
     },
     title: {
-      justifyContent: "flex-start"
+      flexDirection: "column",
+      alignContent: "center",
+      alignItems: "center",
+      justifyContent: "flex-start",
+      flex: 1
     },
     footer: {
+      flexDirection: "column",
+      alignContent: "center",
+      alignItems: "center",
+      flex: 1,
       justifyContent: "flex-end"
     },
     button: {
