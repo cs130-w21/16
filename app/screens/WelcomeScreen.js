@@ -14,13 +14,15 @@ const DATA = [
     "name": "Chef Remy",
     "image": "https://theperceptionalist.files.wordpress.com/2012/03/remy_ratatouille.jpeg",
     "rating": 5,
-    "bio": "I'm a rat."
+    "location": "2 miles away",
+    "bio": "I'm a rat. I've always been a rat. How could I not have been a rat. I'm the worlds best chef of course I'm a rat."
   },
   {
     id: "2",
     "name": "Chef Remy",
     "image": "https://theperceptionalist.files.wordpress.com/2012/03/remy_ratatouille.jpeg",
     "rating": 5,
+    "location": "2 miles away",
     "bio": "I'm a rat"
   },
   {
@@ -28,6 +30,7 @@ const DATA = [
     "name": "Chef Remy",
     "image": "https://theperceptionalist.files.wordpress.com/2012/03/remy_ratatouille.jpeg",
     "rating": 5,
+    "location": "2 miles away",
     "bio": "I'm a rat"
   },
   {
@@ -35,6 +38,7 @@ const DATA = [
     "name": "Chef Remy",
     "image": "https://theperceptionalist.files.wordpress.com/2012/03/remy_ratatouille.jpeg",
     "rating": 5,
+    "location": "2 miles away",
     "bio": "I'm a rat"
   },
   {
@@ -42,6 +46,7 @@ const DATA = [
     "name": "Chef Remy",
     "image": "https://theperceptionalist.files.wordpress.com/2012/03/remy_ratatouille.jpeg",
     "rating": 5,
+    "location": "2 miles away",
     "bio": "I'm a rat"
   }
 ]

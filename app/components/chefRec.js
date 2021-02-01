@@ -2,6 +2,7 @@ import React from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import {
     Card,
+  Icon,
     Rating
 } from "react-native-elements";
 import colors from "../config/colors";
@@ -14,27 +15,30 @@ import PropTypes, { any } from "prop-types"
 export default function ChefRec(props) {
   console.log(props)
     return (
-        // <View style={styles.container}>
-          <Card containerStyle={styles.cardContainer}>
-            <TouchableOpacity onPress={props.item.onPress}>
-                    <Card.Title>{props.item.name}</Card.Title>
-                    <Card.Divider />
-                    <View style={styles.horizontal}>
-                        <Card.Image source={{uri: props.item.image}} style={styles.image} />
-                    </View>
-                    <View style={styles.horizontal}>
-                        <Text numberOfLines={2} style={styles.bio}>{props.item.bio}</Text>
-                        <Rating
-                            readonly={true}
-                            imageSize={13}
-                            fractions={1}
-                            startingValue={props.item.rating ? props.item.rating : 0}
-                        />
-                        
-                    </View>
-              </TouchableOpacity>
-            </Card>
-        // </View>
+        <Card containerStyle={styles.cardContainer}>
+          <TouchableOpacity style={styles.button} onPress={props.item.onPress}>
+            <View containerStyle={styles.title}>
+                <Card.Title>{props.item.name}</Card.Title>
+                <Card.Divider />
+                <Card.Image source={{uri: props.item.image}} style={styles.image} />
+            </View>
+            <Text numberOfLines={2} style={styles.bio}>{props.item.bio}</Text>
+            <View containerStyle={styles.footer}>
+                <View style={styles.location}>
+                  <Icon name="location-pin" size={11} />
+                  <Text style={styles.text}>{props.item.location}</Text>
+                </View>
+                <Card.Divider />
+                <Rating
+                    style={styles.rating}
+                    readonly={true}
+                    imageSize={13}
+                    fractions={1}
+                    startingValue={props.item.rating ? props.item.rating : 0}
+                />
+            </View>                  
+            </TouchableOpacity>
+        </Card>
     )
 }
 
@@ -44,35 +48,67 @@ ChefRec.PropTypes = {
     image: any,
     rating: PropTypes.number,
     bio: PropTypes.string.isRequired,
+    location: PropTypes.string.isRequired,
     onPress: PropTypes.func
 }
 
 const styles = StyleSheet.create({
-    container: {
-      maxWidth: "50%",
-      minHeight: "100%"
-    },
     cardContainer: {
+      flexDirection: "column",
+      flex: 1,
       alignItems: "center",
       alignContent: "center",
-      maxHeight: "100%",
-      maxWidth: "100%",
-      width: 150,
-      flex: 1
+      height: 250,
+      width: 130
     },
     image: {
-      maxHeight: "60%",
-      alignContent: "stretch"
+      height: 50,
+      width: 100
     },
     bio: {
       fontSize: 12,
+      padding: 10,
       flexWrap: "wrap",
+      flexShrink: 1,
+      flexDirection: "column",
+      alignSelf: "center",
+    },
+    text: {
+      fontSize: 10,
+      padding: 10,
+      flexWrap: "wrap",
+      flexShrink: 1,
       flexDirection: "column",
       alignSelf: "center",
     },
     horizontal: {
-      width: 120,
-      padding: 2,
-      alignItems: "stretch"
+      width: "100%",
+      justifyContent: "space-around",
+      alignItems: "stretch",
+      alignSelf: "center"
+    },
+    rating: {
+      position: "absolute",
+      alignSelf: "center",
+      bottom: 0
+    },
+    title: {
+      justifyContent: "flex-start"
+    },
+    footer: {
+      justifyContent: "flex-end"
+    },
+    button: {
+      height: 250,
+      width: 130,
+      alignItems: "center",
+      padding: 10,
+      flexDirection: "column",
+      flex: 1
+    },
+    location: {
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-evenly"
     }
   });
