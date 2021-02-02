@@ -12,11 +12,11 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName="FeaturedMenuScreen">
-        <Stack.Screen
-          name='FeaturedMenuScreen'
-          component={FeaturedMenuScreen}
-        />
         <Stack.Screen name='Search' component={WelcomeScreen}/>
+        <Stack.Screen
+          name='FeaturedMenuScreen' component={FeaturedMenuScreen}
+        />
+        
       </Stack.Navigator>
         
     </NavigationContainer>
