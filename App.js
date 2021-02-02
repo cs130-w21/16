@@ -16,7 +16,6 @@ const App = () => {
         <Stack.Screen
           name='FeaturedMenuScreen' component={FeaturedMenuScreen}
         />
-        
       </Stack.Navigator>
         
     </NavigationContainer>

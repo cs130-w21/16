@@ -8,6 +8,7 @@ import {IconToggle} from 'react-native-material-ui';
 
 import colors from '../config/colors';
 import NavBarComponent from '../components/NavBarComponent';
+import MenuCard from '../components/dish';
 
 class RightElement extends Component{
     render(){
@@ -62,7 +63,33 @@ function FeaturedMenuScreen(props) {
                 barStyle="light-content"
             />
             <ScrollView showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
-                <Text style={{fontSize:1000}}>Hello</Text>
+                <MenuCard
+                    title={"Spaghetti"}
+                    subtitle={"Chef Remy"}
+                    image={require("../assets/potluck_logo_small.jpg")}
+                    description={"Classic spaghetti recipe with marinara sauce!"}
+                    rating={4.5}
+                    price={"$10.11"}
+                    onPress={() => navigation.push("Details")}
+                />
+                <MenuCard
+                    title={"Spaghetti"}
+                    subtitle={"Chef Remy"}
+                    image={require("../assets/potluck_logo_small.jpg")}
+                    description={"Classic spaghetti recipe with marinara sauce!"}
+                    rating={4.5}
+                    price={"$10.11"}
+                    onPress={() => navigation.push("Details")}
+                />
+                <MenuCard
+                    title={"Spaghetti"}
+                    subtitle={"Chef Remy"}
+                    image={require("../assets/potluck_logo_small.jpg")}
+                    description={"Classic spaghetti recipe with marinara sauce!"}
+                    rating={4.5}
+                    price={"$10.11"}
+                    onPress={() => navigation.push("Details")}
+                />
             </ScrollView>
         </SafeAreaProvider>
     );
