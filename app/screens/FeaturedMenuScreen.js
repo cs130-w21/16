@@ -11,7 +11,12 @@ import NavBarComponent from '../components/NavBarComponent';
 import MenuCard from '../components/dish';
 import { useLinkProps } from '@react-navigation/native';
 
+import * as SQLite from 'expo-sqlite';
 
+function getChefs(){
+    const db = SQLite.openDatabase('../../backend/sqlite.db');
+    db.exec([{ sql: 'SELECT * FROM Chef', args: [] }], false, () => console.log('Queried'));
+}
 
 const wait = (timeout) => {
     return new Promise(resolve => {
