@@ -5,6 +5,7 @@ import FeaturedMenuScreen from './app/screens/FeaturedMenuScreen';
 import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import WelcomeScreen from './app/screens/WelcomeScreen';
+import DishPage from './app/screens/DishPage';
 
 const Stack = createStackNavigator();
 
@@ -16,6 +17,7 @@ const App = () => {
         <Stack.Screen
           name='FeaturedMenuScreen' component={FeaturedMenuScreen}
         />
+        <Stack.Screen name='DishPage' component={DishPage}/>
       </Stack.Navigator>
         
     </NavigationContainer>

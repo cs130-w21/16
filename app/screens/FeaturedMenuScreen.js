@@ -9,37 +9,9 @@ import {IconToggle} from 'react-native-material-ui';
 import colors from '../config/colors';
 import NavBarComponent from '../components/NavBarComponent';
 import MenuCard from '../components/dish';
+import { useLinkProps } from '@react-navigation/native';
 
-class RightElement extends Component{
-    render(){
-        return(
-            <Icon name='filter-alt' color='white' onPress={() => {console.log("MAP")}}/>
-        );
-    }
-}
 
-class LeftElement extends Component{
-    render(){
-        const {navigation} = this.props;
-        return(
-            <Icon 
-                name='search' 
-                color='white' 
-                onPress={() => {
-                    console.log("SEARCH");
-                    navigation.navigate('Search')
-                }}/>
-        );
-    }
-}
-
-class CenterElement extends Component{
-    render() {
-        return(
-            <Text style={styles.title}>POTLUCK</Text>
-        );
-    }
-}
 
 const wait = (timeout) => {
     return new Promise(resolve => {
@@ -55,40 +27,34 @@ function FeaturedMenuScreen(props) {
     }, []);
     return(
         <SafeAreaProvider style={styles.container}>
-            <Header
-                containerStyle={{backgroundColor: colors.primary}}
-                leftComponent={<LeftElement navigation={props.navigation}/>}//{icon:'search', color:'white', onPress: ()=> {console.log("Search Pressed")}}}
-                centerComponent={<CenterElement/>} //{ text: 'POTLUCK', style:{ color: '#fff', fontFamily:'Avenir', fontWeight:'bold', fontSize:20} }}
-                rightComponent={<RightElement/>}//{ icon: 'map', color: '#fff', onPress: ()=> {console.log("Map Pressed")}}}
-                barStyle="light-content"
-            />
+            <NavBarComponent navigation={props.navigation}/>
             <ScrollView showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
                 <MenuCard
                     title={"Spaghetti"}
-                    subtitle={"Chef Remy"}
+                    chefname={"Chef Remy"}
                     image={require("../assets/potluck_logo_small.jpg")}
-                    description={"Classic spaghetti recipe with marinara sauce!"}
+                    short_description={"Classic spaghetti recipe with marinara sauce!"}
                     rating={4.5}
-                    price={"$10.11"}
-                    onPress={() => navigation.push("Details")}
+                    price={10.11}
+                    navigation = {props.navigation}
                 />
                 <MenuCard
                     title={"Spaghetti"}
-                    subtitle={"Chef Remy"}
+                    chefname={"Chef Remy"}
                     image={require("../assets/potluck_logo_small.jpg")}
-                    description={"Classic spaghetti recipe with marinara sauce!"}
+                    short_description={"Classic spaghetti recipe with marinara sauce!"}
                     rating={4.5}
-                    price={"$10.11"}
-                    onPress={() => navigation.push("Details")}
+                    price={10.11}
+                    navigation = {props.navigation}
                 />
                 <MenuCard
                     title={"Spaghetti"}
-                    subtitle={"Chef Remy"}
+                    chefname={"Chef Remy"}
                     image={require("../assets/potluck_logo_small.jpg")}
                     description={"Classic spaghetti recipe with marinara sauce!"}
                     rating={4.5}
-                    price={"$10.11"}
-                    onPress={() => navigation.push("Details")}
+                    price={10.11}
+                    navigation = {props.navigation}
                 />
             </ScrollView>
         </SafeAreaProvider>
@@ -98,10 +64,7 @@ function FeaturedMenuScreen(props) {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: colors.background,
-    },
-    title: {
-        color: '#fff', fontFamily:'Avenir', fontWeight:'bold', fontSize:20
-    },
+    }
 });
 
 export default FeaturedMenuScreen;
