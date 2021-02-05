@@ -30,20 +30,20 @@ export default function MenuCard(props) {
     <View style={styles.container}>
       <Card containerStyle={styles.cardContainer}>
         <TouchableOpacity onPress={onPress}>
-          <Card.Title>{props.title}</Card.Title>
+          <Card.Title>{props.json.name}</Card.Title>
           <Card.Divider />
           <View style={styles.cardlayout}>
             <View style={styles.horizontal}>
-              <Card.Image source={props.image} style={styles.image} />
+              <Card.Image source={{uri: props.json.primaryImage}} style={styles.image} />
             </View>
             <View style={styles.horizontal}>
-              <Text style={styles.desc}>{props.short_description}</Text>
-              <Text style={styles.price}>${props.price}</Text>
+              <Text style={styles.desc}>{props.json.shortDesc}</Text>
+              <Text style={styles.price}>${props.json.price}</Text>
               <Rating
                 readonly={true}
                 imageSize={13}
                 fractions={1}
-                startingValue={props.rating ? props.rating : 0}
+                startingValue={props.json.rating ? props.json.rating : 0.0}
               />
               <View style={styles.card}>
                 <Icon name="android" size={12} />
@@ -59,12 +59,13 @@ export default function MenuCard(props) {
 }
 
 MenuCard.propTypes = {
+  json: any.isRequired,
   title: PropTypes.string.isRequired,
   image: any,
   rating: PropTypes.number,
   chefname: PropTypes.string.isRequired,
   short_description: PropTypes.string.isRequired,
-  price: PropTypes.string,
+  price: PropTypes.number,
   onPress: PropTypes.func,
   navigation: any
 };
