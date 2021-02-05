@@ -37,8 +37,8 @@ class CenterElement extends Component{
 
 class NavBarComponent extends Component{
     render(){
-        console.log("NavBar Props");
-        console.log(this.props);
+        //console.log("NavBar Props");
+        //console.log(this.props);
         return(
             <Header
                 containerStyle={{backgroundColor: colors.primary}}

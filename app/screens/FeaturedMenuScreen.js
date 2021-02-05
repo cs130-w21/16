@@ -11,12 +11,7 @@ import NavBarComponent from '../components/NavBarComponent';
 import MenuCard from '../components/dish';
 import { useLinkProps } from '@react-navigation/native';
 
-import * as SQLite from 'expo-sqlite';
-
-function getChefs(){
-    const db = SQLite.openDatabase('../../backend/sqlite.db');
-    db.exec([{ sql: 'SELECT * FROM Chef', args: [] }], false, () => console.log('Queried'));
-}
+import getChefs from '../../backend/database';
 
 const wait = (timeout) => {
     return new Promise(resolve => {
@@ -28,7 +23,12 @@ function FeaturedMenuScreen(props) {
     const [refreshing, setRefreshing] = React.useState(false);
     const onRefresh = React.useCallback(() => {
         setRefreshing(true);
-        wait(2000).then(() => setRefreshing(false));
+        wait(200).then(() => {
+            fetch('http://localhost:3000/Chefs')
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .then(setRefreshing(false));
+        });
     }, []);
     return(
         <SafeAreaProvider style={styles.container}>
@@ -56,7 +56,7 @@ function FeaturedMenuScreen(props) {
                     title={"Spaghetti"}
                     chefname={"Chef Remy"}
                     image={require("../assets/potluck_logo_small.jpg")}
-                    description={"Classic spaghetti recipe with marinara sauce!"}
+                    short_description={"Classic spaghetti recipe with marinara sauce!"}
                     rating={4.5}
                     price={10.11}
                     navigation = {props.navigation}

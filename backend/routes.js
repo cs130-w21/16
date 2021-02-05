@@ -3,10 +3,10 @@ const bodyParser = require('body-parser');
 const mysql = require('mysql');
 
 const connection = mysql.createPool({
-    host     : 'localhost',
-    user     : 'cs143',
-    password : 'password',
-    database : 'Potluck'
+    host     : 'sql3.freemysqlhosting.net',
+    user     : 'sql3390836',
+    password : 'Ly2FN43X7n',
+    database : 'sql3390836'
 });
 
 // We're still in routes.js! Right below everything else.
@@ -20,7 +20,7 @@ app.get('/Chefs', function (req, res) {
     connection.getConnection(function (err, connection) {
         if(err) throw err;
         // Executing the MySQL query (select all data from the 'users' table).
-        connection.query('SELECT * FROM Chefs', function (error, results, fields) {
+        connection.query('SELECT * FROM Chef', function (error, results, fields) {
         // If some error occurs, we throw an error.
         if (error) throw error;
 
@@ -30,6 +30,24 @@ app.get('/Chefs', function (req, res) {
         connection.release();
     });
 });
+
+app.get('/CreateChefs', function (req, res) {
+    // Connecting to the database.
+    connection.getConnection(function (err, connection) {
+        if(err) throw err;
+        // Executing the MySQL query (select all data from the 'users' table).
+        connection.query('CREATE TABLE Chef(chefid INT PRIMARY KEY, name VARCHAR(100), bio TEXT, shortDesc VARCHAR(50), location BLOB, rating FLOAT, numReviews INT, profilePic TEXT);',
+        function (error, results, fields) {
+        // If some error occurs, we throw an error.
+        if (error) throw error;
+
+        // Getting the 'response' from the database and sending it to our route. This is were the data is.
+        res.send(results)
+        });
+        connection.release();
+    });
+});
+
 
 // Starting our server.
 app.listen(3000, () => {

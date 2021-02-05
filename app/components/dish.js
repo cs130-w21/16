@@ -14,7 +14,7 @@ import PropTypes, { any } from "prop-types";
 
 
 export default function MenuCard(props) {
-  console.log(props);
+  //console.log(props);
   function onPress(){
     props.navigation.push("DishPage", {
         carouselData: [{image: require('../assets/spaghetti.jpg')}, {image: require('../assets/spaghetti2.jpg')}], //REPLACE WITH ACTUAL IMAGES
