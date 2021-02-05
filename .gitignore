@@ -3,3 +3,4 @@ node_modules/
 .expo/
 backend/secrets.js
 *secrets.js
+backend/potluck.pem
