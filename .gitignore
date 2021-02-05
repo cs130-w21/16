@@ -1,7 +1,4 @@
 .DS_Store
 node_modules/
-<<<<<<< HEAD
 .expo/
-=======
-.expo/
->>>>>>> issue#6-initial-app-structure
+backend/secrets.js

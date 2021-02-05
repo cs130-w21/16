@@ -1,3 +1,5 @@
+const secrets = require('./secrets');
+
 const express = require('express');
 const bodyParser = require('body-parser');
 const mysql = require('mysql');
@@ -5,11 +7,9 @@ const mysql = require('mysql');
 const connection = mysql.createPool({
     host     : 'sql3.freemysqlhosting.net',
     user     : 'sql3390836',
-    password : 'Ly2FN43X7n',
+    password : secrets.dbpw(),
     database : 'sql3390836'
 });
-
-// We're still in routes.js! Right below everything else.
 
 // Starting our app.
 const app = express();
@@ -21,23 +21,6 @@ app.get('/Chefs', function (req, res) {
         if(err) throw err;
         // Executing the MySQL query (select all data from the 'users' table).
         connection.query('SELECT * FROM Chef', function (error, results, fields) {
-        // If some error occurs, we throw an error.
-        if (error) throw error;
-
-        // Getting the 'response' from the database and sending it to our route. This is were the data is.
-        res.send(results)
-        });
-        connection.release();
-    });
-});
-
-app.get('/CreateChefs', function (req, res) {
-    // Connecting to the database.
-    connection.getConnection(function (err, connection) {
-        if(err) throw err;
-        // Executing the MySQL query (select all data from the 'users' table).
-        connection.query('CREATE TABLE Chef(chefid INT PRIMARY KEY, name VARCHAR(100), bio TEXT, shortDesc VARCHAR(50), location BLOB, rating FLOAT, numReviews INT, profilePic TEXT);',
-        function (error, results, fields) {
         // If some error occurs, we throw an error.
         if (error) throw error;
 

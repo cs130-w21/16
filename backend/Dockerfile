@@ -1,14 +1,15 @@
-FROM junghoo/mysql-apache
+FROM node:14.15-buster-slim
 
 EXPOSE 3000
 
-RUN sudo apt update && sudo apt install -y git
+RUN apt update && apt install -y git
 
-RUN sudo apt install -y nodejs npm
+RUN apt install -y nodejs npm
 
-RUN npm install express
-RUN npm install body-parser
-RUN npm install mysql
+COPY secrets.js /tmp/
 
-COPY create_test_db.sql /home/cs143/
-#ENTRYPOINT sudo mysql < /home/cs143/create_test_db.sql
+RUN git clone --single-branch --branch issue#12 https://github.com/cs130-w21/16.git
+RUN cp /tmp/secrets.js 16/backend/
+ENTRYPOINT cd 16; npm install; node backend/routes.js
+
+
