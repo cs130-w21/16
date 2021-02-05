@@ -1,5 +1,5 @@
 #!/bin/bash
-
+cd "$(dirname "$0")"
 if [[ $# -eq 0 ]];
 then
     docker pull brendonng/potluck:base
