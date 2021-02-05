@@ -10,6 +10,7 @@ import MenuCard from '../components/dish';
 
 function dishCard(content, navigation){
     return <MenuCard
+                json={content}
                 title={content.name}
                 chefname={"Insert Chef Name"}
                 image={content.primaryImage}
