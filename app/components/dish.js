@@ -34,7 +34,7 @@ export default function MenuCard(props) {
           <Card.Divider />
           <View style={styles.cardlayout}>
             <View style={styles.horizontal}>
-              <Card.Image source={props.image} style={styles.image} />
+              <Card.Image source={{uri: props.image}} style={styles.image} />
             </View>
             <View style={styles.horizontal}>
               <Text style={styles.desc}>{props.short_description}</Text>
@@ -42,8 +42,8 @@ export default function MenuCard(props) {
               <Rating
                 readonly={true}
                 imageSize={13}
-                fractions={1}
-                startingValue={props.rating ? props.rating : 0}
+                fractions={0.1}
+                startingValue={props.rating ? props.rating : 0.0}
               />
               <View style={styles.card}>
                 <Icon name="android" size={12} />
@@ -64,7 +64,7 @@ MenuCard.propTypes = {
   rating: PropTypes.number,
   chefname: PropTypes.string.isRequired,
   short_description: PropTypes.string.isRequired,
-  price: PropTypes.string,
+  price: PropTypes.number,
   onPress: PropTypes.func,
   navigation: any
 };
