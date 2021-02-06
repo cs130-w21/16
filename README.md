@@ -25,6 +25,12 @@ https://youtu.be/0-S5a0eXPoc?t=1087
 - Make sure Expo Client is installed from App Store/Google Play Store
 - Scan QR code from Metro Bundler either opened in your browser or terminal which you npm started from
 
+# To Run Database Server Locally
+## MAKE SURE TO DO THIS BEFORE TESTING
+Currently only works for testing on simulators on the same device as development
+- run `backend/run_server.sh` to start the server with the route.js file from dev branch.
+- if you have made any changes to route.js or any backend code, run `backend/run_server.sh <yourbranchname in github>` to create a local Docker container with your branch's backend code.
+
 # Repository Template
 
 [![Build Status](https://travis-ci.com/cs130-w21/16.svg?branch=dev)](https://travis-ci.org/cs130-w21/16)

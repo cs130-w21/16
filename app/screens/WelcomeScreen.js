@@ -4,23 +4,15 @@ import MenuCard from "../components/dish";
 
 import colors from "../config/colors";
 
-function WelcomeScreen({ navigation }) {
-  return (
-    <SafeAreaView style={styles.container}>
-      {/* <View style={styles.logoContainer}>
-                <Image style={styles.logo} source={require("../assets/potluck_logo_small.jpg")}/>
+function WelcomeScreen(props) {
+    const {navigation, route} = props;
+    return (
+        <View style={styles.container}>
+            <View style={styles.logoContainer}>
+                <Image style={styles.logo} source={require("../assets/potluck_logo_small_transparent_orange.png")}/>
                 <Text style={styles.text}>Potluck</Text>
-            </View>   */}
-      <MenuCard
-        title={"Spaghetti"}
-        subtitle={"Chef Remy"}
-        image={require("../assets/potluck_logo_small.jpg")}
-        description={"Classic spaghetti recipe with marinara sauce!"}
-        rating={4.5}
-        price={"$10.11"}
-        onPress={() => navigation.push("Details")}
-      />
-    </SafeAreaView>
+            </View>
+        </View>
   );
 }
 
