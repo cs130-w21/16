@@ -8,84 +8,15 @@ import Constants from 'expo-constants';
 import colors from "../config/colors";
 import ChefRec from "../components/chefRec";
 
-function WelcomeScreen({ navigation }) {
-  const DATA = [
-    {
-      id: "1",
-      "name": "Chef Remy",
-      "image": "https://theperceptionalist.files.wordpress.com/2012/03/remy_ratatouille.jpeg",
-      "rating": 5,
-      "location": "2 miles away",
-      "bio": "I'm a rat.",
-      "cuisine": "Ratatouille",
-      onPress: () => navigation.push("Chef")
-    },
-    {
-      id: "2",
-      "name": "Chef Remy",
-      "image": "https://theperceptionalist.files.wordpress.com/2012/03/remy_ratatouille.jpeg",
-      "rating": 5,
-      "location": "2 miles away",
-      "bio": "I'm a rat",
-      "cuisine": "Ratatouille",
-      onPress: () => navigation.push("Chef")
-    },
-    {
-      id: "3",
-      "name": "Chef Remy",
-      "image": "https://theperceptionalist.files.wordpress.com/2012/03/remy_ratatouille.jpeg",
-      "rating": 5,
-      "location": "2 miles away",
-      "bio": "I'm a rat",
-      "cuisine": "Ratatouille",
-      onPress: () => navigation.push("Chef")
-    },
-    {
-      id: "4",
-      "name": "Chef Remy",
-      "image": "https://theperceptionalist.files.wordpress.com/2012/03/remy_ratatouille.jpeg",
-      "rating": 5,
-      "location": "2 miles away",
-      "bio": "I'm a rat",
-      "cuisine": "Ratatouille",
-      onPress: () => navigation.push("Chef")
-    },
-    {
-      id: "5",
-      "name": "Chef Remy",
-      "image": "https://theperceptionalist.files.wordpress.com/2012/03/remy_ratatouille.jpeg",
-      "rating": 5,
-      "location": "2 miles away",
-      "bio": "I'm a rat",
-      "cuisine": "Ratatouille",
-      onPress: () => navigation.push("Chef")
-    }
-  ]
-
-  return (
-      <SafeAreaView style={styles.scrollContainer}>
-        {/* <View style={styles.logoContainer}>
-                  <Image style={styles.logo} source={require("../assets/potluck_logo_small.jpg")}/>
-                  <Text style={styles.text}>Potluck</Text>
-              </View>   */}
-        <ScrollView>
-          <SafeAreaView style={styles.container}>
-            <MenuCard
-              title={"Spaghetti"}
-              subtitle={"Chef Remy"}
-              image={require("../assets/potluck_logo_small.jpg")}
-              description={"Classic spaghetti recipe with marinara sauce!"}
-              rating={4.5}
-              price={"$10.11"}
-              onPress={() => navigation.push("Details")}
-            />
-          </SafeAreaView>
-          <SafeAreaView style={styles.container}>
-            <ChefRecList data={DATA} />
-          </SafeAreaView>
-        </ScrollView>
-        
-      </SafeAreaView>
+function WelcomeScreen(props) {
+    const {navigation, route} = props;
+    return (
+        <View style={styles.container}>
+            <View style={styles.logoContainer}>
+                <Image style={styles.logo} source={require("../assets/potluck_logo_small_transparent_orange.png")}/>
+                <Text style={styles.text}>Potluck</Text>
+            </View>
+        </View>
   );
 }
 
