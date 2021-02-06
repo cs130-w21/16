@@ -1,8 +1,12 @@
 import React from "react";
-import { View, StyleSheet, Image, Text, SafeAreaView } from "react-native";
+import { View, StyleSheet, Image, Text, SafeAreaView, FlatList } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
+import ChefRecList from "../components/chefRecList";
 import MenuCard from "../components/dish";
+import Constants from 'expo-constants';
 
 import colors from "../config/colors";
+import ChefRec from "../components/chefRec";
 
 function WelcomeScreen(props) {
     const {navigation, route} = props;
@@ -24,12 +28,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flexDirection: "row"
   },
-
+  scrollContainer: {
+    flex: 1,
+    backgroundColor: colors.primary,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: Constants.statusBarHeight,
+  },
   logo: {
     width: 100,
     height: 100
   },
-
   logoContainer: {
     position: "absolute",
     top: "40%",
