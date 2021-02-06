@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {Dimensions, Image, Modal, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {Button, Icon, Divider} from 'react-native-elements'
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import colors from '../config/colors';
 
@@ -24,12 +25,16 @@ const CarouselCardItem = ({ item, index }) => {
     )
 }
 function DishPage(props) {
+    const navigation = props.navigation;
+    props = props.route.params;
+    console.log(props);
     const [count, setCount] = useState(0);
     const [modalVisible, setVisible] = useState(true);
     const [index, setIndex] = React.useState(0)
     const isCarousel = React.useRef(null)
 
     return(
+        <SafeAreaView>
         <Modal animationType="slide" transparent={false} visible={modalVisible}>
             <View style={styles.container}>
                 <View style={styles.image}>
@@ -56,7 +61,7 @@ function DishPage(props) {
                         containerStyle={styles.dots}
                 />
                 <View style={styles.closeButton} >
-                    <Button onPress={() => close(setVisible)} buttonStyle={styles.closeButtonStyle} icon={<Icon name='close' type="simple-line-icon" size='30' color='black'/>} />
+                    <Button onPress={() => navigation.goBack()} buttonStyle={styles.closeButtonStyle} icon={<Icon name='close' type="simple-line-icon" size={30} color='black'/>} />
                 </View>
                 <View style={styles.textContainer}>
                     <View style ={styles.title}>
@@ -77,11 +82,12 @@ function DishPage(props) {
                     <Text style={styles.countStyle}>{count}</Text>
                     <Button type='solid' style={styles.plusButtonPadding} title=' + ' onPress={() => setCount(count + 1)} titleStyle={styles.buttonText} buttonStyle={styles.plusButton}/>
                     <Button type='solid' title='Add to Cart' titleStyle={styles.addToCartText} buttonStyle={styles.addToCartButton} icon={
-                        <Icon style={styles.cartPadding} name='basket' type="simple-line-icon" size='20' color='white'/>}
+                        <Icon style={styles.cartPadding} name='basket' type="simple-line-icon" size={20} color='white'/>}
                     />
                 </View>
             </View>
         </Modal>
+        </SafeAreaView>
     );
 }
 
