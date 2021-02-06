@@ -49,7 +49,7 @@ app.get('/AllDishes', function (req, res) {
 
 
 // Starting our server.
-app.listen(3000, () => {
- console.log('Go to http://localhost:3000/Chefs so you can see the data.');
+app.listen(8888, () => {
+ console.log('Go to http://localhost:8888/Chefs so you can see the data.');
  // Use fetch('http://<ip where db is hosted or localhost>:3000/Chefs') to fetch
 });
