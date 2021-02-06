@@ -25,8 +25,6 @@ const CarouselCardItem = ({ item, index }) => {
     )
 }
 function DishPage(props) {
-    //console.log(props);
-    //props.push(props.route.params)
     const navigation = props.navigation;
     props = props.route.params;
     console.log(props);

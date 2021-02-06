@@ -37,14 +37,12 @@ class CenterElement extends Component{
 
 class NavBarComponent extends Component{
     render(){
-        //console.log("NavBar Props");
-        //console.log(this.props);
         return(
             <Header
                 containerStyle={{backgroundColor: colors.primary}}
-                leftComponent={<LeftElement navigation={this.props.navigation}/>}//{icon:'search', color:'white', onPress: ()=> {console.log("Search Pressed")}}}
-                centerComponent={<CenterElement/>} //{ text: 'POTLUCK', style:{ color: '#fff', fontFamily:'Avenir', fontWeight:'bold', fontSize:20} }}
-                rightComponent={<RightElement/>}//{ icon: 'map', color: '#fff', onPress: ()=> {console.log("Map Pressed")}}}
+                leftComponent={<LeftElement navigation={this.props.navigation}/>}
+                centerComponent={<CenterElement/>} 
+                rightComponent={<RightElement/>}
                 barStyle="light-content"
             />
         )
