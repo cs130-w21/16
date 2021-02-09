@@ -6,10 +6,7 @@ import { NavigationContainer, StackActions } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import WelcomeScreen from './app/screens/WelcomeScreen';
 import DishPage from './app/screens/DishPage';
-<<<<<<< HEAD
-=======
 import ChefScreen from "./app/screens/ChefScreen";
->>>>>>> dev
 
 const Stack = createStackNavigator();
 
@@ -22,10 +19,7 @@ const App = () => {
           name='FeaturedMenuScreen' component={FeaturedMenuScreen}
         />
         <Stack.Screen name='DishPage' component={DishPage}/>
-<<<<<<< HEAD
-=======
         <Stack.Screen name="Chef" component={ChefScreen} />
->>>>>>> dev
       </Stack.Navigator>
         
     </NavigationContainer>

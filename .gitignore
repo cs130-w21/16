@@ -1,13 +1,7 @@
 .DS_Store
 node_modules/
 .expo/
-<<<<<<< HEAD
-backend/secrets.js
-*secrets.js
-backend/potluck.pem
-=======
 settings.json
 backend/secrets.js
 *secrets.js
 backend/potluck.pem
->>>>>>> dev

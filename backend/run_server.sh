@@ -13,8 +13,4 @@ else
     docker stop potluck-dev-server
     docker rm potluck-dev-server
     docker run -it -p 8888:8888 --name potluck-dev-server brendonng/potluck:$branchclean
-<<<<<<< HEAD
 fi
-=======
-fi
->>>>>>> dev

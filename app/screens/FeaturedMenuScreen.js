@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import React, {Component, useCallback, useEffect, useState} from 'react';
-=======
-import React, {Component, useEffect} from 'react';
->>>>>>> dev
 import { ScrollView, Text, View, RefreshControl } from 'react-native';
 import {StyleSheet} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
@@ -14,10 +10,7 @@ import MenuCard from '../components/dish';
 
 function dishCard(content, navigation){
     return <MenuCard
-<<<<<<< HEAD
                 key={content.dishid}
-=======
->>>>>>> dev
                 json={content}
                 title={content.name}
                 chefname={"Insert Chef Name"}
@@ -44,20 +37,6 @@ class Cards extends Component{
         }
     }
 }
-
-<<<<<<< HEAD
-/*
-async function onRefresh(){
-    setRefreshing(true);
-    getDishes().then(function(results) {
-        if(results!=null){
-            setDishes(results);
-        }
-    })
-    .catch(() => {console.log("Refresh Err")});
-    setRefreshing(false);
-}
-*/
 
 async function getDishes() {
     const response = await fetch('http://3.141.20.190:8888/AllDishes');
@@ -97,71 +76,6 @@ function FeaturedMenuScreen(props){
     );
 }
 
-=======
-class FeaturedMenuScreen extends Component{
-    constructor(props){
-        super(props);
-        this.state={
-            dishes: null,
-            refreshing: false,
-            test: "false"
-        }
-
-        this.componentDidMount = this.componentDidMount.bind(this);
-        this.onRefresh = this.onRefresh.bind(this);
-    }
-
-    componentDidMount(){
-        let ref = this;
-        this.getDishes().then(function(results) {
-            ref.setState({test: "true"});
-            ref.setState({dishes: results});
-        }, ()=>{console.log("Error")})
-        .catch((err) => {console.log("Component Did Mount Err: ", err)});
-
-   }
-
-    async getDishes() {
-        const response = await fetch('http://3.141.20.190:8888/AllDishes');
-        const dishes = await response.json();
-        return dishes;
-    }
-
-    async onRefresh(){
-        var ref = this;
-        this.setState({refreshing: true});
-        this.getDishes().then(function(results) {
-            if(results!=null){
-                //console.log(results);
-                ref.setState({dishes: results});
-            }
-        })
-        .catch(() => {console.log("Refresh Err")});
-        this.setState({refreshing: false});
-    }
-
-
-    wait(timeout){
-        return new Promise(resolve => {
-            setTimeout(resolve, timeout);
-        });
-    }
-
-    render(){
-        return(
-            <SafeAreaProvider style={styles.container}>
-                <NavBarComponent navigation={this.props.navigation}/>
-                <ScrollView showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={this.state.refreshing} onRefresh={this.onRefresh}/>}>
-                    <Cards dishes={this.state.dishes} navigation={this.props.navigation}/>
-                </ScrollView>
-            </SafeAreaProvider>
-        );
-    }
-    
-}
-
-
->>>>>>> dev
 const styles = StyleSheet.create({
     container: {
         backgroundColor: colors.background,
