@@ -47,6 +47,7 @@ app.get('/AllDishes', function (req, res) {
     });
 });
 
+<<<<<<< HEAD
 app.get('/AvailableDishes', function (req, res) {
     // Connecting to the database.
     connection.getConnection(function (err, connection) {
@@ -73,5 +74,11 @@ if(args.length == 0){
 else{port = parseInt(args[0]);}
 app.listen(port, () => {
  console.log('Go to http://3.141.20.190:' + port.toString() +'/AllDishes so you can see the data.');
+=======
+
+// Starting our server.
+app.listen(8888, () => {
+ console.log('Go to http://localhost:8888/Chefs so you can see the data.');
+>>>>>>> dev
  // Use fetch('http://<ip where db is hosted or localhost>:3000/Chefs') to fetch
 });
