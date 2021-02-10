@@ -3,10 +3,10 @@ import {Dimensions, Image, Modal, ScrollView, StyleSheet, Text, View, SafeAreaVi
 import {Button, Icon, Divider} from 'react-native-elements'
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import colors from '../config/colors';
-import { Linking } from "react-native";
-import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
+import { Table, TableWrapper, Row, Rows } from 'react-native-table-component';
 
-import {getCoverPhotos} from "../util/Queries";
+import {getChefsDishes, getCoverPhotos} from "../util/Queries";
+import minRemainingToString from '../util/TimeConversion';
 
 const SLIDER_WIDTH = Dimensions.get('window').width
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH)
@@ -32,7 +32,8 @@ function ChefScreen(props) {
     let shortDesc = props.shortDesc;
 
     const [coverPhotos, setCoverPhotos] = useState(null);
-    const [carouselData, setCarouselData] = useState([{image: require('../assets/spaghetti.jpg')}, {image: require('../assets/spaghetti2.jpg')}]);
+    const [carouselData, setCarouselData] = useState([]);
+    const [chefsDishes, setChefsDishes] = useState([]);
 
     useEffect(() => {
         getCoverPhotos(id).then(function(results) {
@@ -42,108 +43,50 @@ function ChefScreen(props) {
             setCarouselData(photos);
         }, ()=>{console.log("Error")})
         .catch((err) => {console.log("Use Effect Err Cover Photos: ", err)});
+
+        getChefsDishes(id).then(function(results) {
+            setChefsDishes(results);
+        }, ()=>{console.log("Error")})
+        .catch((err) => {console.log("Use Effect Err Chef's Dishes: ", err)});
         
     }, [])
     
-    function onPress(){
+    function onPress(dish){
+        const carouselData = [{image: {uri: dish.primaryImage}}];
+        dish.secondImage != null ? carouselData.push({image: {uri: dish.secondImage}}) : {};
+        dish.thirdImage != null ? carouselData.push({image: {uri: dish.thirdImage}}) : {};
+        dish.fourthImage != null ? carouselData.push({image: {uri: dish.fourthImage}}) : {};
         navigation.push("DishPage", {
-            carouselData: [{image: require('../assets/spaghetti.jpg')}, {image: require('../assets/spaghetti2.jpg')}], //REPLACE WITH ACTUAL IMAGES
-            name: "spaghetti",
-            price: "5",
-            time: "1 hour", //REPLACE WITH ACTUAL TIME
-            description: "Spaghetti is a long, thin, solid, cylindrical noodle pasta. It is a staple food of traditional Italian cuisine. Like other pasta, spaghetti is made of milled wheat and water and sometimes enriched with vitamins and minerals. Italian spaghetti is typically made from durum wheat semolina.",
-            ingredients: "flour, tomatoes, basil, parmesan cheese, salt, pepper" //REPLACE WITH ACTUAL INGREDIENTS
+            carouselData: carouselData,
+            name: dish.name,
+            price: dish.price,
+            time: minRemainingToString(dish.timeMin),
+            description: dish.description,
+            ingredients: dish.ingredients,
+            chefid: dish.chefid
         })
     }
 
-
-
-
-
-
-    const [count, setCount] = useState(0);
-    const [modalVisible, setVisible] = useState(true);
     const [index, setIndex] = React.useState(0)
     const isCarousel = React.useRef(null)
-    let tableHead = ['Dish Name', 'Price', 'Review']
-  
-    let tableData = [
-        [<Text style={{color: 'blue', textAlign:'center'}}
-        onPress={onPress}>
-        Pizookie
-        </Text>, 
-        '$2.00', 
-        '1'],
-        [<Text style={{color: 'blue', textAlign:'center'}}
-        onPress={onPress}>
-        Sugar Cookies
-        </Text>, '$3.00', '2'],
-        [<Text style={{color: 'blue', textAlign:'center'}}
-        onPress={onPress}>
-        Banana Bread
-        </Text>, '$4.00', '3'],
-        [<Text style={{color: 'blue', textAlign:'center'}}
-        onPress={onPress}>
-        Chocolate Cake
-        </Text>, '$5.00', '4'],
-        [<Text style={{color: 'blue', textAlign:'center'}}
-        onPress={onPress}>
-        Banana Bread
-        </Text>, '$4.00', '3'],
-        [<Text style={{color: 'blue', textAlign:'center'}}
-        onPress={onPress}>
-        Banana Bread
-        </Text>, '$4.00', '3'],
-        [<Text style={{color: 'blue', textAlign:'center'}}
-        onPress={onPress}>
-        Banana Bread
-        </Text>, '$4.00', '3'],
-        [<Text style={{color: 'blue', textAlign:'center'}}
-        onPress={onPress}>
-        Banana Bread
-        </Text>, '$4.00', '3'],
-        [<Text style={{color: 'blue', textAlign:'center'}}
-        onPress={onPress}>
-        Banana Bread
-        </Text>, '$4.00', '3'],
-        [<Text style={{color: 'blue', textAlign:'center'}}
-        onPress={onPress}>
-        Banana Bread
-        </Text>, '$4.00', '3'],
-        [<Text style={{color: 'blue', textAlign:'center'}}
-        onPress={onPress}>
-        Banana Bread
-        </Text>, '$4.00', '3'],
-        [<Text style={{color: 'blue', textAlign:'center'}}
-        onPress={onPress}>
-        Banana Bread
-        </Text>, '$4.00', '3'],
-        [<Text style={{color: 'blue', textAlign:'center'}}
-        onPress={onPress}>
-        Banana Bread
-        </Text>, '$4.00', '3'],
-        [<Text style={{color: 'blue', textAlign:'center'}}
-        onPress={onPress}>
-        Banana Bread
-        </Text>, '$4.00', '3'],
-        [<Text style={{color: 'blue', textAlign:'center'}}
-        onPress={onPress}>
-        Banana Bread
-        </Text>, '$4.00', '3'],
-        [<Text style={{color: 'blue', textAlign:'center'}}
-        onPress={onPress}>
-        Banana Bread
-        </Text>, '$4.00', '3'],
-        [<Text style={{color: 'blue', textAlign:'center'}}
-        onPress={onPress}>
-        Banana Bread
-        </Text>, '$4.00', '4']
-    ]
+    let tableHead = ['Dish Name', 'Price', 'Rating']
+
+    let tableData = [];
+    chefsDishes.forEach((dish) => {
+        tableData.push(
+            [<Text style={{color: 'blue', textAlign: 'center'}}
+            onPress={() => {onPress(dish)}}>
+                {dish.name}
+            </Text>,
+            '$'+dish.price.toFixed(2),
+            dish.rating.toFixed(2)
+        ]
+        )
+    })
 
     return(
-        
-        <SafeAreaView style={styles.container}>
-            <SafeAreaView style={styles.images}>
+        <SafeAreaView style = {styles.container}>
+            <View style={styles.images}>
 
                 <View style={styles.image}>
                     <Carousel
@@ -164,7 +107,7 @@ function ChefScreen(props) {
                 <View style={styles.chefPicHolder}>
                     <Image style={styles.chefPic} source={{uri: profilePic}}/>
                 </View>
-            </SafeAreaView>
+            </View>
             <View style={styles.closeButton} >
                     <Button onPress={() => navigation.goBack()} buttonStyle={styles.closeButtonStyle} icon={<Icon name='close' type="simple-line-icon" size={30} color='white'/>} />
                 </View>
@@ -185,15 +128,9 @@ function ChefScreen(props) {
                                 <Rows data={tableData} flexArr={[3,2, 2]} style={styles.row} textStyle={styles.text}/>
                             </TableWrapper>
                         </Table>   
-                    {/* <View style={styles.holder}>
-
-                    </View>           */}
                 </ScrollView>   
             </SafeAreaView>
-
-           
         </SafeAreaView>
-
         
     );
 }

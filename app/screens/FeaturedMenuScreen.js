@@ -3,7 +3,6 @@ import { ScrollView, Text, View, RefreshControl } from 'react-native';
 import {StyleSheet} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 
-
 import colors from '../config/colors';
 import NavBarComponent from '../components/NavBarComponent';
 import MenuCard from '../components/dish';
@@ -18,7 +17,7 @@ function dishCard(content, navigation){
                 chefname={"Insert Chef Name"}
                 image={content.primaryImage}
                 short_description={content.shortDesc}
-                rating={Math.round(content.rating, 2)}
+                rating={Math.round(content.rating*100)/100}
                 price={content.price}
                 navigation={navigation}/>
 }
