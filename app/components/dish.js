@@ -25,7 +25,7 @@ export default function MenuCard(props) {
       setChefObject(chef);
     }, () => {console.log("Error")})
     .catch((err) => {console.log("Use Effect Error: ", err)});
-  }, [])
+  }, [props.Dish]);
 
   function onPress(){
     props.navigation.push("DishPage", {
