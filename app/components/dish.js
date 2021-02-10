@@ -1,8 +1,11 @@
-import React from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import React, { useEffect, useState} from "react";
+import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native";
 import { Card, Rating, Avatar, Icon } from "react-native-elements";
 import colors from "../config/colors";
 import PropTypes, { any } from "prop-types";
+import minRemainingToString from "../util/TimeConversion";
+import {getChefInfo} from "../util/Queries";
+import Chef from "../objects/Chef";
 
 // general design/architecture notes:
 // from the landing page, make query to get all of the dishes
@@ -11,31 +14,57 @@ import PropTypes, { any } from "prop-types";
 // --> for the dish page navigation, pass in the dish's id parameter
 // to do another query call for the dish page
 //
+
 export default function MenuCard(props) {
+  const [ChefObject, setChefObject] = useState(null);
+  
+  useEffect(()=>{
+    getChefInfo(props.Dish.chefid).then(function(results) {
+      var chef = new Chef(results[0]);
+      props.Dish.setChef(chef);
+      setChefObject(chef);
+    }, () => {console.log("Error")})
+    .catch((err) => {console.log("Use Effect Error: ", err)});
+  }, [props.Dish]);
+
+  function onPress(){
+    props.navigation.push("DishPage", {
+      Dish: props.Dish,
+    })
+  }
+
+  function onPressChef(){
+    if(props.Dish.Chef == null) {return;}
+    props.navigation.push("Chef", {
+      Chef: props.Dish.Chef
+    })
+  }
+
   return (
     <View style={styles.container}>
       <Card containerStyle={styles.cardContainer}>
-        <TouchableOpacity onPress={props.onPress}>
-          <Card.Title>{props.title}</Card.Title>
+        <TouchableOpacity onPress={onPress}>
+          <Card.Title><Text style={styles.title}>{props.Dish.name}</Text></Card.Title>
           <Card.Divider />
           <View style={styles.cardlayout}>
             <View style={styles.horizontal}>
-              <Card.Image source={props.image} style={styles.image} />
+              <Card.Image source={{uri: props.Dish.primaryImageURL}} style={styles.image} />
             </View>
             <View style={styles.horizontal}>
-              <Text style={styles.desc}>{props.description}</Text>
-              <Text style={styles.price}>{props.price}</Text>
+              <Text style={styles.desc}>{props.Dish.shortDesc}</Text>
+              <Text style={styles.price}>${props.Dish.price}</Text>
               <Rating
                 readonly={true}
                 imageSize={13}
                 fractions={1}
-                startingValue={props.rating ? props.rating : 0}
+                startingValue={props.Dish.rating ? props.Dish.rating : 0.0}
               />
+              <TouchableOpacity onPress={onPressChef}>
               <View style={styles.card}>
-                <Icon name="android" size={12} />
-                {/* <Avatar rounded title="Initials" size="small" /> */}
-                <Text style={styles.text}>{props.subtitle}</Text>
+                <Image source={{uri: props.Dish.Chef!=null ? props.Dish.Chef.profilePicURL : "https://reactnative.dev/img/header_logo.svg"}} style={styles.icon}/>
+                <Text style={styles.text}>{props.Dish.Chef!=null ? props.Dish.Chef.name : "Loading"}</Text>
               </View>
+              </TouchableOpacity>
             </View>
           </View>
         </TouchableOpacity>
@@ -45,23 +74,23 @@ export default function MenuCard(props) {
 }
 
 MenuCard.propTypes = {
-  title: PropTypes.string.isRequired,
-  image: any,
-  rating: PropTypes.number,
-  subtitle: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  price: PropTypes.string,
-  onPress: PropTypes.func
+  Dish: any.isRequired,
+  navigation: any
 };
 
 const styles = StyleSheet.create({
   container: {
-    minWidth: "100%"
+    width: "100%"
   },
   cardContainer: {
     alignItems: "flex-end",
     alignContent: "stretch",
-    maxHeight: "40%"
+    height: 225
+  },
+  title: {
+    fontWeight: "bold",
+    textAlign: "center",
+    fontSize: 16
   },
   text: {
     paddingVertical: 4,
@@ -70,7 +99,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   },
   desc: {
-    fontSize: 12
+    fontSize: 12,
+    textAlign: "center"
   },
   card: {
     flexDirection: "row",
@@ -94,5 +124,10 @@ const styles = StyleSheet.create({
     flex: 1,
     flexWrap: "wrap",
     flexDirection: "row"
+  },
+  icon: {
+    width: 25,
+    height: 25,
+    borderRadius: 12.5
   }
 });
