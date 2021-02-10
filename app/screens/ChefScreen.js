@@ -1,14 +1,17 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Dimensions, Image, Modal, ScrollView, StyleSheet, Text, View, SafeAreaView} from 'react-native';
 import {Button, Icon, Divider} from 'react-native-elements'
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import colors from '../config/colors';
-import { Linking } from "react-native";
-import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-component';
+import { Table, TableWrapper, Row, Rows } from 'react-native-table-component';
+
+import {getChefsDishes, getCoverPhotos} from "../util/Queries";
+import minRemainingToString from '../util/TimeConversion';
+import Dish from '../objects/Dish';
+import { LogBox } from 'react-native';
 
 const SLIDER_WIDTH = Dimensions.get('window').width
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH)
-
 
 const CarouselCardItem = ({ item, index }) => {
     return (
@@ -20,112 +23,67 @@ const CarouselCardItem = ({ item, index }) => {
 }
 
 function ChefScreen(props) {
-    function onPress(){
-        props.navigation.push("DishPage", {
-            carouselData: [{image: require('../assets/spaghetti.jpg')}, {image: require('../assets/spaghetti2.jpg')}], //REPLACE WITH ACTUAL IMAGES
-            name: "spaghetti",
-            price: "5",
-            time: "1 hour", //REPLACE WITH ACTUAL TIME
-            description: "Spaghetti is a long, thin, solid, cylindrical noodle pasta. It is a staple food of traditional Italian cuisine. Like other pasta, spaghetti is made of milled wheat and water and sometimes enriched with vitamins and minerals. Italian spaghetti is typically made from durum wheat semolina.",
-            ingredients: "flour, tomatoes, basil, parmesan cheese, salt, pepper" //REPLACE WITH ACTUAL INGREDIENTS
+    LogBox.ignoreLogs(['Non-serializable values were found in the navigation state']);
+    const navigation = props.navigation;
+    let Chef = props.route.params.Chef;
+
+
+    let name = Chef.name;
+    let description = Chef.bio;
+    let id=Chef.chefid;
+    let profilePic = Chef.profilePicURL;
+    let shortDesc = Chef.shortDesc;
+    let tableHead = ['Dish Name', 'Price', 'Rating'];
+
+    const [carouselData, setCarouselData] = useState([]);
+    const [tableData, setTableData] = useState([]);
+    const [index, setIndex] = React.useState(0);
+    const isCarousel = React.useRef(null);
+
+    useEffect(() => {
+        getCoverPhotos(id).then(function(results) {
+            let photos = [];
+            results.forEach((x) => {photos.push({image: {uri: x.primaryImage}})});
+            setCarouselData(photos);
+        }, ()=>{console.log("Error")})
+        .catch((err) => {console.log("Use Effect Err Cover Photos: ", err)});
+
+        getChefsDishes(id).then(function(results) {
+            let dishes = [];
+            results.forEach((dish) => {
+                dishes.push(new Dish(dish));
+            });
+            Chef.setDishes(dishes);
+            let td = [];
+            Chef.dishes.forEach((dish) => {
+                td.push(
+                    [<Text style={{color: 'blue', textAlign: 'center'}}
+                    onPress={() => {onPress(dish)}}>
+                    {dish.name}
+                    </Text>,
+                    '$'+dish.price,
+                    dish.rating.toFixed(2)
+                    ]
+                );
+            });
+            setTableData(td);
+        }, ()=>{console.log("Error")})
+        .catch((err) => {console.log("Use Effect Err Chef's Dishes: ", err)});
+        
+        
+    }, [])
+    
+    function onPress(dish){
+        navigation.push("DishPage", {
+            Dish: dish
         })
-      }
-
-
-
-
-
-
-    const [count, setCount] = useState(0);
-    const [modalVisible, setVisible] = useState(true);
-    const [index, setIndex] = React.useState(0)
-    const isCarousel = React.useRef(null)
-    let carouselData = carouselData=[{image: { uri: 'https://i0.wp.com/www.eatthis.com/wp-content/uploads/2019/01/healthy-spaghetti-spicy-tomato-sauce.jpg?resize=1250%2C702&ssl=1' }}, {image: { uri: 'https://i0.wp.com/www.eatthis.com/wp-content/uploads/2019/01/healthy-spaghetti-spicy-tomato-sauce.jpg?resize=1250%2C702&ssl=1' }}]
-    let name="Gordon Ramsay" 
-    let time="1 hour" 
-    let description="My name is Gordon, I like cooking. I own several 5 star restaurants around the world, please buy my banana bread." 
-    let ingredients="flour, tomatoes, basil, parmesan cheese, salt, pepper"
-    let tableHead = ['Dish Name', 'Price', 'Review']
-  
-    let tableData = [
-        [<Text style={{color: 'blue', textAlign:'center'}}
-        onPress={onPress}>
-        Pizookie
-        </Text>, 
-        '$2.00', 
-        '1'],
-        [<Text style={{color: 'blue', textAlign:'center'}}
-        onPress={onPress}>
-        Sugar Cookies
-        </Text>, '$3.00', '2'],
-        [<Text style={{color: 'blue', textAlign:'center'}}
-        onPress={onPress}>
-        Banana Bread
-        </Text>, '$4.00', '3'],
-        [<Text style={{color: 'blue', textAlign:'center'}}
-        onPress={onPress}>
-        Chocolate Cake
-        </Text>, '$5.00', '4'],
-        [<Text style={{color: 'blue', textAlign:'center'}}
-        onPress={onPress}>
-        Banana Bread
-        </Text>, '$4.00', '3'],
-        [<Text style={{color: 'blue', textAlign:'center'}}
-        onPress={onPress}>
-        Banana Bread
-        </Text>, '$4.00', '3'],
-        [<Text style={{color: 'blue', textAlign:'center'}}
-        onPress={onPress}>
-        Banana Bread
-        </Text>, '$4.00', '3'],
-        [<Text style={{color: 'blue', textAlign:'center'}}
-        onPress={onPress}>
-        Banana Bread
-        </Text>, '$4.00', '3'],
-        [<Text style={{color: 'blue', textAlign:'center'}}
-        onPress={onPress}>
-        Banana Bread
-        </Text>, '$4.00', '3'],
-        [<Text style={{color: 'blue', textAlign:'center'}}
-        onPress={onPress}>
-        Banana Bread
-        </Text>, '$4.00', '3'],
-        [<Text style={{color: 'blue', textAlign:'center'}}
-        onPress={onPress}>
-        Banana Bread
-        </Text>, '$4.00', '3'],
-        [<Text style={{color: 'blue', textAlign:'center'}}
-        onPress={onPress}>
-        Banana Bread
-        </Text>, '$4.00', '3'],
-        [<Text style={{color: 'blue', textAlign:'center'}}
-        onPress={onPress}>
-        Banana Bread
-        </Text>, '$4.00', '3'],
-        [<Text style={{color: 'blue', textAlign:'center'}}
-        onPress={onPress}>
-        Banana Bread
-        </Text>, '$4.00', '3'],
-        [<Text style={{color: 'blue', textAlign:'center'}}
-        onPress={onPress}>
-        Banana Bread
-        </Text>, '$4.00', '3'],
-        [<Text style={{color: 'blue', textAlign:'center'}}
-        onPress={onPress}>
-        Banana Bread
-        </Text>, '$4.00', '3'],
-        [<Text style={{color: 'blue', textAlign:'center'}}
-        onPress={onPress}>
-        Banana Bread
-        </Text>, '$4.00', '4']
-    ]
+    }
 
     return(
-        
-        <SafeAreaView style={styles.container}>
-            <SafeAreaView style={styles.images}>
+        <SafeAreaView style = {styles.container}>
+            <View style={styles.images}>
 
-                <SafeAreaView style={styles.image}>
+                <View style={styles.image}>
                     <Carousel
                         layout='default'
                         data={carouselData}
@@ -140,13 +98,13 @@ function ChefScreen(props) {
                     <View style={styles.border}>
 
                     </View>
-                </SafeAreaView>
-                <SafeAreaView style={styles.chefPicHolder}>
-                    <Image style={styles.chefPic} source={{uri: 'https://yt3.ggpht.com/ytc/AAUvwnhSeGCbeHJD09S7X-Qo8yuQKJqYdHa85OqkBDzSmg=s900-c-k-c0x00ffffff-no-rj'}}/>
-                </SafeAreaView>
-            </SafeAreaView>
+                </View>
+                <View style={styles.chefPicHolder}>
+                    <Image style={styles.chefPic} source={{uri: profilePic}}/>
+                </View>
+            </View>
             <View style={styles.closeButton} >
-                    <Button onPress={() => props.navigation.goBack()} buttonStyle={styles.closeButtonStyle} icon={<Icon name='close' type="simple-line-icon" size={30} color='white'/>} />
+                    <Button onPress={() => navigation.goBack()} buttonStyle={styles.closeButtonStyle} icon={<Icon name='close' type="simple-line-icon" size={30} color='white'/>} />
                 </View>
 
             
@@ -154,6 +112,7 @@ function ChefScreen(props) {
            
             <SafeAreaView style={styles.textContainer}>  
                 <Text style={styles.titleText}>{name}</Text>
+                <Text style={styles.subtitleText}>{shortDesc}</Text>
                     <Divider style={styles.divider} /> 
                 <ScrollView> 
                         <Text style={styles.descriptionText}>{description}</Text>
@@ -164,15 +123,9 @@ function ChefScreen(props) {
                                 <Rows data={tableData} flexArr={[3,2, 2]} style={styles.row} textStyle={styles.text}/>
                             </TableWrapper>
                         </Table>   
-                    {/* <View style={styles.holder}>
-
-                    </View>           */}
                 </ScrollView>   
             </SafeAreaView>
-
-           
         </SafeAreaView>
-
         
     );
 }
@@ -263,6 +216,12 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontFamily: "Avenir",
         alignSelf: "center"
+    },
+    subtitleText: {
+        color: "black",
+        fontFamily: "Avenir",
+        alignSelf: "center",
+        marginBottom: 10
     },
     border: {
         backgroundColor: colors.primary,

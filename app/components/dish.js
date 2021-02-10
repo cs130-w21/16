@@ -1,8 +1,11 @@
-import React from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import React, { useEffect, useState} from "react";
+import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native";
 import { Card, Rating, Avatar, Icon } from "react-native-elements";
 import colors from "../config/colors";
 import PropTypes, { any } from "prop-types";
+import minRemainingToString from "../util/TimeConversion";
+import {getChefInfo} from "../util/Queries";
+import Chef from "../objects/Chef";
 
 // general design/architecture notes:
 // from the landing page, make query to get all of the dishes
@@ -12,22 +15,28 @@ import PropTypes, { any } from "prop-types";
 // to do another query call for the dish page
 //
 
-
 export default function MenuCard(props) {
-  //console.log(props);
+  const [ChefObject, setChefObject] = useState(null);
+  
+  useEffect(()=>{
+    getChefInfo(props.Dish.chefid).then(function(results) {
+      var chef = new Chef(results[0]);
+      props.Dish.setChef(chef);
+      setChefObject(chef);
+    }, () => {console.log("Error")})
+    .catch((err) => {console.log("Use Effect Error: ", err)});
+  }, [])
+
   function onPress(){
     props.navigation.push("DishPage", {
-        carouselData: [{image: require('../assets/spaghetti.jpg')}, {image: require('../assets/spaghetti2.jpg')}], //REPLACE WITH ACTUAL IMAGES
-        name: props.title,
-        price: props.price,
-        time: "1 hour", //REPLACE WITH ACTUAL TIME
-        description: "Spaghetti is a long, thin, solid, cylindrical noodle pasta. It is a staple food of traditional Italian cuisine. Like other pasta, spaghetti is made of milled wheat and water and sometimes enriched with vitamins and minerals. Italian spaghetti is typically made from durum wheat semolina.",
-        ingredients: "flour, tomatoes, basil, parmesan cheese, salt, pepper" //REPLACE WITH ACTUAL INGREDIENTS
+      Dish: props.Dish,
     })
   }
 
   function onPressChef(){
+    if(props.Dish.Chef == null) {return;}
     props.navigation.push("Chef", {
+      Chef: props.Dish.Chef
     })
   }
 
@@ -35,26 +44,25 @@ export default function MenuCard(props) {
     <View style={styles.container}>
       <Card containerStyle={styles.cardContainer}>
         <TouchableOpacity onPress={onPress}>
-          <Card.Title>{props.json.name}</Card.Title>
+          <Card.Title><Text style={styles.title}>{props.Dish.name}</Text></Card.Title>
           <Card.Divider />
           <View style={styles.cardlayout}>
             <View style={styles.horizontal}>
-              <Card.Image source={{uri: props.json.primaryImage}} style={styles.image} />
+              <Card.Image source={{uri: props.Dish.primaryImageURL}} style={styles.image} />
             </View>
             <View style={styles.horizontal}>
-              <Text style={styles.desc}>{props.json.shortDesc}</Text>
-              <Text style={styles.price}>${props.json.price}</Text>
+              <Text style={styles.desc}>{props.Dish.shortDesc}</Text>
+              <Text style={styles.price}>${props.Dish.price}</Text>
               <Rating
                 readonly={true}
                 imageSize={13}
                 fractions={1}
-                startingValue={props.json.rating ? props.json.rating : 0.0}
+                startingValue={props.Dish.rating ? props.Dish.rating : 0.0}
               />
               <TouchableOpacity onPress={onPressChef}>
               <View style={styles.card}>
-                <Icon name="android" size={12} />
-                {/* <Avatar rounded title="Initials" size="small" /> */}
-                <Text style={styles.text}>{props.chefname}</Text>
+                <Image source={{uri: props.Dish.Chef!=null ? props.Dish.Chef.profilePicURL : "https://reactnative.dev/img/header_logo.svg"}} style={styles.icon}/>
+                <Text style={styles.text}>{props.Dish.Chef!=null ? props.Dish.Chef.name : "Loading"}</Text>
               </View>
               </TouchableOpacity>
             </View>
@@ -66,14 +74,7 @@ export default function MenuCard(props) {
 }
 
 MenuCard.propTypes = {
-  json: any.isRequired,
-  title: PropTypes.string.isRequired,
-  image: any,
-  rating: PropTypes.number,
-  chefname: PropTypes.string.isRequired,
-  short_description: PropTypes.string.isRequired,
-  price: PropTypes.number,
-  onPress: PropTypes.func,
+  Dish: any.isRequired,
   navigation: any
 };
 
@@ -85,6 +86,11 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     alignContent: "stretch",
     height: 225
+  },
+  title: {
+    fontWeight: "bold",
+    textAlign: "center",
+    fontSize: 16
   },
   text: {
     paddingVertical: 4,
@@ -118,5 +124,10 @@ const styles = StyleSheet.create({
     flex: 1,
     flexWrap: "wrap",
     flexDirection: "row"
+  },
+  icon: {
+    width: 25,
+    height: 25,
+    borderRadius: 12.5
   }
 });

@@ -13,7 +13,6 @@ import PropTypes, { any } from "prop-types"
 */
 
 export default function ChefRec(props) {
-  console.log(props)
     return (
         <Card containerStyle={styles.cardContainer}>
           <TouchableOpacity style={styles.button} onPress={props.item.onPress}>

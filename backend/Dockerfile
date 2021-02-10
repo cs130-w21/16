@@ -1,11 +1,11 @@
 FROM brendonng/potluck:base
 ARG branch
-EXPOSE 3000
 
 WORKDIR /16
+RUN git config --global user.email brendonn8@gmail.com && git config --global user.name brendon-ng
 RUN git checkout -b $branch
 RUN git pull origin $branch
 RUN npm install
-ENTRYPOINT git pull origin $branch; npm install; node backend/routes.js
+ENTRYPOINT git pull origin $branch; npm install; node backend/routes.js 8080
 
 
