@@ -9,14 +9,7 @@ import { Table, TableWrapper, Row, Rows, Col } from 'react-native-table-componen
 const SLIDER_WIDTH = Dimensions.get('window').width
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH)
 
-function remove(count, setCount) {
-    if(count > 0){
-        setCount(count - 1);
-    }
-}
-function close(setVisible) {
-    setVisible(false);
-}
+
 const CarouselCardItem = ({ item, index }) => {
     return (
         <Image
@@ -152,6 +145,9 @@ function ChefScreen(props) {
                     <Image style={styles.chefPic} source={{uri: 'https://yt3.ggpht.com/ytc/AAUvwnhSeGCbeHJD09S7X-Qo8yuQKJqYdHa85OqkBDzSmg=s900-c-k-c0x00ffffff-no-rj'}}/>
                 </SafeAreaView>
             </SafeAreaView>
+            <View style={styles.closeButton} >
+                    <Button onPress={() => props.navigation.goBack()} buttonStyle={styles.closeButtonStyle} icon={<Icon name='close' type="simple-line-icon" size={30} color='white'/>} />
+                </View>
 
             
               
@@ -249,7 +245,17 @@ const styles = StyleSheet.create({
         backgroundColor: colors.secondary,
         height: 1
     }, 
+    closeButton:{
+        alignSelf:'flex-end',
+        position:'absolute',
+        top:40,
+        right: 0,
+    },
 
+    closeButtonStyle: {
+        backgroundColor: 'transparent',
+
+    },
     titleText: {
         fontSize: 30,
         padding: 10,
