@@ -9,6 +9,8 @@ then
 else
     branch=$1
     branchclean=`echo $1 | tr -dc '[:alnum:]\n\r'`
+    docker rmi brendonng/potluck:base
+    docker pull brendonng/potluck:base
     DOCKER_BUILDKIT=1 docker build --build-arg branch=$branch -t brendonng/potluck:$branchclean .
     docker stop potluck-test-server
     docker rm potluck-test-server
