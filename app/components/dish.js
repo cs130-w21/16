@@ -26,14 +26,11 @@ export default function MenuCard(props) {
     })
   }
 
-<<<<<<< HEAD
   function onPressChef(){
     props.navigation.push("Chef", {
     })
   }
 
-=======
->>>>>>> 0750319cebb29c04409e182e6662d3645c55ab8d
   return (
     <View style={styles.container}>
       <Card containerStyle={styles.cardContainer}>
