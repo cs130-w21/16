@@ -26,6 +26,11 @@ export default function MenuCard(props) {
     })
   }
 
+  function onPressChef(){
+    props.navigation.push("Chef", {
+    })
+  }
+
   return (
     <View style={styles.container}>
       <Card containerStyle={styles.cardContainer}>
@@ -45,11 +50,13 @@ export default function MenuCard(props) {
                 fractions={1}
                 startingValue={props.json.rating ? props.json.rating : 0.0}
               />
+              <TouchableOpacity onPress={onPressChef}>
               <View style={styles.card}>
                 <Icon name="android" size={12} />
                 {/* <Avatar rounded title="Initials" size="small" /> */}
                 <Text style={styles.text}>{props.chefname}</Text>
               </View>
+              </TouchableOpacity>
             </View>
           </View>
         </TouchableOpacity>
