@@ -58,12 +58,12 @@ function FeaturedMenuScreen(props){
                 dishObjects.push(new Dish(dish));
             })
             setDishes(dishObjects);
-        }, ()=>{console.log("Error")})
+        }, ()=>{console.log("Error in useEffect getAvailableDishes")})
         .catch((err) => {console.log("Use Effect Err Dishes: ", err)});
 
         getChefs().then(function(results) {
             setChefs(results);
-        }, ()=>{console.log("Error")})
+        }, ()=>{console.log("Error in useEffect getChefs")})
         .catch((err) => {console.log("Use Effect Err Chefs: ", err)});
     }, [])
 
@@ -75,7 +75,7 @@ function FeaturedMenuScreen(props){
                 dishObjects.push(new Dish(dish));
             })
             setDishes(dishObjects);
-        }, ()=>{console.log("Error")})
+        }, ()=>{console.log("Error in onRefresh getAvailableDishes")})
         .catch((err) => {console.log("Refresh Err Dishes: ", err)});
         setRefreshing(false);
     });
