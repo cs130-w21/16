@@ -15,18 +15,6 @@ function dishCard(content, navigation){
                 key={content.dishid}
                 Dish={content}
                 navigation={navigation}/>
-    /*
-    return <MenuCard
-                key={content.dishid}
-                
-                json={content}
-                title={content.name}
-                chefname={"Insert Chef Name"}
-                image={content.primaryImage}
-                short_description={content.shortDesc}
-                rating={Math.round(content.rating*100)/100}
-                price={content.price}
-                navigation={navigation}/> */
 }
 
 class Cards extends Component{
