@@ -97,6 +97,23 @@ app.get('/CoverPhotos', function (req, res) {
     });
 });
 
+app.get('/ChefsDishes', function (req, res) {
+    // Connecting to the database.
+    connection.getConnection(function (err, connection) {
+        if(err) throw err;
+        // Executing the MySQL query (select all data from the 'users' table).
+        const chefid = req.query.id
+        connection.query('SELECT * FROM Dish WHERE chefid = '+chefid+' ORDER BY available DESC, rating DESC', function (error, results, fields) {
+        // If some error occurs, we throw an error.
+        if (error) throw error;
+
+        // Getting the 'response' from the database and sending it to our route. This is were the data is.
+        res.send(results)
+        });
+        connection.release();
+    });
+});
+
 
 // Starting our server.
 var args = process.argv.slice(2);
