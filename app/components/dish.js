@@ -41,7 +41,13 @@ export default function MenuCard(props) {
   }
 
   function onPressChef(){
+    if(chefinfo == null) {return;}
     props.navigation.push("Chef", {
+      id: chefinfo[0].chefid,
+      name: chefinfo[0].name,
+      description: chefinfo[0].bio,
+      profilePic: chefinfo[0].profilePic,
+      shortDesc: chefinfo[0].shortDesc
     })
   }
 
