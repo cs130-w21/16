@@ -7,6 +7,8 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import colors from '../config/colors';
 import NavBarComponent from '../components/NavBarComponent';
 import MenuCard from '../components/dish';
+import {getAvailableDishes, getChefs} from '../util/Queries';
+import ChefRecList from '../components/chefRecList';
 
 function dishCard(content, navigation){
     return <MenuCard
@@ -38,26 +40,26 @@ class Cards extends Component{
     }
 }
 
-async function getDishes() {
-    const response = await fetch('http://3.141.20.190:8888/AllDishes');
-    const dishes = await response.json();
-    return dishes;
-}
-
 function FeaturedMenuScreen(props){
     const [dishes, setDishes] = useState(null);
     const [refreshing, setRefreshing] = useState(false);
+    const [chefs, setChefs] = useState(null);
 
     useEffect(() => {
-        getDishes().then(function(results) {
+        getAvailableDishes().then(function(results) {
             setDishes(results);
         }, ()=>{console.log("Error")})
-        .catch((err) => {console.log("Use Effect Err: ", err)});
+        .catch((err) => {console.log("Use Effect Err Dishes: ", err)});
+
+        getChefs().then(function(results) {
+            setChefs(results);
+        }, ()=>{console.log("Error")})
+        .catch((err) => {console.log("Use Effect Err Chefs: ", err)});
     }, [])
 
     const onRefresh = useCallback(() => {
         setRefreshing(true);
-        getDishes().then(function(results) {
+        getAvailableDishes().then(function(results) {
             if(results!=null){
                 setDishes(results);
             }
@@ -69,7 +71,7 @@ function FeaturedMenuScreen(props){
     return(
         <SafeAreaProvider style={styles.container}>
             <NavBarComponent navigation={props.navigation}/>
-            <ScrollView showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
+            <ScrollView style={styles.ScrollView} showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
                 <Cards dishes={dishes} navigation={props.navigation}/>
             </ScrollView>
         </SafeAreaProvider>
@@ -79,6 +81,9 @@ function FeaturedMenuScreen(props){
 const styles = StyleSheet.create({
     container: {
         backgroundColor: colors.background,
+    },
+    ScrollView: {
+        marginBottom: 20
     }
 });
 

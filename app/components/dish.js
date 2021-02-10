@@ -1,8 +1,10 @@
-import React from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import React, { useEffect, useState} from "react";
+import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native";
 import { Card, Rating, Avatar, Icon } from "react-native-elements";
 import colors from "../config/colors";
 import PropTypes, { any } from "prop-types";
+import minRemainingToString from "../util/TimeConversion";
+import {getChefInfo} from "../util/Queries";
 
 // general design/architecture notes:
 // from the landing page, make query to get all of the dishes
@@ -12,17 +14,29 @@ import PropTypes, { any } from "prop-types";
 // to do another query call for the dish page
 //
 
-
 export default function MenuCard(props) {
-  //console.log(props);
+  const [chefinfo, setChefInfo] = useState(null);
+  
+  useEffect(()=>{
+    getChefInfo(props.json.chefid).then(function(results) {
+      setChefInfo(results);
+    }, () => {console.log("Error")})
+    .catch((err) => {console.log("Use Effect Error: ", err)});
+  }, [])
+
   function onPress(){
+    const carouselData = [{image: {uri: props.json.primaryImage}}];
+    props.json.secondImage != null ? carouselData.push({image: {uri: props.json.secondImage}}) : {};
+    props.json.thirdImage != null ? carouselData.push({image: {uri: props.json.thirdImage}}) : {};
+    props.json.fourthImage != null ? carouselData.push({image: {uri: props.json.fourthImage}}) : {};
     props.navigation.push("DishPage", {
-        carouselData: [{image: require('../assets/spaghetti.jpg')}, {image: require('../assets/spaghetti2.jpg')}], //REPLACE WITH ACTUAL IMAGES
+        carouselData: carouselData,
         name: props.title,
         price: props.price,
-        time: "1 hour", //REPLACE WITH ACTUAL TIME
-        description: "Spaghetti is a long, thin, solid, cylindrical noodle pasta. It is a staple food of traditional Italian cuisine. Like other pasta, spaghetti is made of milled wheat and water and sometimes enriched with vitamins and minerals. Italian spaghetti is typically made from durum wheat semolina.",
-        ingredients: "flour, tomatoes, basil, parmesan cheese, salt, pepper" //REPLACE WITH ACTUAL INGREDIENTS
+        time: minRemainingToString(props.json.timeMin), 
+        description: props.json.description,
+        ingredients: props.json.shortDesc,
+        chefid: props.json.chefid
     })
   }
 
@@ -46,9 +60,8 @@ export default function MenuCard(props) {
                 startingValue={props.json.rating ? props.json.rating : 0.0}
               />
               <View style={styles.card}>
-                <Icon name="android" size={12} />
-                {/* <Avatar rounded title="Initials" size="small" /> */}
-                <Text style={styles.text}>{props.chefname}</Text>
+                <Image source={{uri: chefinfo!=null ? chefinfo[0].profilePic : "https://reactnative.dev/img/header_logo.svg"}} style={styles.icon}/>
+                <Text style={styles.text}>{chefinfo!=null ? chefinfo[0].name : "Loading"}</Text>
               </View>
             </View>
           </View>
@@ -111,5 +124,10 @@ const styles = StyleSheet.create({
     flex: 1,
     flexWrap: "wrap",
     flexDirection: "row"
+  },
+  icon: {
+    width: 25,
+    height: 25,
+    borderRadius: 12.5
   }
 });

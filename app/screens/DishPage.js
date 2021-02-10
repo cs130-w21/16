@@ -27,7 +27,6 @@ const CarouselCardItem = ({ item, index }) => {
 function DishPage(props) {
     const navigation = props.navigation;
     props = props.route.params;
-    console.log(props);
     const [count, setCount] = useState(0);
     const [modalVisible, setVisible] = useState(true);
     const [index, setIndex] = React.useState(0)
@@ -61,7 +60,7 @@ function DishPage(props) {
                         containerStyle={styles.dots}
                 />
                 <View style={styles.closeButton} >
-                    <Button onPress={() => navigation.goBack()} buttonStyle={styles.closeButtonStyle} icon={<Icon name='close' type="simple-line-icon" size={30} color='black'/>} />
+                    <Button onPress={() => navigation.goBack()} buttonStyle={styles.closeButtonStyle} icon={<Icon name='close' size={25} color='white' style={{backgroundColor: 'black', borderRadius:15, outline:"white solid 1px"}}/>} />
                 </View>
                 <View style={styles.textContainer}>
                     <View style ={styles.title}>
@@ -130,7 +129,7 @@ const styles = StyleSheet.create({
     },
 
     closeButtonStyle: {
-        backgroundColor: 'transparent'
+        backgroundColor: 'transparent',
     },
     
     minusButton: {
