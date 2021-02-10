@@ -8,10 +8,17 @@ import NavBarComponent from '../components/NavBarComponent';
 import MenuCard from '../components/dish';
 import {getAvailableDishes, getChefs} from '../util/Queries';
 import ChefRecList from '../components/chefRecList';
+import Dish from '../objects/Dish';
 
 function dishCard(content, navigation){
     return <MenuCard
                 key={content.dishid}
+                Dish={content}
+                navigation={navigation}/>
+    /*
+    return <MenuCard
+                key={content.dishid}
+                
                 json={content}
                 title={content.name}
                 chefname={"Insert Chef Name"}
@@ -19,7 +26,7 @@ function dishCard(content, navigation){
                 short_description={content.shortDesc}
                 rating={Math.round(content.rating*100)/100}
                 price={content.price}
-                navigation={navigation}/>
+                navigation={navigation}/> */
 }
 
 class Cards extends Component{
@@ -46,7 +53,11 @@ function FeaturedMenuScreen(props){
 
     useEffect(() => {
         getAvailableDishes().then(function(results) {
-            setDishes(results);
+            var dishObjects = [];
+            results.forEach((dish) => {
+                dishObjects.push(new Dish(dish));
+            })
+            setDishes(dishObjects);
         }, ()=>{console.log("Error")})
         .catch((err) => {console.log("Use Effect Err Dishes: ", err)});
 
@@ -59,11 +70,13 @@ function FeaturedMenuScreen(props){
     const onRefresh = useCallback(() => {
         setRefreshing(true);
         getAvailableDishes().then(function(results) {
-            if(results!=null){
-                setDishes(results);
-            }
-        })
-        .catch(() => {console.log("Refresh Err")});
+            var dishObjects = [];
+            results.forEach((dish) => {
+                dishObjects.push(new Dish(dish));
+            })
+            setDishes(dishObjects);
+        }, ()=>{console.log("Error")})
+        .catch((err) => {console.log("Refresh Err Dishes: ", err)});
         setRefreshing(false);
     });
 

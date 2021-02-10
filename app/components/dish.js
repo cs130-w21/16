@@ -5,6 +5,7 @@ import colors from "../config/colors";
 import PropTypes, { any } from "prop-types";
 import minRemainingToString from "../util/TimeConversion";
 import {getChefInfo} from "../util/Queries";
+import Chef from "../objects/Chef";
 
 // general design/architecture notes:
 // from the landing page, make query to get all of the dishes
@@ -16,38 +17,27 @@ import {getChefInfo} from "../util/Queries";
 
 export default function MenuCard(props) {
   const [chefinfo, setChefInfo] = useState(null);
+  const [ChefObject, setChefObject] = useState(null);
   
   useEffect(()=>{
-    getChefInfo(props.json.chefid).then(function(results) {
-      setChefInfo(results);
+    getChefInfo(props.Dish.chefid).then(function(results) {
+      var chef = new Chef(results[0]);
+      props.Dish.setChef(chef);
+      setChefObject(chef);
     }, () => {console.log("Error")})
     .catch((err) => {console.log("Use Effect Error: ", err)});
   }, [])
 
   function onPress(){
-    const carouselData = [{image: {uri: props.json.primaryImage}}];
-    props.json.secondImage != null ? carouselData.push({image: {uri: props.json.secondImage}}) : {};
-    props.json.thirdImage != null ? carouselData.push({image: {uri: props.json.thirdImage}}) : {};
-    props.json.fourthImage != null ? carouselData.push({image: {uri: props.json.fourthImage}}) : {};
     props.navigation.push("DishPage", {
-        carouselData: carouselData,
-        name: props.title,
-        price: props.price,
-        time: minRemainingToString(props.json.timeMin), 
-        description: props.json.description,
-        ingredients: props.json.shortDesc,
-        chefid: props.json.chefid
+      Dish: props.Dish,
     })
   }
 
   function onPressChef(){
-    if(chefinfo == null) {return;}
+    if(props.Dish.Chef == null) {return;}
     props.navigation.push("Chef", {
-      id: chefinfo[0].chefid,
-      name: chefinfo[0].name,
-      description: chefinfo[0].bio,
-      profilePic: chefinfo[0].profilePic,
-      shortDesc: chefinfo[0].shortDesc
+      Chef: props.Dish.Chef
     })
   }
 
@@ -55,25 +45,25 @@ export default function MenuCard(props) {
     <View style={styles.container}>
       <Card containerStyle={styles.cardContainer}>
         <TouchableOpacity onPress={onPress}>
-          <Card.Title>{props.json.name}</Card.Title>
+          <Card.Title><Text style={styles.title}>{props.Dish.name}</Text></Card.Title>
           <Card.Divider />
           <View style={styles.cardlayout}>
             <View style={styles.horizontal}>
-              <Card.Image source={{uri: props.json.primaryImage}} style={styles.image} />
+              <Card.Image source={{uri: props.Dish.primaryImageURL}} style={styles.image} />
             </View>
             <View style={styles.horizontal}>
-              <Text style={styles.desc}>{props.json.shortDesc}</Text>
-              <Text style={styles.price}>${props.json.price}</Text>
+              <Text style={styles.desc}>{props.Dish.shortDesc}</Text>
+              <Text style={styles.price}>${props.Dish.price}</Text>
               <Rating
                 readonly={true}
                 imageSize={13}
                 fractions={1}
-                startingValue={props.json.rating ? props.json.rating : 0.0}
+                startingValue={props.Dish.rating ? props.Dish.rating : 0.0}
               />
               <TouchableOpacity onPress={onPressChef}>
               <View style={styles.card}>
-                <Image source={{uri: chefinfo!=null ? chefinfo[0].profilePic : "https://reactnative.dev/img/header_logo.svg"}} style={styles.icon}/>
-                <Text style={styles.text}>{chefinfo!=null ? chefinfo[0].name : "Loading"}</Text>
+                <Image source={{uri: props.Dish.Chef!=null ? props.Dish.Chef.profilePicURL : "https://reactnative.dev/img/header_logo.svg"}} style={styles.icon}/>
+                <Text style={styles.text}>{props.Dish.Chef!=null ? props.Dish.Chef.name : "Loading"}</Text>
               </View>
               </TouchableOpacity>
             </View>
@@ -85,14 +75,7 @@ export default function MenuCard(props) {
 }
 
 MenuCard.propTypes = {
-  json: any.isRequired,
-  title: PropTypes.string.isRequired,
-  image: any,
-  rating: PropTypes.number,
-  chefname: PropTypes.string.isRequired,
-  short_description: PropTypes.string.isRequired,
-  price: PropTypes.number,
-  onPress: PropTypes.func,
+  Dish: any.isRequired,
   navigation: any
 };
 
@@ -104,6 +87,11 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     alignContent: "stretch",
     height: 225
+  },
+  title: {
+    fontWeight: "bold",
+    textAlign: "center",
+    fontSize: 16
   },
   text: {
     paddingVertical: 4,

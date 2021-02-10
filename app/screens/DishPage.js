@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import { LogBox } from 'react-native';
 import {Dimensions, Image, Modal, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {Button, Icon, Divider} from 'react-native-elements'
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -25,12 +26,23 @@ const CarouselCardItem = ({ item, index }) => {
     )
 }
 function DishPage(props) {
-    const navigation = props.navigation;
-    props = props.route.params;
+    LogBox.ignoreLogs(['Non-serializable values were found in the navigation state']);
+    let Dish = props.route.params.Dish;
+
     const [count, setCount] = useState(0);
     const [modalVisible, setVisible] = useState(true);
     const [index, setIndex] = React.useState(0)
     const isCarousel = React.useRef(null)
+
+    let carouselData = [];
+    if(Dish.imagesURLs != null){
+        Dish.imagesURLs.forEach((imageURL) => {
+            if(imageURL != null){
+                carouselData.push({image: {uri: imageURL}});
+            }
+        });
+    }
+
 
     return(
         <SafeAreaView>
@@ -39,7 +51,7 @@ function DishPage(props) {
                 <View style={styles.image}>
                     <Carousel
                         layout='default'
-                        data={props.carouselData}
+                        data={carouselData}
                         useScrollView={true}
                         renderItem={CarouselCardItem}
                         sliderWidth={SLIDER_WIDTH}
@@ -50,7 +62,7 @@ function DishPage(props) {
                     />
                 </View>
                 <Pagination
-                        dotsLength={props.carouselData.length}
+                        dotsLength={carouselData.length}
                         activeDotIndex={index}
                         carouselRef={isCarousel}
                         dotStyle={styles.dotStyle}
@@ -60,20 +72,20 @@ function DishPage(props) {
                         containerStyle={styles.dots}
                 />
                 <View style={styles.closeButton} >
-                    <Button onPress={() => navigation.goBack()} buttonStyle={styles.closeButtonStyle} icon={<Icon name='close' size={25} color='white' style={{backgroundColor: 'black', borderRadius:15, outline:"white solid 1px"}}/>} />
+                    <Button onPress={() => props.navigation.goBack()} buttonStyle={styles.closeButtonStyle} icon={<Icon name='close' size={25} color='white' style={{backgroundColor: 'black', borderRadius:15, outline:"white solid 1px"}}/>} />
                 </View>
                 <View style={styles.textContainer}>
                     <View style ={styles.title}>
-                        <Text style={styles.titleText}>{props.name}</Text>
-                        <Text style={styles.price}>${props.price}</Text>
+                        <Text style={styles.titleText}>{Dish.name}</Text>
+                        <Text style={styles.price}>${Dish.price}</Text>
                     </View>
                     <Divider style={styles.divider} />
                     <ScrollView>
-                        <Text style={styles.descriptionText}>{props.description}</Text>
+                        <Text style={styles.descriptionText}>{Dish.description}</Text>
                         <Divider style={styles.divider} />
-                        <Text style={styles.descriptionText}>Ingredients: {props.ingredients}</Text>
+                        <Text style={styles.descriptionText}>Ingredients: {Dish.ingredients}</Text>
                         <Divider style={styles.divider} />
-                        <Text style={styles.descriptionText}>Estimated Time: {props.time}</Text>
+                        <Text style={styles.descriptionText}>Estimated Time: {Dish.timeString}</Text>
                     </ScrollView>
                 </View>
                 <View style={styles.checkout}>

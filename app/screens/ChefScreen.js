@@ -7,10 +7,11 @@ import { Table, TableWrapper, Row, Rows } from 'react-native-table-component';
 
 import {getChefsDishes, getCoverPhotos} from "../util/Queries";
 import minRemainingToString from '../util/TimeConversion';
+import Dish from '../objects/Dish';
+import { LogBox } from 'react-native';
 
 const SLIDER_WIDTH = Dimensions.get('window').width
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH)
-
 
 const CarouselCardItem = ({ item, index }) => {
     return (
@@ -22,22 +23,25 @@ const CarouselCardItem = ({ item, index }) => {
 }
 
 function ChefScreen(props) {
+    LogBox.ignoreLogs(['Non-serializable values were found in the navigation state']);
     const navigation = props.navigation;
-    props = props.route.params;
+    let Chef = props.route.params.Chef;
 
-    let name = props.name;
-    let description = props.description;
-    let id=props.id;
-    let profilePic = props.profilePic;
-    let shortDesc = props.shortDesc;
 
-    const [coverPhotos, setCoverPhotos] = useState(null);
+    let name = Chef.name;
+    let description = Chef.bio;
+    let id=Chef.chefid;
+    let profilePic = Chef.profilePicURL;
+    let shortDesc = Chef.shortDesc;
+    let tableHead = ['Dish Name', 'Price', 'Rating'];
+
     const [carouselData, setCarouselData] = useState([]);
-    const [chefsDishes, setChefsDishes] = useState([]);
+    const [tableData, setTableData] = useState([]);
+    const [index, setIndex] = React.useState(0);
+    const isCarousel = React.useRef(null);
 
     useEffect(() => {
         getCoverPhotos(id).then(function(results) {
-            setCoverPhotos(results);
             let photos = [];
             results.forEach((x) => {photos.push({image: {uri: x.primaryImage}})});
             setCarouselData(photos);
@@ -45,44 +49,35 @@ function ChefScreen(props) {
         .catch((err) => {console.log("Use Effect Err Cover Photos: ", err)});
 
         getChefsDishes(id).then(function(results) {
-            setChefsDishes(results);
+            let dishes = [];
+            results.forEach((dish) => {
+                dishes.push(new Dish(dish));
+            });
+            Chef.setDishes(dishes);
+            let td = [];
+            Chef.dishes.forEach((dish) => {
+                td.push(
+                    [<Text style={{color: 'blue', textAlign: 'center'}}
+                    onPress={() => {onPress(dish)}}>
+                    {dish.name}
+                    </Text>,
+                    '$'+dish.price,
+                    dish.rating.toFixed(2)
+                    ]
+                );
+            });
+            setTableData(td);
         }, ()=>{console.log("Error")})
         .catch((err) => {console.log("Use Effect Err Chef's Dishes: ", err)});
+        
         
     }, [])
     
     function onPress(dish){
-        const carouselData = [{image: {uri: dish.primaryImage}}];
-        dish.secondImage != null ? carouselData.push({image: {uri: dish.secondImage}}) : {};
-        dish.thirdImage != null ? carouselData.push({image: {uri: dish.thirdImage}}) : {};
-        dish.fourthImage != null ? carouselData.push({image: {uri: dish.fourthImage}}) : {};
         navigation.push("DishPage", {
-            carouselData: carouselData,
-            name: dish.name,
-            price: dish.price,
-            time: minRemainingToString(dish.timeMin),
-            description: dish.description,
-            ingredients: dish.ingredients,
-            chefid: dish.chefid
+            Dish: dish
         })
     }
-
-    const [index, setIndex] = React.useState(0)
-    const isCarousel = React.useRef(null)
-    let tableHead = ['Dish Name', 'Price', 'Rating']
-
-    let tableData = [];
-    chefsDishes.forEach((dish) => {
-        tableData.push(
-            [<Text style={{color: 'blue', textAlign: 'center'}}
-            onPress={() => {onPress(dish)}}>
-                {dish.name}
-            </Text>,
-            '$'+dish.price.toFixed(2),
-            dish.rating.toFixed(2)
-        ]
-        )
-    })
 
     return(
         <SafeAreaView style = {styles.container}>
