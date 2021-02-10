@@ -26,6 +26,17 @@ export default function MenuCard(props) {
     })
   }
 
+  function onPressChef(){
+    props.navigation.push("Chef", {
+        carouselData: [{image: require('../assets/spaghetti.jpg')}, {image: require('../assets/spaghetti2.jpg')}], //REPLACE WITH ACTUAL IMAGES
+        name: props.title,
+        price: props.price,
+        time: "1 hour", //REPLACE WITH ACTUAL TIME
+        description: "Spaghetti is a long, thin, solid, cylindrical noodle pasta. It is a staple food of traditional Italian cuisine. Like other pasta, spaghetti is made of milled wheat and water and sometimes enriched with vitamins and minerals. Italian spaghetti is typically made from durum wheat semolina.",
+        ingredients: "flour, tomatoes, basil, parmesan cheese, salt, pepper" //REPLACE WITH ACTUAL INGREDIENTS
+    })
+  }
+
   return (
     <View style={styles.container}>
       <Card containerStyle={styles.cardContainer}>
@@ -45,11 +56,13 @@ export default function MenuCard(props) {
                 fractions={1}
                 startingValue={props.json.rating ? props.json.rating : 0.0}
               />
+              <TouchableOpacity onPress={onPressChef}>
               <View style={styles.card}>
                 <Icon name="android" size={12} />
                 {/* <Avatar rounded title="Initials" size="small" /> */}
                 <Text style={styles.text}>{props.chefname}</Text>
               </View>
+              </TouchableOpacity>
             </View>
           </View>
         </TouchableOpacity>
