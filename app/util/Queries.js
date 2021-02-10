@@ -1,6 +1,6 @@
-const port = 8080;
-//const ip = 'http://3.141.20.190';
-const ip = 'http://localhost';
+const port = 8888;
+const ip = 'http://3.141.20.190';
+//const ip = 'http://localhost';
 
 async function getDishes() {
     const response = await fetch(ip+':'+port+'/AllDishes');
