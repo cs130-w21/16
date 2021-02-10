@@ -15,15 +15,11 @@ import Chef from "../objects/Chef";
 // to do another query call for the dish page
 //
 
-export default function MenuCard(props) {
-  const [chefinfo, setChefInfo] = useState(null);
-  const [ChefObject, setChefObject] = useState(null);
-  
+export default function MenuCard(props) {  
   useEffect(()=>{
     getChefInfo(props.Dish.chefid).then(function(results) {
       var chef = new Chef(results[0]);
       props.Dish.setChef(chef);
-      setChefObject(chef);
     }, () => {console.log("Error")})
     .catch((err) => {console.log("Use Effect Error: ", err)});
   }, [])
