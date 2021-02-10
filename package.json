@@ -32,7 +32,10 @@
     "react-native-safe-area-context": "3.1.9",
     "react-native-screens": "~2.15.2",
     "react-native-snap-carousel": "^3.9.1",
+<<<<<<< HEAD
     "react-native-table-component": "^1.2.1",
+=======
+>>>>>>> 0750319cebb29c04409e182e6662d3645c55ab8d
     "react-native-web": "~0.13.12"
   },
   "devDependencies": {
