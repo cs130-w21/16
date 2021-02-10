@@ -40,6 +40,11 @@ export default function MenuCard(props) {
     })
   }
 
+  function onPressChef(){
+    props.navigation.push("Chef", {
+    })
+  }
+
   return (
     <View style={styles.container}>
       <Card containerStyle={styles.cardContainer}>
@@ -59,10 +64,12 @@ export default function MenuCard(props) {
                 fractions={1}
                 startingValue={props.json.rating ? props.json.rating : 0.0}
               />
+              <TouchableOpacity onPress={onPressChef}>
               <View style={styles.card}>
                 <Image source={{uri: chefinfo!=null ? chefinfo[0].profilePic : "https://reactnative.dev/img/header_logo.svg"}} style={styles.icon}/>
                 <Text style={styles.text}>{chefinfo!=null ? chefinfo[0].name : "Loading"}</Text>
               </View>
+              </TouchableOpacity>
             </View>
           </View>
         </TouchableOpacity>
