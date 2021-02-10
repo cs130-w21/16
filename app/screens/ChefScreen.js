@@ -6,7 +6,6 @@ import colors from '../config/colors';
 import { Table, TableWrapper, Row, Rows } from 'react-native-table-component';
 
 import {getChefsDishes, getCoverPhotos} from "../util/Queries";
-import minRemainingToString from '../util/TimeConversion';
 import Dish from '../objects/Dish';
 import { LogBox } from 'react-native';
 
@@ -104,8 +103,8 @@ function ChefScreen(props) {
                 </View>
             </View>
             <View style={styles.closeButton} >
-                    <Button onPress={() => navigation.goBack()} buttonStyle={styles.closeButtonStyle} icon={<Icon name='close' type="simple-line-icon" size={30} color='white'/>} />
-                </View>
+                    <Button onPress={() => props.navigation.goBack()} buttonStyle={styles.closeButtonStyle} icon={<Icon name='close' size={25} color='white' style={{backgroundColor: 'black', borderRadius:15, outline:"white solid 1px"}}/>} />
+            </View>
 
             
               

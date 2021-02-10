@@ -1,7 +1,3 @@
-import Chef from "./Chef";
-
-const { exp } = require("react-native-reanimated");
-const { getChefInfo } = require("../util/Queries");
 const { default: minRemainingToString } = require("../util/TimeConversion");
 
 function Dish(dishJSON){
