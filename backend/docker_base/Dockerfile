@@ -10,7 +10,5 @@ RUN git clone --single-branch --branch dev https://github.com/cs130-w21/16.git
 WORKDIR /16
 RUN cp /tmp/secrets.js backend/
 RUN npm install
-ENTRYPOINT git pull origin dev; npm install; node backend/routes.js
-
 
 

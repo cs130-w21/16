@@ -2,7 +2,7 @@
 cd "$(dirname "$0")"
 if [[ $# -eq 0 ]];
 then
-    docker pull brendonng/potluck:base
+    docker pull brendonng/potluck:master
     docker stop potluck-dev-server
     docker rm potluck-dev-server
     docker run -p 8888:8888 --name potluck-dev-server brendonng/potluck:base
