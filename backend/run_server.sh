@@ -5,7 +5,7 @@ then
     docker pull brendonng/potluck:master
     docker stop potluck-dev-server
     docker rm potluck-dev-server
-    docker run -p 8888:8888 --name potluck-dev-server brendonng/potluck:base
+    docker run -p 8888:8888 --name potluck-dev-server brendonng/potluck:master
 else
     branch=$1
     branchclean=`echo $1 | tr -dc '[:alnum:]\n\r'`
