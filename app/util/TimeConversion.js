@@ -10,7 +10,7 @@ function minRemainingToString(min){
     } else if(hours > 1 && minutes > 0){
         return ""+hours+" hours and "+minutes+" minutes";
     } else if(hours > 1 && minutes == 0){
-        return ""+hours+"hours";
+        return ""+hours+" hours";
     } else{
         return ""+hours+" hours and "+minutes+" minutes";
     }
