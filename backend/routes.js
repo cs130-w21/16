@@ -86,7 +86,7 @@ app.get('/CoverPhotos', function (req, res) {
         if(err) throw err;
         // Executing the MySQL query (select all data from the 'users' table).
         const chefid = req.query.id
-        connection.query('SELECT primaryImage FROM Dish WHERE chefid = '+chefid, function (error, results, fields) {
+        connection.query('SELECT primaryImage FROM Dish WHERE chefid = '+chefid+' ORDER BY rating DESC', function (error, results, fields) {
         // If some error occurs, we throw an error.
         if (error) throw error;
 
