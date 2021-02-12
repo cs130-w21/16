@@ -6,6 +6,7 @@ RUN git config --global user.email brendonn8@gmail.com && git config --global us
 RUN git checkout -b $branch
 RUN git pull origin $branch
 RUN npm install
-ENTRYPOINT git pull origin $branch; npm install; node backend/routes.js 8080
+RUN echo $branch > /branch
+ENTRYPOINT git pull origin `cat /branch`; npm install; node backend/routes.js 8080
 
 
