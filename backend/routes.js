@@ -14,23 +14,12 @@ const connection = mysql.createPool({
 // Starting our app.
 const app = express();
 
-// Creating a GET route that returns data from the 'users' table.
-app.get('/Chefs', function (req, res) {
-    // Connecting to the database.
-    connection.getConnection(function (err, connection) {
-        if(err) throw err;
-        // Executing the MySQL query (select all data from the 'users' table).
-        connection.query('SELECT * FROM Chef', function (error, results, fields) {
-        // If some error occurs, we throw an error.
-        if (error) throw error;
 
-        // Getting the 'response' from the database and sending it to our route. This is were the data is.
-        res.send(results)
-        });
-        connection.release();
-    });
-});
+////////////
+// DISHES //
+///////////
 
+// ALL Dish entries in the Dish table
 app.get('/AllDishes', function (req, res) {
     // Connecting to the database.
     connection.getConnection(function (err, connection) {
@@ -47,6 +36,7 @@ app.get('/AllDishes', function (req, res) {
     });
 });
 
+// All Dish entries of currently available dishes
 app.get('/AvailableDishes', function (req, res) {
     // Connecting to the database.
     connection.getConnection(function (err, connection) {
@@ -63,23 +53,7 @@ app.get('/AvailableDishes', function (req, res) {
     });
 });
 
-app.get('/ChefInfo', function (req, res) {
-    // Connecting to the database.
-    connection.getConnection(function (err, connection) {
-        if(err) throw err;
-        // Executing the MySQL query (select all data from the 'users' table).
-        const chefid = req.query.id
-        connection.query('SELECT * FROM Chef WHERE chefid = '+chefid, function (error, results, fields) {
-        // If some error occurs, we throw an error.
-        if (error) throw error;
-
-        // Getting the 'response' from the database and sending it to our route. This is were the data is.
-        res.send(results)
-        });
-        connection.release();
-    });
-});
-
+// All Dish Primary Images for a specified chef ordered by dish rating
 app.get('/CoverPhotos', function (req, res) {
     // Connecting to the database.
     connection.getConnection(function (err, connection) {
@@ -97,6 +71,7 @@ app.get('/CoverPhotos', function (req, res) {
     });
 });
 
+// All Dish entries for a given chef
 app.get('/ChefsDishes', function (req, res) {
     // Connecting to the database.
     connection.getConnection(function (err, connection) {
@@ -113,6 +88,52 @@ app.get('/ChefsDishes', function (req, res) {
         connection.release();
     });
 });
+
+
+
+///////////
+// CHEFS //
+//////////
+
+// All Chef entries in Chef table
+app.get('/Chefs', function (req, res) {
+    // Connecting to the database.
+    connection.getConnection(function (err, connection) {
+        if(err) throw err;
+        // Executing the MySQL query (select all data from the 'users' table).
+        connection.query('SELECT * FROM Chef', function (error, results, fields) {
+        // If some error occurs, we throw an error.
+        if (error) throw error;
+
+        // Getting the 'response' from the database and sending it to our route. This is were the data is.
+        res.send(results)
+        });
+        connection.release();
+    });
+});
+
+// Table Entry for a specified chef
+app.get('/ChefInfo', function (req, res) {
+    // Connecting to the database.
+    connection.getConnection(function (err, connection) {
+        if(err) throw err;
+        // Executing the MySQL query (select all data from the 'users' table).
+        const chefid = req.query.id
+        connection.query('SELECT * FROM Chef WHERE chefid = '+chefid, function (error, results, fields) {
+        // If some error occurs, we throw an error.
+        if (error) throw error;
+
+        // Getting the 'response' from the database and sending it to our route. This is were the data is.
+        res.send(results)
+        });
+        connection.release();
+    });
+});
+
+
+///////////////////
+// DB Operations //
+//////////////////
 
 app.get('/CreateDB', function (req, res) {
     // Connecting to the database.
