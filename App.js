@@ -7,6 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import WelcomeScreen from './app/screens/WelcomeScreen';
 import DishPage from './app/screens/DishPage';
 import ChefScreen from "./app/screens/ChefScreen";
+import Search from './app/screens/Search'
 
 const Stack = createStackNavigator();
 
@@ -14,7 +15,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName="FeaturedMenuScreen">
-        <Stack.Screen name='Search' component={WelcomeScreen}/>
+        <Stack.Screen name='Search' component={Search}/>
         <Stack.Screen
           name='FeaturedMenuScreen' component={FeaturedMenuScreen}
         />
