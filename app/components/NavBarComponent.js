@@ -21,7 +21,6 @@ class LeftElement extends Component{
                     name='search' 
                     color='white' 
                     onPress={() => {
-                        console.log("SEARCH");
                         navigation.navigate('Search');
                     }}/>
             );
@@ -32,7 +31,6 @@ class LeftElement extends Component{
                     type='simple-line-icon'
                     color='white' 
                     onPress={() => {
-                        console.log("SEARCH");
                         navigation.navigate('FeaturedMenuScreen');
                     }}/>
             );
