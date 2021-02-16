@@ -1,4 +1,6 @@
-const port = 8080;
+const moment = require("moment");
+
+const port = 8888;
 const ip = 'http://3.141.20.190';
 //const ip = 'http://localhost';
 
@@ -58,3 +60,34 @@ async function getChefs() {
     return data;
 }
 module.exports.getChefs = getChefs;
+
+
+/////////////
+// Reviews //
+/////////////
+
+async function pushNewReview(dishid, chefid, reviewer, rating, comment, timestamp) {
+    var mysqlTimestamp = moment(timestamp).format('YYYY-MM-DD HH:mm:ss');
+    const response = await fetch(ip+':'+port+'/newReview?dishid='+dishid+'&chefid='+chefid+'&reviewer='+encodeURI(reviewer).replace(/%20/g, "+")+'&rating='+rating+'&comment='+encodeURI(comment).replace(/%20/g, "+")+'&timestamp='+encodeURI(mysqlTimestamp).replace(/%20/g, "+"));
+    const data = await response.json();
+    const response2 = await fetch(ip+':'+port+'/updateDishWithNewReview?dishid='+dishid+'&rating='+rating);
+    const data2 = await response2.json();
+    const response3 = await fetch(ip+':'+port+'/updateChefWithNewReview?chefid='+chefid+'&rating='+rating);
+    const data3 = await response3.json();
+    return [data,data2, data3];
+}
+module.exports.pushNewReview = pushNewReview;
+
+async function getDishReviews(dishid) {
+    const response = await fetch(ip+':'+port+'/getDishReviews?dishid='+dishid);
+    const data = await response.json();
+    return data;
+}
+module.exports.getDishReviews = getDishReviews;
+
+async function getAllReviews(){
+    const response = await fetch(ip+':'+port+'/AllReviews');
+    const data = await response.json();
+    return data;
+}
+module.exports.getAllReviews = getAllReviews;

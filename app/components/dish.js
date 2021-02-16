@@ -53,12 +53,16 @@ export default function MenuCard(props) {
             <View style={styles.horizontal}>
               <Text style={styles.desc}>{props.Dish.shortDesc}</Text>
               <Text style={styles.price}>${props.Dish.price}</Text>
-              <Rating
-                readonly={true}
-                imageSize={13}
-                fractions={1}
-                startingValue={props.Dish.rating ? props.Dish.rating : 0.0}
-              />
+              <View style={styles.ratingsContainer}>
+                <Rating
+                  style={styles.rating}
+                  readonly={true}
+                  imageSize={13}
+                  fractions={1}
+                  startingValue={props.Dish.rating ? props.Dish.rating : 0.0}
+                />
+                <Text style={styles.numReviews}>({props.Dish.numReviews})</Text>
+              </View>
               <TouchableOpacity onPress={onPressChef}>
               <View style={styles.card}>
                 <Image source={{uri: props.Dish.Chef!=null ? props.Dish.Chef.profilePicURL : "https://reactnative.dev/img/header_logo.svg"}} style={styles.icon}/>
@@ -129,5 +133,21 @@ const styles = StyleSheet.create({
     width: 25,
     height: 25,
     borderRadius: 12.5
+  },
+  ratingsContainer: {
+    width: '100%',
+    flexDirection: "row",
+    alignContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  numReviews: {
+    marginLeft: 5,
+    fontSize: 12,
+    color: 'grey',
+    left: 45
+  },
+  rating: {
+    position: 'absolute'
   }
 });

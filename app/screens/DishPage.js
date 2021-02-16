@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { LogBox } from 'react-native';
 import {Dimensions, Image, Modal, ScrollView, StyleSheet, Text, View} from 'react-native';
-import {Button, Icon, Divider} from 'react-native-elements'
+import {Button, Icon, Divider, Rating} from 'react-native-elements'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import colors from '../config/colors';
@@ -78,6 +78,16 @@ function DishPage(props) {
                     <View style ={styles.title}>
                         <Text style={styles.titleText}>{Dish.name}</Text>
                         <Text style={styles.price}>${Dish.price}</Text>
+                    </View>
+                    <View style={styles.ratingsContainer}>
+                        <Rating
+                        style={styles.rating}
+                        readonly={true}
+                        imageSize={20}
+                        fractions={1}
+                        startingValue={Dish.rating ? Dish.rating : 0.0}
+                        />
+                        <Text style={styles.numReviews}>({Dish.numReviews} Reviews)</Text>
                     </View>
                     <Divider style={styles.divider} />
                     <ScrollView>
@@ -255,7 +265,21 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
         flexDirection: 'row',
-    }
+    },
+    ratingsContainer: {
+        width: '100%',
+        flexDirection: "row",
+        alignContent: 'center',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        marginBottom: 15,
+        marginLeft: 10
+      },
+      numReviews: {
+        marginLeft: 5,
+        fontSize: 18,
+        color: 'grey',
+      },
 });
 
 export default DishPage;
