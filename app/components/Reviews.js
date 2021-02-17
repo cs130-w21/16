@@ -36,7 +36,6 @@ function Reviews(props){
                 />) : <Text></Text>}
             <Button title="More Reviews" type="outline" onPress={allReviewsOnPress} containerStyle={styles.buttonContainer} titleStyle={styles.button} buttonStyle={styles.button}/>
             {props.dishid!=null && allReviewsVisible && <AllReviews dishid={props.dishid} visible={allReviewsVisible} hideModal={hideModal}/>}
-            {allReviewsVisible && <View style={styles.modalBackground}/>}
         </View>
     );
 }
@@ -101,14 +100,6 @@ const styles = StyleSheet.create({
         color: colors.primary,
         borderColor: colors.primary
     },
-    modalBackground: {
-        position:'absolute',
-        right:0,
-        top:0,
-        height:1000000000,
-        width: 1000000000,
-        backgroundColor: 'black'
-    }
 });
 
 export default Reviews;
