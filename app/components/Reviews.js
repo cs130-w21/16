@@ -4,33 +4,23 @@ import {Rating, Divider, Button, Icon} from "react-native-elements";
 import PropTypes from 'prop-types';
 import { timeDifference } from '../util/TimeConversion';
 import colors from '../config/colors';
+import AllReviews from '../screens/AllReviews';
+import Review from './Review';
 
 
 
-function Review(props){
-    return(
-        <View>
-            {props.index != 0 ? <Divider style={styles.divider}/> : <View></View>}
-            <View style={styles.ReviewContainer}>
-                <Text style={styles.reviewerText}>{props.reviewer}</Text>
-                <View style={styles.starContainer}>
-                    <Rating
-                        style={styles.stars}
-                        readonly={true}
-                        imageSize={18}
-                        fractions={1}
-                        startingValue={props.rating ? props.rating : 0.0}
-                    />
-                    <Text style={styles.timestamp}>{timeDifference(Date.now(), new Date(props.timestamp))}</Text>
-                </View>
-                <Text style={styles.comment}>{props.comment}</Text>
-            </View>
-            
-        </View>
-    )
-}
 
 function Reviews(props){
+    const [allReviewsVisible, setAllReviewsVisible] = useState(false);
+
+    function allReviewsOnPress(){
+        setAllReviewsVisible(true);
+    }
+
+    function hideModal(){
+        setAllReviewsVisible(false);
+    }
+    console.log("render");
     return(
         <View style={styles.container}>
             <Text style={styles.title}>Recent Reviews:</Text>
@@ -44,7 +34,9 @@ function Reviews(props){
                     timestamp={review.timestamp}
                     comment={review.comment}
                 />) : <Text></Text>}
-            <Button title="More Reviews" type="outline" containerStyle={styles.buttonContainer} titleStyle={styles.button} buttonStyle={styles.button}/>
+            <Button title="More Reviews" type="outline" onPress={allReviewsOnPress} containerStyle={styles.buttonContainer} titleStyle={styles.button} buttonStyle={styles.button}/>
+            {props.dishid!=null && allReviewsVisible && <AllReviews dishid={props.dishid} visible={allReviewsVisible} hideModal={hideModal}/>}
+            {allReviewsVisible && <View style={styles.modalBackground}/>}
         </View>
     );
 }
@@ -56,7 +48,8 @@ Reviews.propTypes = {
 
 const styles = StyleSheet.create({
     container: {
-        padding: 10
+        padding: 10,
+        width: '100%'
     },
     title: {
         fontSize: 24,
@@ -101,11 +94,20 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         marginTop: 10,
-        color: colors.secondary
+        color: colors.secondary,
+        width: '100%'
     },
     button: {
         color: colors.primary,
         borderColor: colors.primary
+    },
+    modalBackground: {
+        position:'absolute',
+        right:0,
+        top:0,
+        height:1000000000,
+        width: 1000000000,
+        backgroundColor: 'black'
     }
 });
 

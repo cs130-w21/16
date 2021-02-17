@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import { LogBox } from 'react-native';
 import {Dimensions, Image, ScrollView, StyleSheet, Text, View, Modal} from 'react-native';
 import {Button, Icon, Divider, Rating} from 'react-native-elements'
+import { color } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import Reviews from '../components/Reviews';
@@ -102,14 +103,17 @@ function DishPage(props) {
                                 />
                                 <Text style={styles.numReviews}>({props.Dish.numReviews} Reviews)</Text>
                             </View>
-                            <Divider style={styles.divider} />
+                            <View style={styles.spacer}/>
                             
                             <Text style={styles.descriptionText}>{props.Dish.description}</Text>
                             <Divider style={styles.divider} />
                             <Text style={styles.descriptionText}>Ingredients: {props.Dish.ingredients}</Text>
                             <Divider style={styles.divider} />
                             <Text style={styles.descriptionText}>Estimated Time: {props.Dish.timeString}</Text>
-                            <Reviews rating={props.Dish.rating} numReviews={props.Dish.numReviews} reviews={first5Reviews}/>
+                            <View style={styles.spacer}></View>
+                            <Reviews rating={props.Dish.rating} numReviews={props.Dish.numReviews} reviews={first5Reviews} chefid={props.Dish.chefid} dishid={props.Dish.dishid}/>
+                            <View style={styles.spacer}/>
+                            <View style={styles.spacer}/>
                         </View>
                     </View>
                 </ScrollView>
@@ -320,6 +324,11 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: 'grey',
       },
+      spacer: {
+          height: 10,
+          backgroundColor: colors.background,
+          width: '100%'
+      }
 });
 
 export default DishPage;
