@@ -219,7 +219,26 @@ app.get('/getDishReviews', function (req, res) {
         if(err) throw err;
         // Executing the MySQL query (select all data from the 'users' table).
         const dishid = req.query.dishid;
-        connection.query('SELECT * FROM Review WHERE dishid = '+dishid, function (error, results, fields) {
+        connection.query('SELECT * FROM Review WHERE dishid = '+dishid+' AND comment IS NOT NULL ORDER BY TIMESTAMP DESC', function (error, results, fields) {
+        // If some error occurs, we throw an error.
+        if (error) throw error;
+
+        // Getting the 'response' from the database and sending it to our route. This is were the data is.
+        res.send(results)
+        });
+        connection.release();
+    });
+});
+
+// Return Reviews for given dish
+app.get('/getNDishReviews', function (req, res) {
+    // Connecting to the database.
+    connection.getConnection(function (err, connection) {
+        if(err) throw err;
+        // Executing the MySQL query (select all data from the 'users' table).
+        const dishid = req.query.dishid;
+        const n=req.query.n;
+        connection.query('SELECT * FROM Review WHERE dishid = '+dishid+' AND comment IS NOT NULL ORDER BY TIMESTAMP DESC LIMIT '+n, function (error, results, fields) {
         // If some error occurs, we throw an error.
         if (error) throw error;
 

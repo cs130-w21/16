@@ -1,6 +1,6 @@
 const moment = require("moment");
 
-const port = 8888;
+const port = 8080;
 const ip = 'http://3.141.20.190';
 //const ip = 'http://localhost';
 
@@ -84,6 +84,13 @@ async function getDishReviews(dishid) {
     return data;
 }
 module.exports.getDishReviews = getDishReviews;
+
+async function getNDishReviews(dishid, n) {
+    const response = await fetch(ip+':'+port+'/getNDishReviews?dishid='+dishid+'&n='+n);
+    const data = await response.json();
+    return data;
+}
+module.exports.getNDishReviews = getNDishReviews;
 
 async function getAllReviews(){
     const response = await fetch(ip+':'+port+'/AllReviews');

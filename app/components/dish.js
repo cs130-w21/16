@@ -6,6 +6,8 @@ import PropTypes, { any } from "prop-types";
 import minRemainingToString from "../util/TimeConversion";
 import {getChefInfo} from "../util/Queries";
 import Chef from "../objects/Chef";
+import Dish from "../objects/Dish";
+import DishPage from "../screens/DishPage";
 
 // general design/architecture notes:
 // from the landing page, make query to get all of the dishes
@@ -17,6 +19,7 @@ import Chef from "../objects/Chef";
 
 export default function MenuCard(props) {
   const [ChefObject, setChefObject] = useState(null);
+  const [dishPageVisible, setDishPageVisible] = useState(false);
   
   useEffect(()=>{
     getChefInfo(props.Dish.chefid).then(function(results) {
@@ -28,9 +31,11 @@ export default function MenuCard(props) {
   }, [props.Dish]);
 
   function onPress(){
-    props.navigation.push("DishPage", {
-      Dish: props.Dish,
-    })
+    setDishPageVisible(true);
+  }
+
+  function hideModal(){
+    setDishPageVisible(false);
   }
 
   function onPressChef(){
@@ -73,6 +78,10 @@ export default function MenuCard(props) {
           </View>
         </TouchableOpacity>
       </Card>
+      <View style={styles.centeredContent}>
+        {props.Dish!=null && dishPageVisible && <DishPage Dish={props.Dish} visible={dishPageVisible} hideModal={hideModal}/>}
+      </View>
+      
     </View>
   );
 }
@@ -83,6 +92,11 @@ MenuCard.propTypes = {
 };
 
 const styles = StyleSheet.create({
+  centeredContent: {
+    flex:1,
+    justifyContent:'center',
+    alignItems: 'center'
+  },
   container: {
     width: "100%"
   },
