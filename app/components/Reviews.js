@@ -20,7 +20,7 @@ function Reviews(props){
     function hideModal(){
         setAllReviewsVisible(false);
     }
-    console.log("render");
+
     return(
         <View style={styles.container}>
             <Text style={styles.title}>Recent Reviews:</Text>

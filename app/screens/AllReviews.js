@@ -26,7 +26,6 @@ export default function AllReviews(props){
         setVisible(false);
         props.hideModal();
     }
-    console.log("ALL REVIEWS RENDER", modalVisible);
     return(
         <Modal
             animationType="slide"
@@ -48,7 +47,8 @@ export default function AllReviews(props){
                         />
                         <ScrollView style={styles.ScrollView} showsVerticalScrollIndicator={false} alwaysBounceHorizontal={false} alwaysBounceVertical={false}>
                             {reviews!=null ? reviews.map((review, index)=>
-                                <View style={{marginLeft: 10, marginRight:10}}><Review 
+                                <View style={{marginLeft: 10, marginRight:10}}>
+                                    <Review 
                                     key={index}
                                     index={index}
                                     reviewer={review.reviewer}
@@ -81,7 +81,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 50,
-        margin: '5%'
+        marginLeft: '2.5%',
+        marginRight: '2.5%',
+        marginBottom: '5%'
     },
     scrollView: {
         width: '100%',
