@@ -67,8 +67,7 @@ module.exports.getChefs = getChefs;
 /////////////
 
 async function pushNewReview(dishid, chefid, reviewer, rating, comment, timestamp) {
-    var mysqlTimestamp = moment(timestamp).format('YYYY-MM-DD HH:mm:ss');
-    const response = await fetch(ip+':'+port+'/newReview?dishid='+dishid+'&chefid='+chefid+'&reviewer='+encodeURI(reviewer).replace(/%20/g, "+")+'&rating='+rating+'&comment='+encodeURI(comment).replace(/%20/g, "+")+'&timestamp='+encodeURI(mysqlTimestamp).replace(/%20/g, "+"));
+    const response = await fetch(ip+':'+port+'/newReview?dishid='+dishid+'&chefid='+chefid+'&reviewer='+encodeURI(reviewer).replace(/%20/g, "+")+'&rating='+rating+'&comment='+encodeURI(comment).replace(/%20/g, "+")+'&timestamp='+timestamp);
     const data = await response.json();
     const response2 = await fetch(ip+':'+port+'/updateDishWithNewReview?dishid='+dishid+'&rating='+rating);
     const data2 = await response2.json();

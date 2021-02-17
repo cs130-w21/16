@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native";
 import { Card, Rating, Avatar, Icon } from "react-native-elements";
 import colors from "../config/colors";
 import PropTypes, { any } from "prop-types";
-import minRemainingToString from "../util/TimeConversion";
+import {minRemainingToString} from "../util/TimeConversion";
 import {getChefInfo} from "../util/Queries";
 import Chef from "../objects/Chef";
 import Dish from "../objects/Dish";

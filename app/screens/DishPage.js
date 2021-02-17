@@ -35,7 +35,7 @@ function DishPage(props) {
     const [modalVisible, setVisible] = useState(false);
     const [index, setIndex] = React.useState(0)
     const isCarousel = React.useRef(null)
-    const [first5Reviews, setFirst5Reviews] = useState([]);
+    const [first5Reviews, setFirst5Reviews] = useState(null);
 
     useEffect(() => {
         
