@@ -1,9 +1,11 @@
 import React from 'react';
+import { LogBox } from 'react-native';
 import {StyleSheet, View, Text} from 'react-native';
 import {Rating, Divider} from "react-native-elements";
 import { timeDifference } from '../util/TimeConversion';
 
 function Review(props){
+    LogBox.ignoreLogs(['Each child in a list should have a unique "key" prop.']);
     return(
         <View>
             {props.index != 0 ? <Divider style={styles.divider}/> : <View></View>}
