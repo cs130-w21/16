@@ -30,7 +30,6 @@ const CarouselCardItem = ({ item, index }) => {
 }
 function DishPage(props) {
     LogBox.ignoreLogs(['Non-serializable values were found in the navigation state']);
-    //let Dish = props.route.params.Dish;
 
     const [count, setCount] = useState(0);
     const [modalVisible, setVisible] = useState(false);
@@ -87,6 +86,7 @@ function DishPage(props) {
                                 ref={isCarousel}
                             />
                         </View>
+                        <Divider style={styles.divider2}/>
                         <View style={styles.textContainer}>
                             <View style ={styles.title}>
                                 <Text style={styles.titleText}>{props.Dish.name}</Text>
@@ -246,6 +246,13 @@ const styles = StyleSheet.create({
     
     divider: {
         width: '90%',
+        alignSelf: 'center',
+        backgroundColor: colors.secondary,
+        height: 1
+    }, 
+
+    divider2: {
+        width: '100%',
         alignSelf: 'center',
         backgroundColor: colors.secondary,
         height: 1
