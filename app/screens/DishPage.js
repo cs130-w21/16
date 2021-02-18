@@ -140,21 +140,25 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '80%%'
     },
+
     modalContainer: {
         flex:1,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: colors.background
     },
+
     modalView: {
         backgroundColor: colors.background,
         alignItems: 'flex-start',
         width: '100%',
         minHeight: '100%'
     },
+
     carouselContainer: {
         width: '100%'
     },
+
     closeButton:{
         alignSelf:'flex-end',
         position:'absolute',
@@ -165,10 +169,12 @@ const styles = StyleSheet.create({
     closeButtonStyle: {
         backgroundColor: 'transparent',
     },
+
     carouselItem: {
         width: ITEM_WIDTH,
         height: Math.round(ITEM_WIDTH*(3.0/4.0)),
     },
+
     dots: {
         position: 'absolute',
         alignSelf: 'center',
@@ -268,6 +274,7 @@ const styles = StyleSheet.create({
         color: "black",
         fontWeight: 'bold',
         fontFamily: "Avenir",
+        maxWidth: '80%',
     },
 
     countStyle: {
@@ -281,12 +288,13 @@ const styles = StyleSheet.create({
     },
 
     price: {
-        alignSelf: 'flex-end',
+        alignSelf: 'flex-start',
         fontSize: 30,
         padding: 10,
         color: colors.black,
         fontWeight: 'bold',
         fontFamily: "Avenir",
+        maxWidth: '30%',
     },
 
     description: {
