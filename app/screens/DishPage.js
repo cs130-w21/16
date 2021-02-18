@@ -138,7 +138,7 @@ function DishPage(props) {
 const styles = StyleSheet.create({
     scrollView: {
         width: '100%',
-        height: '80%%'
+        height: '80%'
     },
 
     modalContainer: {
