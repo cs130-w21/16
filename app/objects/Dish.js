@@ -1,4 +1,4 @@
-const { default: minRemainingToString } = require("../util/TimeConversion");
+import { minRemainingToString } from "../util/TimeConversion";
 
 function Dish(dishJSON){
     this.dishid = dishJSON.dishid;

@@ -8,6 +8,7 @@ import { Table, TableWrapper, Row, Rows } from 'react-native-table-component';
 import {getChefsDishes, getCoverPhotos} from "../util/Queries";
 import Dish from '../objects/Dish';
 import { LogBox } from 'react-native';
+import DishPage from './DishPage';
 
 const SLIDER_WIDTH = Dimensions.get('window').width
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH)
@@ -38,6 +39,8 @@ function ChefScreen(props) {
     const [tableData, setTableData] = useState([]);
     const [index, setIndex] = React.useState(0);
     const isCarousel = React.useRef(null);
+    const [dishPageVisible, setDishPageVisible] = useState(false);
+    const [dishPageFocus, setDishPageFocus] = useState(null);
 
     useEffect(() => {
         getCoverPhotos(id).then(function(results) {
@@ -71,11 +74,14 @@ function ChefScreen(props) {
         
         
     }, [])
+
+    function hideModal(){
+        setDishPageVisible(false);
+    }
     
     function onPress(dish){
-        navigation.push("DishPage", {
-            Dish: dish
-        })
+        setDishPageVisible(true);
+        setDishPageFocus(dish);
     }
 
     return(
@@ -124,6 +130,7 @@ function ChefScreen(props) {
                         </Table>   
                 </ScrollView>   
             </SafeAreaView>
+            {dishPageFocus!=null && dishPageVisible && <DishPage Dish={dishPageFocus} visible={dishPageVisible} hideModal={hideModal}/>}
         </SafeAreaView>
         
     );

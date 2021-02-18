@@ -1,10 +1,13 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { LogBox } from 'react-native';
-import {Dimensions, Image, Modal, ScrollView, StyleSheet, Text, View} from 'react-native';
-import {Button, Icon, Divider} from 'react-native-elements'
+import {Dimensions, Image, ScrollView, StyleSheet, Text, View, Modal} from 'react-native';
+import {Button, Icon, Divider, Rating} from 'react-native-elements'
+import { color } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
+import Reviews from '../components/Reviews';
 import colors from '../config/colors';
+import { getNDishReviews } from '../util/Queries';
 
 const SLIDER_WIDTH = Dimensions.get('window').width
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH)
@@ -14,8 +17,9 @@ function remove(count, setCount) {
         setCount(count - 1);
     }
 }
-function close(setVisible) {
+function close(setVisible, hideModal) {
     setVisible(false);
+    hideModal();
 }
 const CarouselCardItem = ({ item, index }) => {
     return (
@@ -27,66 +31,94 @@ const CarouselCardItem = ({ item, index }) => {
 }
 function DishPage(props) {
     LogBox.ignoreLogs(['Non-serializable values were found in the navigation state']);
-    let Dish = props.route.params.Dish;
 
     const [count, setCount] = useState(0);
-    const [modalVisible, setVisible] = useState(true);
+    const [modalVisible, setVisible] = useState(false);
     const [index, setIndex] = React.useState(0)
     const isCarousel = React.useRef(null)
+    const [first5Reviews, setFirst5Reviews] = useState(null);
+
+    useEffect(() => {
+        
+        getNDishReviews(props.Dish.dishid, 5).then(function(results) {
+            setFirst5Reviews(results);
+        }, () => {console.log("Error in useEffect getNDishReviews")})
+        .catch((err) => {console.log("use Effect Err Get N Dish Reviews: ", err)});
+        
+    }, []);
+
+    useEffect(() => {
+        setVisible(props.visible);
+    })
 
     let carouselData = [];
-    if(Dish.imagesURLs != null){
-        Dish.imagesURLs.forEach((imageURL) => {
+    if(props.Dish.imagesURLs != null){
+        props.Dish.imagesURLs.forEach((imageURL) => {
             if(imageURL != null){
                 carouselData.push({image: {uri: imageURL}});
             }
         });
     }
 
-
     return(
-        <SafeAreaView>
-        <Modal animationType="slide" transparent={false} visible={modalVisible}>
-            <View style={styles.container}>
-                <View style={styles.image}>
-                    <Carousel
-                        layout='default'
-                        data={carouselData}
-                        useScrollView={true}
-                        renderItem={CarouselCardItem}
-                        sliderWidth={SLIDER_WIDTH}
-                        itemWidth={ITEM_WIDTH}
-                        onSnapToItem={(index) => setIndex(index)}
-                        useScrollView={true}
-                        ref={isCarousel}
-                    />
-                </View>
-                <Pagination
-                        dotsLength={carouselData.length}
-                        activeDotIndex={index}
-                        carouselRef={isCarousel}
-                        dotStyle={styles.dotStyle}
-                        inactiveDotOpacity={0.4}
-                        inactiveDotScale={0.6}
-                        tappableDots={true}
-                        containerStyle={styles.dots}
-                />
-                <View style={styles.closeButton} >
-                    <Button onPress={() => props.navigation.goBack()} buttonStyle={styles.closeButtonStyle} icon={<Icon name='close' size={25} color='white' style={{backgroundColor: 'black', borderRadius:15, outline:"white solid 1px"}}/>} />
-                </View>
-                <View style={styles.textContainer}>
-                    <View style ={styles.title}>
-                        <Text style={styles.titleText}>{Dish.name}</Text>
-                        <Text style={styles.price}>${Dish.price}</Text>
+        <Modal 
+            animationType="slide"
+            transparent={true} 
+            visible={modalVisible} 
+            swipeDirection="down" 
+            onRequestClose={()=>{close(setVisible, props.hideModal)}}
+        >
+            
+            <View style={styles.modalContainer}>
+                <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false} alwaysBounceHorizontal={false} alwaysBounceVertical={false}>
+                    <View style={styles.modalView}>
+                        <View style={styles.carouselContainer}>
+                            <Carousel
+                                layout='default'
+                                data={carouselData}
+                                useScrollView={true}
+                                renderItem={CarouselCardItem}
+                                sliderWidth={ITEM_WIDTH}
+                                sliderHeight={Math.round(ITEM_WIDTH*(3.0/4.0))}
+                                itemWidth={ITEM_WIDTH}
+                                itemHeight={Math.round(ITEM_WIDTH*(3.0/4.0))}
+                                onSnapToItem={(index) => setIndex(index)}
+                                useScrollView={true}
+                                ref={isCarousel}
+                            />
+                        </View>
+                        <Divider style={styles.divider2}/>
+                        <View style={styles.textContainer}>
+                            <View style ={styles.title}>
+                                <Text style={styles.titleText}>{props.Dish.name}</Text>
+                                <Text style={styles.price}>${props.Dish.price}</Text>
+                            </View>
+                            <View style={styles.ratingsContainer}>
+                                <Rating
+                                style={styles.rating}
+                                readonly={true}
+                                imageSize={20}
+                                fractions={1}
+                                startingValue={props.Dish.rating ? props.Dish.rating : 0.0}
+                                />
+                                <Text style={styles.numReviews}>({props.Dish.numReviews} Reviews)</Text>
+                            </View>
+                            <View style={styles.spacer}/>
+                            
+                            <Text style={styles.descriptionText}>{props.Dish.description}</Text>
+                            <Divider style={styles.divider} />
+                            <Text style={styles.descriptionText}>Ingredients: {props.Dish.ingredients}</Text>
+                            <Divider style={styles.divider} />
+                            <Text style={styles.descriptionText}>Estimated Time: {props.Dish.timeString}</Text>
+                            <View style={styles.spacer}></View>
+                            <Reviews rating={props.Dish.rating} numReviews={props.Dish.numReviews} reviews={first5Reviews} chefid={props.Dish.chefid} dishid={props.Dish.dishid}/>
+                            <View style={styles.spacer}/>
+                            <View style={styles.spacer}/>
+                        </View>
                     </View>
-                    <Divider style={styles.divider} />
-                    <ScrollView>
-                        <Text style={styles.descriptionText}>{Dish.description}</Text>
-                        <Divider style={styles.divider} />
-                        <Text style={styles.descriptionText}>Ingredients: {Dish.ingredients}</Text>
-                        <Divider style={styles.divider} />
-                        <Text style={styles.descriptionText}>Estimated Time: {Dish.timeString}</Text>
-                    </ScrollView>
+                </ScrollView>
+                <View style={styles.closeButton} >
+                    <Button onPress={() => close(setVisible, props.hideModal)} buttonStyle={styles.closeButtonStyle} icon={<Icon name='close' size={25} color='white' style={{backgroundColor: 'black', borderRadius:15, outline:"white solid 1px"}}/>} />
                 </View>
                 <View style={styles.checkout}>
                     <Button type='solid' title=' - ' onPress={() => remove(count, setCount)} titleStyle={styles.buttonText} buttonStyle={styles.minusButton}/>
@@ -97,32 +129,50 @@ function DishPage(props) {
                     />
                 </View>
             </View>
+            
         </Modal>
-        </SafeAreaView>
     );
 }
 
 
 const styles = StyleSheet.create({
-    container: {
-        paddingTop: '10%',
-        flex: 1,
-        backgroundColor: colors.primary,
-        minWidth: '100%',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        flexDirection: 'column'
-    },
-
-    carouselItem: {
+    scrollView: {
         width: '100%',
-        height: '100%',
+        height: '80%%'
+    },
+    modalContainer: {
+        flex:1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: colors.background
+    },
+    modalView: {
+        backgroundColor: colors.background,
+        alignItems: 'flex-start',
+        width: '100%',
+        minHeight: '100%'
+    },
+    carouselContainer: {
+        width: '100%'
+    },
+    closeButton:{
+        alignSelf:'flex-end',
+        position:'absolute',
+        top:20,
+        right: 0
     },
 
+    closeButtonStyle: {
+        backgroundColor: 'transparent',
+    },
+    carouselItem: {
+        width: ITEM_WIDTH,
+        height: Math.round(ITEM_WIDTH*(3.0/4.0)),
+    },
     dots: {
         position: 'absolute',
         alignSelf: 'center',
-        top: 305,
+        bottom: 0
     },
 
     dotStyle: {
@@ -147,13 +197,15 @@ const styles = StyleSheet.create({
     minusButton: {
         borderBottomLeftRadius: 20,
         borderTopLeftRadius: 20,
-        backgroundColor: colors.secondary
+        backgroundColor: colors.secondary,
+        marginBottom: 10
     },
 
     plusButton: {
         borderBottomRightRadius: 20,
         borderTopRightRadius: 20,
-        backgroundColor: colors.secondary
+        backgroundColor: colors.secondary,
+        marginBottom: 10
     },
 
     plusButtonPadding: {
@@ -163,7 +215,8 @@ const styles = StyleSheet.create({
     addToCartButton: {
         borderRadius:20,
         backgroundColor: colors.secondary,
-        paddingLeft:10
+        paddingLeft:10,
+        marginBottom: 10
     },
 
     addToCartText: {
@@ -188,14 +241,6 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         flexDirection: 'column'
     },
-
-    image: {
-        flex: 3,
-        width: '100%',
-        height: '100%',
-        justifyContent: 'center',
-        paddingBottom: 20,
-    },
     
     title: {
         flexDirection: 'row',
@@ -205,6 +250,13 @@ const styles = StyleSheet.create({
     
     divider: {
         width: '90%',
+        alignSelf: 'center',
+        backgroundColor: colors.secondary,
+        height: 1
+    }, 
+
+    divider2: {
+        width: '100%',
         alignSelf: 'center',
         backgroundColor: colors.secondary,
         height: 1
@@ -225,6 +277,7 @@ const styles = StyleSheet.create({
         height: 40,
         fontWeight: 'bold',
         fontFamily: "Avenir",
+        marginBottom: 10
     },
 
     price: {
@@ -253,9 +306,29 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: colors.primary,
         alignItems: 'center',
-        justifyContent: 'flex-start',
+        justifyContent: 'center',
         flexDirection: 'row',
-    }
+        width: '100%',
+    },
+    ratingsContainer: {
+        width: '100%',
+        flexDirection: "row",
+        alignContent: 'center',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        marginBottom: 15,
+        marginLeft: 10
+      },
+      numReviews: {
+        marginLeft: 5,
+        fontSize: 18,
+        color: 'grey',
+      },
+      spacer: {
+          height: 10,
+          backgroundColor: colors.background,
+          width: '100%'
+      }
 });
 
 export default DishPage;
