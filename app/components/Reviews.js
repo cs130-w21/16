@@ -1,17 +1,21 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
-import {Rating, Divider, Button, Icon} from "react-native-elements";
+import {Rating, Divider, Button, Icon,} from "react-native-elements";
 import PropTypes from 'prop-types';
 import { timeDifference } from '../util/TimeConversion';
 import colors from '../config/colors';
 import AllReviews from '../screens/AllReviews';
 import Review from './Review';
+import {AirbnbRating} from 'react-native-ratings';
+import LeaveReview from '../screens/LeaveReview';
 
 
 
 
 function Reviews(props){
     const [allReviewsVisible, setAllReviewsVisible] = useState(false);
+    const [leaveReviewVisible, setLeaveReviewVisible] = useState(false);
+    const [leftRating, setLeftRating] = useState(0);
 
     function allReviewsOnPress(){
         setAllReviewsVisible(true);
@@ -19,12 +23,36 @@ function Reviews(props){
 
     function hideModal(){
         setAllReviewsVisible(false);
+        setLeaveReviewVisible(false);
     }
+
+    function ratingTapped(rating){
+        console.log("Rating Tapped");
+        setLeaveReviewVisible(true);
+        setLeftRating(rating);
+    }
+
 
     return(
         <View style={styles.container}>
             <Text style={styles.title}>Recent Reviews:</Text>
             <Text style={styles.rating}>{Math.round(props.rating*100)/100} out of 5 ({props.numReviews} Reviews)</Text>
+            {props.dishid!=null && <View style={styles.leaveReviewContainer}>
+                <Text style={styles.tapText}>Tap to leave a review:</Text>
+                <AirbnbRating
+                    defaultRating={0}
+                    reviews={[]}
+                    count={5}
+                    size={30}
+                    showRating={false}
+                    onFinishRating={ratingTapped}
+                />
+                {leaveReviewVisible && <LeaveReview
+                    dishid={props.dishid}
+                    hideModal={hideModal}    
+                    rating={leftRating}
+                />}
+            </View>}
             {props.reviews!=null ? props.reviews.map((review, index)=>
                 <Review 
                     key={index}
@@ -109,6 +137,14 @@ const styles = StyleSheet.create({
         padding: 15,
         alignSelf: 'center',
         fontSize: 18
+    },
+    leaveReviewContainer:{
+        alignItems: 'center',
+        paddingTop: 10
+    },
+    tapText: {
+        fontFamily: 'Avenir',
+        paddingBottom: 5
     }
 });
 

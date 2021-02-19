@@ -1,8 +1,8 @@
 const moment = require("moment");
 
-const port = 8080;
-const ip = 'http://3.141.20.190';
-//const ip = 'http://localhost';
+const port = 8888;
+//const ip = 'http://3.141.20.190';
+const ip = 'http://localhost';
 
 ////////////
 // DISHES //
@@ -15,6 +15,14 @@ async function getDishes() {
     return data;
 }
 module.exports.getDishes = getDishes;
+
+// Dish information for specific dish 
+async function getDishInfo(dishid) {
+    const response = await fetch(ip+':'+port+'/DishInfo?dishid='+dishid);
+    const data = await response.json();
+    return data;
+}
+module.exports.getDishInfo = getDishInfo;
 
 // All Dish entries of currently available dishes
 async function getAvailableDishes() {

@@ -53,6 +53,24 @@ app.get('/AvailableDishes', function (req, res) {
     });
 });
 
+// Dish information for specific dish 
+app.get('/DishInfo', function (req, res) {
+    // Connecting to the database.
+    connection.getConnection(function (err, connection) {
+        if(err) throw err;
+        // Executing the MySQL query (select all data from the 'users' table).
+        const dishid = req.query.dishid;
+        connection.query('SELECT dishid, C.chefid AS chefid, D.name AS name, description, D.shortDesc AS shortDesc, ingredients, timeMin, D.rating as rating, D.numReviews as numReviews, primaryImage, secondImage, thirdImage, fourthImage, available, C.name as chefName FROM Dish D JOIN Chef C on D.chefid = C.chefid WHERE dishid ='+dishid, function (error, results, fields) {
+        // If some error occurs, we throw an error.
+        if (error) throw error;
+
+        // Getting the 'response' from the database and sending it to our route. This is were the data is.
+        res.send(results)
+        });
+        connection.release();
+    });
+});
+
 // All Dish Primary Images for a specified chef ordered by dish rating
 app.get('/CoverPhotos', function (req, res) {
     // Connecting to the database.
@@ -144,9 +162,9 @@ app.get('/newReview', function (req, res) {
         const chefid = req.query.chefid;
         const reviewer = req.query.reviewer;
         const rating = req.query.rating;
-        const comment = req.query.comment;
+        const comment = req.query.comment != null ? '"'+req.query.comment+'"' : 'null';
         const timestamp = req.query.timestamp;
-        connection.query('INSERT INTO Review VALUES ('+dishid+','+chefid+',"'+reviewer+'",'+rating+',"'+comment+'","'+timestamp+'")', function (error, results, fields) {
+        connection.query('INSERT INTO Review VALUES ('+dishid+','+chefid+',"'+reviewer+'",'+rating+','+comment+',"'+timestamp+'")', function (error, results, fields) {
         // If some error occurs, we throw an error.
         if (error) throw error;
 
