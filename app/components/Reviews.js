@@ -1,17 +1,23 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
-import {Rating, Divider, Button, Icon} from "react-native-elements";
+import {Rating, Divider, Button, Icon,} from "react-native-elements";
 import PropTypes from 'prop-types';
 import { timeDifference } from '../util/TimeConversion';
 import colors from '../config/colors';
 import AllReviews from '../screens/AllReviews';
 import Review from './Review';
+import {AirbnbRating} from 'react-native-ratings';
+import LeaveReview from '../screens/LeaveReview';
+import { getNDishReviews } from '../util/Queries';
 
 
 
 
 function Reviews(props){
     const [allReviewsVisible, setAllReviewsVisible] = useState(false);
+    const [leaveReviewVisible, setLeaveReviewVisible] = useState(false);
+    const [leftRating, setLeftRating] = useState(0);
+    const [reviews, setReviews] = useState(props.reviews);
 
     function allReviewsOnPress(){
         setAllReviewsVisible(true);
@@ -19,12 +25,43 @@ function Reviews(props){
 
     function hideModal(){
         setAllReviewsVisible(false);
+        setLeaveReviewVisible(false);
     }
 
+    function refresh(){
+        getNDishReviews(props.dishid, 5).then(function(results) {
+            setReviews(results);
+        }, () => {console.log("Error in useEffect getNDishReviews")})
+        .catch((err) => {console.log("use Effect Err Get N Dish Reviews: ", err)});
+    }
+
+    function ratingTapped(rating){
+        setLeaveReviewVisible(true);
+        setLeftRating(rating);
+    }
+
+    
     return(
         <View style={styles.container}>
             <Text style={styles.title}>Recent Reviews:</Text>
             <Text style={styles.rating}>{Math.round(props.rating*100)/100} out of 5 ({props.numReviews} Reviews)</Text>
+            {props.dishid!=null && <View style={styles.leaveReviewContainer}>
+                <Text style={styles.tapText}>Tap to leave a review:</Text>
+                <AirbnbRating
+                    defaultRating={0}
+                    reviews={[]}
+                    count={5}
+                    size={30}
+                    showRating={false}
+                    onFinishRating={ratingTapped}
+                />
+                {leaveReviewVisible && <LeaveReview
+                    dishid={props.dishid}
+                    hideModal={hideModal}    
+                    rating={leftRating}
+                    refresh={refresh}
+                />}
+            </View>}
             {props.reviews!=null ? props.reviews.map((review, index)=>
                 <Review 
                     key={index}
@@ -33,9 +70,11 @@ function Reviews(props){
                     rating={review.rating}
                     timestamp={review.timestamp}
                     comment={review.comment}
+                    name={review.name!=null ? review.name : null}
                 />) : <Text></Text>}
-            <Button title="More Reviews" type="outline" onPress={allReviewsOnPress} containerStyle={styles.buttonContainer} titleStyle={styles.button} buttonStyle={styles.button}/>
-            {props.dishid!=null && allReviewsVisible && <AllReviews dishid={props.dishid} visible={allReviewsVisible} hideModal={hideModal}/>}
+            {props.reviews!=null && props.reviews.length==0 && <Text style={styles.noReviews}>No Reviews with Comments</Text>}
+            {props.reviews!=null && props.reviews.length>0 && <Button title="More Reviews" type="outline" onPress={allReviewsOnPress} containerStyle={styles.buttonContainer} titleStyle={styles.button} buttonStyle={styles.button}/>}
+            {(props.dishid!=null || props.chefid!=null) && allReviewsVisible && <AllReviews dishid={props.dishid} chefid={props.chefid} visible={allReviewsVisible} hideModal={hideModal}/>}
         </View>
     );
 }
@@ -58,6 +97,7 @@ const styles = StyleSheet.create({
     },
     rating: {
         color: 'gray',
+        fontFamily: 'Avenir',
     },
     ReviewContainer: {
         marginTop: 15,
@@ -67,7 +107,8 @@ const styles = StyleSheet.create({
     reviewerText: {
         //fontWeight: 'bold',
         color: 'black',
-        marginBottom: 7
+        marginBottom: 7,
+        fontFamily: 'Avenir',
     },
     starContainer: {
         alignItems: 'center',
@@ -83,7 +124,8 @@ const styles = StyleSheet.create({
         color: 'grey'
     },
     comment: {
-        color: 'grey'
+        color: 'grey',
+        fontFamily: 'Avenir',
     },
     divider: {
         width: '100%',
@@ -100,6 +142,19 @@ const styles = StyleSheet.create({
         color: colors.primary,
         borderColor: colors.primary
     },
+    noReviews: {
+        padding: 15,
+        alignSelf: 'center',
+        fontSize: 18
+    },
+    leaveReviewContainer:{
+        alignItems: 'center',
+        paddingTop: 10
+    },
+    tapText: {
+        fontFamily: 'Avenir',
+        paddingBottom: 5
+    }
 });
 
 export default Reviews;

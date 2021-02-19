@@ -142,7 +142,6 @@ function DishPage(props) {
                 rating={props.Dish.rating}
                 numReviews={props.Dish.numReviews}
                 reviews={first5Reviews}
-                chefid={props.Dish.chefid}
                 dishid={props.Dish.dishid}
               />
               <View style={styles.spacer} />
@@ -269,14 +268,19 @@ const styles = StyleSheet.create({
     bottom: 0
   },
 
-  plusButton: {
-    borderBottomRightRadius: 20,
-    borderTopRightRadius: 20,
-    backgroundColor: colors.secondary
+  dotStyle: {
+    width: 10,
+    height: 10,
+    borderRadius: 5,
+    marginHorizontal: 0,
+    backgroundColor: colors.black
   },
 
-  plusButtonPadding: {
-    paddingRight: 10
+  closeButton: {
+    alignSelf: "flex-end",
+    position: "absolute",
+    top: 40,
+    right: 0
   },
 
   closeButtonStyle: {
@@ -297,8 +301,8 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
 
-  buttonText: {
-    fontWeight: "bold"
+  plusButtonPadding: {
+    paddingRight: 10
   },
 
   addToCartButton: {
@@ -308,27 +312,18 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
 
-  textContainer: {
-    flex: 5,
-    backgroundColor: "white",
-    paddingTop: "0%",
-    width: "100%",
-    alignItems: "flex-start",
-    flexDirection: "column"
+  addToCartText: {
+    fontWeight: "bold",
+    paddingRight: 10
   },
 
-  image: {
-    flex: 3,
-    width: "100%",
-    height: "100%",
-    justifyContent: "center",
-    paddingBottom: 20
+  buttonText: {
+    fontWeight: "bold"
   },
 
-  title: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "100%"
+  cartPadding: {
+    paddingLeft: 10,
+    paddingRight: 10
   },
 
   textContainer: {
@@ -343,7 +338,8 @@ const styles = StyleSheet.create({
   title: {
     flexDirection: "row",
     justifyContent: "space-between",
-    width: "100%"
+    width: "100%",
+    fontFamily: "Avenir"
   },
 
   divider: {
@@ -359,7 +355,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.secondary,
     height: 1
   },
-
   titleText: {
     fontSize: 30,
     padding: 10,
@@ -389,11 +384,10 @@ const styles = StyleSheet.create({
     maxWidth: "30%"
   },
 
-  descriptionText: {
-    fontSize: 20,
-    padding: 10,
-    color: "gray",
-    fontFamily: "Avenir"
+  description: {
+    alignSelf: "flex-start",
+    flex: 2,
+    paddingLeft: 20
   },
 
   descriptionText: {
