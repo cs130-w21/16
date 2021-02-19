@@ -3,7 +3,6 @@ import {ScrollView, StyleSheet, Text, View, Modal, Image} from 'react-native';
 import {Button, Icon, Divider, Rating, Header, Input} from 'react-native-elements'
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import {AirbnbRating} from 'react-native-ratings';
-import MenuCard from '../components/dish';
 import Review from '../components/Review';
 import colors from '../config/colors';
 import { getDishReviews, getChefReviews, getDishInfo, pushNewReview } from '../util/Queries';
