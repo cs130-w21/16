@@ -37,7 +37,8 @@ const styles = StyleSheet.create({
     ReviewContainer: {
         marginTop: 15,
         alignItems: 'flex-start',
-        marginBottom: 15
+        marginBottom: 15,
+        width: '100%'
     },
     reviewerText: {
         //fontWeight: 'bold',

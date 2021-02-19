@@ -8,6 +8,7 @@ import AllReviews from '../screens/AllReviews';
 import Review from './Review';
 import {AirbnbRating} from 'react-native-ratings';
 import LeaveReview from '../screens/LeaveReview';
+import { getNDishReviews } from '../util/Queries';
 
 
 
@@ -16,6 +17,7 @@ function Reviews(props){
     const [allReviewsVisible, setAllReviewsVisible] = useState(false);
     const [leaveReviewVisible, setLeaveReviewVisible] = useState(false);
     const [leftRating, setLeftRating] = useState(0);
+    const [reviews, setReviews] = useState(props.reviews);
 
     function allReviewsOnPress(){
         setAllReviewsVisible(true);
@@ -26,13 +28,19 @@ function Reviews(props){
         setLeaveReviewVisible(false);
     }
 
+    function refresh(){
+        getNDishReviews(props.dishid, 5).then(function(results) {
+            setReviews(results);
+        }, () => {console.log("Error in useEffect getNDishReviews")})
+        .catch((err) => {console.log("use Effect Err Get N Dish Reviews: ", err)});
+    }
+
     function ratingTapped(rating){
-        console.log("Rating Tapped");
         setLeaveReviewVisible(true);
         setLeftRating(rating);
     }
 
-
+    
     return(
         <View style={styles.container}>
             <Text style={styles.title}>Recent Reviews:</Text>
@@ -51,6 +59,7 @@ function Reviews(props){
                     dishid={props.dishid}
                     hideModal={hideModal}    
                     rating={leftRating}
+                    refresh={refresh}
                 />}
             </View>}
             {props.reviews!=null ? props.reviews.map((review, index)=>

@@ -19,6 +19,7 @@ export default function LeaveReview(props){
     const [rating, setRating] = useState(props.rating);
     const [reviewer, setReviewer] = useState(null);
     const [comment, setComment] = useState(null);
+    const [invalid, setInvalid] = useState(false);
 
     useEffect(() => {
         setVisible(props.visible);
@@ -42,21 +43,42 @@ export default function LeaveReview(props){
 
     function close(){
         setVisible(false);
+        props.refresh();
         props.hideModal();
+    }
+
+    function makeInvalid(){
+        setInvalid(true);
     }
 
     function submit(){
         if(dish!=null && reviewer!=null && reviewer.length>0){
-            pushNewReview(dish.dishid,dish.chefid,reviewer,rating,((comment!=null)&&(comment.length>0)) ? comment : null, Date.now()).then(function(results) {
+            pushNewReview(dish.dishid,dish.chefid,reviewer,rating,comment, Date.now()).then(function(results) {
                 Alert.alert(
                     "Review Submitted",
                     "Your Review Has Been Recorded!",
                     [
-                        {text: "Dismiss", style: 'dismiss', onPress: {close}}
+                        {
+                            text: "Dismiss",
+                            style: 'dismiss',
+                            onPress: close
+                        }
                     ]
                 );
             }, ()=>{console.log("Error in submit pushnewReview")})
             .catch((err) => {console.log("Err Push New Review: ", err)});
+        } else {
+            Alert.alert(
+                "Unable to Submit Review",
+                "You must enter your name to leave a review.",
+                [
+                    {
+                        text: "Dismiss",
+                        style: 'dismiss',
+                        onPress: makeInvalid
+                    }
+                ]
+            );
         }
     }
 
@@ -96,7 +118,8 @@ export default function LeaveReview(props){
                             <Input
                                 placeholder="Your Name"
                                 inputStyle={styles.nameInput}
-                                onChangeText={text => {if(text.length > 0){setReviewer(text)}}}
+                                inputContainerStyle = {invalid ? styles.invalidInputContainer : {}}
+                                onChangeText={text => {setReviewer(text); setInvalid(false)}}
                             />
                             <Input
                                 placeholder="Comment (optional)"
@@ -105,7 +128,7 @@ export default function LeaveReview(props){
                                 containerStyle={styles.commentInput}
                                 inputContainerStyle={styles.commentInputContainer}
                                 inputStyle={styles.commentInput}
-                                onChangeText={text => {if(text.length > 0){setComment(text)}}}
+                                onChangeText={text => {setComment(text)}}
                             />
                             <Button title="Submit Review" type="solid" onPress={submit} containerStyle={styles.submitButtonContainer} titleStyle={styles.submitButtonTitle} buttonStyle={styles.submitButton}/>
                         </View>
@@ -222,7 +245,7 @@ const styles = StyleSheet.create({
         width: '95%'
     },
     nameInput:{
-        fontFamily: 'Avenir'
+        fontFamily: 'Avenir',
     },
     commentInputContainer: {
         height: '50%',
@@ -246,4 +269,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Avenir',
         borderColor: 'white',
     },
+    invalidInputContainer: {
+        borderColor: 'red',
+    }
 });
