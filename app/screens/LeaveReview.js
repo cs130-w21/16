@@ -117,15 +117,17 @@ export default function LeaveReview(props){
                         <View style={styles.inputContainer}>
                             <Input
                                 placeholder="Your Name"
+                                placeholderTextColor={invalid? 'red': 'grey'}
                                 inputStyle={styles.nameInput}
                                 inputContainerStyle = {invalid ? styles.invalidInputContainer : {}}
                                 onChangeText={text => {setReviewer(text); setInvalid(false)}}
                             />
                             <Input
                                 placeholder="Comment (optional)"
+                                placeholderTextColor='grey'
                                 multiline={true}
                                 numberOfLines={10}
-                                containerStyle={styles.commentInput}
+                                containerStyle={styles.commentContainer}
                                 inputContainerStyle={styles.commentInputContainer}
                                 inputStyle={styles.commentInput}
                                 onChangeText={text => {setComment(text)}}
@@ -242,22 +244,31 @@ const styles = StyleSheet.create({
     inputContainer: {
         paddingHorizontal: 10,
         paddingVertical: 30,
-        width: '95%'
+        width: '95%',
+        flexDirection: 'column',
+        flex: 1
     },
     nameInput:{
         fontFamily: 'Avenir',
     },
     commentInputContainer: {
-        height: '50%',
+        height: '100%',
+    },
+    commentContainer:{
+        alignSelf: 'flex-start',
+        fontFamily: 'Avenir',
+        height: '40%',
     },
     commentInput:{
         alignSelf: 'flex-start',
-        fontFamily: 'Avenir'
+        fontFamily: 'Avenir',
+        height: '100%'
     },
     submitButtonContainer: {
         marginTop: 10,
-        backgroundColor: colors.background,
-        width: '100%'
+        width: '100%',
+        justifyContent: 'flex-end',
+        flex: 1
     },
     submitButton: {
         color: 'white',
