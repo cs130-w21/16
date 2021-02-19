@@ -9,7 +9,7 @@ import colors from "../config/colors";
 function Review(props){
     LogBox.ignoreLogs(['Each child in a list should have a unique "key" prop.']);
     return(
-        <View>
+        <View style={{minWidth: '100%'}}>
             {props.index != 0 ? <Divider style={styles.divider}/> : <View></View>}
             <View style={styles.ReviewContainer}>
                 <Text style={styles.reviewerText}>{props.reviewer}</Text>
