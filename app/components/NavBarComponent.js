@@ -14,7 +14,6 @@ class RightElement extends Component {
     return (
       <TouchableOpacity
         onPress={() => {
-          console.log("CART");
           navigation.navigate("ShoppingCart");
           this.setState({ sum: cartSum() });
         }}
@@ -22,8 +21,8 @@ class RightElement extends Component {
         <Icon name="shopping-cart" color="white" />
         {cartSum() > 0 ? (
           <Badge
-            status="error"
             containerStyle={{ position: "absolute", top: -4, right: -4 }}
+            badgeStyle={{ backgroundColor: colors.secondary }}
           />
         ) : (
           <></>
