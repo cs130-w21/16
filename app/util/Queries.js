@@ -16,6 +16,14 @@ async function getDishes() {
 }
 module.exports.getDishes = getDishes;
 
+// Dish information for specific dish 
+async function getDishInfo(dishid) {
+    const response = await fetch(ip+':'+port+'/DishInfo?dishid='+dishid);
+    const data = await response.json();
+    return data;
+}
+module.exports.getDishInfo = getDishInfo;
+
 // All Dish entries of currently available dishes
 async function getAvailableDishes() {
     const response = await fetch(ip+':'+port+'/AvailableDishes');
@@ -67,7 +75,7 @@ module.exports.getChefs = getChefs;
 /////////////
 
 async function pushNewReview(dishid, chefid, reviewer, rating, comment, timestamp) {
-    const response = await fetch(ip+':'+port+'/newReview?dishid='+dishid+'&chefid='+chefid+'&reviewer='+encodeURI(reviewer).replace(/%20/g, "+")+'&rating='+rating+'&comment='+encodeURI(comment).replace(/%20/g, "+")+'&timestamp='+timestamp);
+    const response = await fetch(ip+':'+port+'/newReview?dishid='+dishid+'&chefid='+chefid+'&reviewer='+encodeURI(reviewer).replace(/%20/g, "+")+'&rating='+rating+'&timestamp='+timestamp+(comment!=null ? '&comment='+encodeURI(comment).replace(/%20/g, "+"):""));
     const data = await response.json();
     const response2 = await fetch(ip+':'+port+'/updateDishWithNewReview?dishid='+dishid+'&rating='+rating);
     const data2 = await response2.json();
@@ -84,12 +92,26 @@ async function getDishReviews(dishid) {
 }
 module.exports.getDishReviews = getDishReviews;
 
+async function getChefReviews(chefid) {
+    const response = await fetch(ip+':'+port+'/getChefReviews?chefid='+chefid);
+    const data = await response.json();
+    return data;
+}
+module.exports.getChefReviews = getChefReviews;
+
 async function getNDishReviews(dishid, n) {
     const response = await fetch(ip+':'+port+'/getNDishReviews?dishid='+dishid+'&n='+n);
     const data = await response.json();
     return data;
 }
 module.exports.getNDishReviews = getNDishReviews;
+
+async function getNChefReviews(chefid, n) {
+    const response = await fetch(ip+':'+port+'/getNChefReviews?chefid='+chefid+'&n='+n);
+    const data = await response.json();
+    return data;
+}
+module.exports.getNChefReviews = getNChefReviews;
 
 async function getAllReviews(){
     const response = await fetch(ip+':'+port+'/AllReviews');

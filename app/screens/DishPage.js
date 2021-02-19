@@ -111,7 +111,7 @@ function DishPage(props) {
                             <Divider style={styles.divider} />
                             <Text style={styles.descriptionText}>Estimated Time: {props.Dish.timeString}</Text>
                             <View style={styles.spacer}></View>
-                            <Reviews rating={props.Dish.rating} numReviews={props.Dish.numReviews} reviews={first5Reviews} chefid={props.Dish.chefid} dishid={props.Dish.dishid}/>
+                            <Reviews rating={props.Dish.rating} numReviews={props.Dish.numReviews} reviews={first5Reviews} dishid={props.Dish.dishid}/>
                             <View style={styles.spacer}/>
                             <View style={styles.spacer}/>
                         </View>
@@ -251,7 +251,8 @@ const styles = StyleSheet.create({
     title: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        width: '100%'
+        width: '100%',
+        fontFamily: "Avenir",
     },
     
     divider: {
@@ -267,7 +268,6 @@ const styles = StyleSheet.create({
         backgroundColor: colors.secondary,
         height: 1
     }, 
-
     titleText: {
         fontSize: 30,
         padding: 10,
@@ -327,16 +327,17 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         marginLeft: 10
       },
-      numReviews: {
+    numReviews: {
         marginLeft: 5,
         fontSize: 18,
         color: 'grey',
-      },
-      spacer: {
-          height: 10,
-          backgroundColor: colors.background,
-          width: '100%'
-      }
+        
+    },
+    spacer: {
+        height: 10,
+        backgroundColor: colors.background,
+        width: '100%'
+    }
 });
 
 export default DishPage;
