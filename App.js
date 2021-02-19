@@ -9,6 +9,7 @@ import DishPage from "./app/screens/DishPage";
 import ChefScreen from "./app/screens/ChefScreen";
 import ShoppingCartScreen from "./app/screens/ShoppingCartScreen";
 import colors from "./app/config/colors";
+import Search from "./app/screens/Search";
 
 const Stack = createStackNavigator();
 
@@ -19,13 +20,7 @@ const App = () => {
         screenOptions={{ headerShown: false }}
         initialRouteName="FeaturedMenuScreen"
       >
-        <Stack.Screen name="Search" component={WelcomeScreen} />
-        <Stack.Screen
-          name="FeaturedMenuScreen"
-          component={FeaturedMenuScreen}
-        />
-        <Stack.Screen name="DishPage" component={DishPage} />
-        <Stack.Screen name="Chef" component={ChefScreen} />
+        <Stack.Screen name="Search" component={Search} />
         <Stack.Screen
           name="ShoppingCart"
           component={ShoppingCartScreen}
@@ -46,6 +41,12 @@ const App = () => {
             headerBackTitle: ""
           }}
         />
+        <Stack.Screen
+          name="FeaturedMenuScreen"
+          component={FeaturedMenuScreen}
+        />
+        <Stack.Screen name="DishPage" component={DishPage} />
+        <Stack.Screen name="Chef" component={ChefScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

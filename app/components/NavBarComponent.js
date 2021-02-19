@@ -35,17 +35,29 @@ class RightElement extends Component {
 
 class LeftElement extends Component {
   render() {
-    const { navigation } = this.props;
-    return (
-      <Icon
-        name="search"
-        color="white"
-        onPress={() => {
-          console.log("SEARCH");
-          navigation.navigate("Search");
-        }}
-      />
-    );
+    const { navigation, search } = this.props;
+    if (search == null) {
+      return (
+        <Icon
+          name="search"
+          color="white"
+          onPress={() => {
+            navigation.navigate("Search");
+          }}
+        />
+      );
+    } else {
+      return (
+        <Icon
+          name="arrow-left"
+          type="simple-line-icon"
+          color="white"
+          onPress={() => {
+            navigation.navigate("FeaturedMenuScreen");
+          }}
+        />
+      );
+    }
   }
 }
 
@@ -55,17 +67,17 @@ class CenterElement extends Component {
   }
 }
 
-class CartElement extends Component {
-  render() {
-    return <Text>Shopping cart</Text>;
-  }
-}
 class NavBarComponent extends Component {
   render() {
     return (
       <Header
         containerStyle={{ backgroundColor: colors.primary }}
-        leftComponent={<LeftElement navigation={this.props.navigation} />}
+        leftComponent={
+          <LeftElement
+            navigation={this.props.navigation}
+            search={this.props.search}
+          />
+        }
         centerComponent={<CenterElement />}
         rightComponent={<RightElement navigation={this.props.navigation} />}
         barStyle="light-content"

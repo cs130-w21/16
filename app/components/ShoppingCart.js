@@ -9,7 +9,6 @@ global.cart = [];
 export function cartSum() {
   let sum = 0;
   global.cart.forEach(item => (sum += item.count));
-  console.log(sum);
   return sum;
 }
 
@@ -27,7 +26,7 @@ function CartCard(props) {
 
   function remove(count, setCount) {
     const found = global.cart.findIndex(
-      item => item["Dish"]["dishid"] == props.dishid
+      item => item["dish"]["dishid"] == props.dishid
     );
     if (count > 1) {
       setCount(count - 1);
@@ -71,7 +70,7 @@ function CartCard(props) {
                 onPress={() => {
                   setCount(count + 1);
                   const found = global.cart.findIndex(
-                    item => item["Dish"]["dishid"] == props.dishid
+                    item => item["dish"]["dishid"] == props.dishid
                   );
                   global.cart[found].count++;
                 }}
@@ -107,10 +106,11 @@ export default function ShoppingCart(props) {
         ) : (
           cart.map(item => (
             <CartCard
-              title={item["Dish"]["name"]}
+              key={item["dish"]["name"]}
+              title={item["dish"]["name"]}
               quantity={item["count"]}
-              price={item["Dish"]["price"]}
-              dishid={item["Dish"]["dishid"]}
+              price={item["dish"]["price"]}
+              dishid={item["dish"]["dishid"]}
             />
           ))
         )}

@@ -14,23 +14,12 @@ const connection = mysql.createPool({
 // Starting our app.
 const app = express();
 
-// Creating a GET route that returns data from the 'users' table.
-app.get('/Chefs', function (req, res) {
-    // Connecting to the database.
-    connection.getConnection(function (err, connection) {
-        if(err) throw err;
-        // Executing the MySQL query (select all data from the 'users' table).
-        connection.query('SELECT * FROM Chef', function (error, results, fields) {
-        // If some error occurs, we throw an error.
-        if (error) throw error;
 
-        // Getting the 'response' from the database and sending it to our route. This is were the data is.
-        res.send(results)
-        });
-        connection.release();
-    });
-});
+////////////
+// DISHES //
+///////////
 
+// ALL Dish entries in the Dish table
 app.get('/AllDishes', function (req, res) {
     // Connecting to the database.
     connection.getConnection(function (err, connection) {
@@ -47,6 +36,7 @@ app.get('/AllDishes', function (req, res) {
     });
 });
 
+// All Dish entries of currently available dishes
 app.get('/AvailableDishes', function (req, res) {
     // Connecting to the database.
     connection.getConnection(function (err, connection) {
@@ -63,6 +53,66 @@ app.get('/AvailableDishes', function (req, res) {
     });
 });
 
+// All Dish Primary Images for a specified chef ordered by dish rating
+app.get('/CoverPhotos', function (req, res) {
+    // Connecting to the database.
+    connection.getConnection(function (err, connection) {
+        if(err) throw err;
+        // Executing the MySQL query (select all data from the 'users' table).
+        const chefid = req.query.id
+        connection.query('SELECT primaryImage FROM Dish WHERE chefid = '+chefid+' ORDER BY rating DESC', function (error, results, fields) {
+        // If some error occurs, we throw an error.
+        if (error) throw error;
+
+        // Getting the 'response' from the database and sending it to our route. This is were the data is.
+        res.send(results)
+        });
+        connection.release();
+    });
+});
+
+// All Dish entries for a given chef
+app.get('/ChefsDishes', function (req, res) {
+    // Connecting to the database.
+    connection.getConnection(function (err, connection) {
+        if(err) throw err;
+        // Executing the MySQL query (select all data from the 'users' table).
+        const chefid = req.query.id
+        connection.query('SELECT * FROM Dish WHERE chefid = '+chefid+' ORDER BY available DESC, rating DESC', function (error, results, fields) {
+        // If some error occurs, we throw an error.
+        if (error) throw error;
+
+        // Getting the 'response' from the database and sending it to our route. This is were the data is.
+        res.send(results)
+        });
+        connection.release();
+    });
+});
+
+
+
+///////////
+// CHEFS //
+//////////
+
+// All Chef entries in Chef table
+app.get('/Chefs', function (req, res) {
+    // Connecting to the database.
+    connection.getConnection(function (err, connection) {
+        if(err) throw err;
+        // Executing the MySQL query (select all data from the 'users' table).
+        connection.query('SELECT * FROM Chef', function (error, results, fields) {
+        // If some error occurs, we throw an error.
+        if (error) throw error;
+
+        // Getting the 'response' from the database and sending it to our route. This is were the data is.
+        res.send(results)
+        });
+        connection.release();
+    });
+});
+
+// Table Entry for a specified chef
 app.get('/ChefInfo', function (req, res) {
     // Connecting to the database.
     connection.getConnection(function (err, connection) {
@@ -80,13 +130,23 @@ app.get('/ChefInfo', function (req, res) {
     });
 });
 
-app.get('/CoverPhotos', function (req, res) {
+/////////////
+// Reviews //
+/////////////
+
+// Add a new review
+app.get('/newReview', function (req, res) {
     // Connecting to the database.
     connection.getConnection(function (err, connection) {
         if(err) throw err;
         // Executing the MySQL query (select all data from the 'users' table).
-        const chefid = req.query.id
-        connection.query('SELECT primaryImage FROM Dish WHERE chefid = '+chefid, function (error, results, fields) {
+        const dishid = req.query.dishid;
+        const chefid = req.query.chefid;
+        const reviewer = req.query.reviewer;
+        const rating = req.query.rating;
+        const comment = req.query.comment;
+        const timestamp = req.query.timestamp;
+        connection.query('INSERT INTO Review VALUES ('+dishid+','+chefid+',"'+reviewer+'",'+rating+',"'+comment+'","'+timestamp+'")', function (error, results, fields) {
         // If some error occurs, we throw an error.
         if (error) throw error;
 
@@ -97,13 +157,15 @@ app.get('/CoverPhotos', function (req, res) {
     });
 });
 
-app.get('/ChefsDishes', function (req, res) {
+// Update Ratings on Specific Dish
+app.get('/updateDishWithNewReview', function (req, res) {
     // Connecting to the database.
     connection.getConnection(function (err, connection) {
         if(err) throw err;
         // Executing the MySQL query (select all data from the 'users' table).
-        const chefid = req.query.id
-        connection.query('SELECT * FROM Dish WHERE chefid = '+chefid+' ORDER BY available DESC, rating DESC', function (error, results, fields) {
+        const dishid = req.query.dishid;
+        const rating = req.query.rating;
+        connection.query('UPDATE Dish SET rating = (numReviews*rating+'+rating+')/(numReviews+1), numReviews = numReviews+1 WHERE dishid='+dishid, function (error, results, fields) {
         // If some error occurs, we throw an error.
         if (error) throw error;
 
@@ -113,6 +175,85 @@ app.get('/ChefsDishes', function (req, res) {
         connection.release();
     });
 });
+
+// Update Ratings on Specific Chef
+app.get('/updateChefWithNewReview', function (req, res) {
+    // Connecting to the database.
+    connection.getConnection(function (err, connection) {
+        if(err) throw err;
+        // Executing the MySQL query (select all data from the 'users' table).
+        const chefid = req.query.chefid;
+        const rating = req.query.rating;
+        connection.query('UPDATE Chef SET rating = (numReviews*rating+'+rating+')/(numReviews+1), numReviews = numReviews+1 WHERE chefid='+chefid, function (error, results, fields) {
+        // If some error occurs, we throw an error.
+        if (error) throw error;
+
+        // Getting the 'response' from the database and sending it to our route. This is were the data is.
+        res.send(results)
+        });
+        connection.release();
+    });
+});
+
+// Return ALL Reviews (for testing)
+app.get('/AllReviews', function (req, res) {
+    // Connecting to the database.
+    connection.getConnection(function (err, connection) {
+        if(err) throw err;
+        // Executing the MySQL query (select all data from the 'users' table).
+        connection.query('SELECT * FROM Review;', function (error, results, fields) {
+        // If some error occurs, we throw an error.
+        if (error) throw error;
+
+        // Getting the 'response' from the database and sending it to our route. This is were the data is.
+        res.send(results)
+        });
+        connection.release();
+    });
+});
+
+// Return Reviews for given dish
+app.get('/getDishReviews', function (req, res) {
+    // Connecting to the database.
+    connection.getConnection(function (err, connection) {
+        if(err) throw err;
+        // Executing the MySQL query (select all data from the 'users' table).
+        const dishid = req.query.dishid;
+        connection.query('SELECT * FROM Review WHERE dishid = '+dishid+' AND comment IS NOT NULL ORDER BY TIMESTAMP DESC', function (error, results, fields) {
+        // If some error occurs, we throw an error.
+        if (error) throw error;
+
+        // Getting the 'response' from the database and sending it to our route. This is were the data is.
+        res.send(results)
+        });
+        connection.release();
+    });
+});
+
+// Return Reviews for given dish
+app.get('/getNDishReviews', function (req, res) {
+    // Connecting to the database.
+    connection.getConnection(function (err, connection) {
+        if(err) throw err;
+        // Executing the MySQL query (select all data from the 'users' table).
+        const dishid = req.query.dishid;
+        const n=req.query.n;
+        connection.query('SELECT * FROM Review WHERE dishid = '+dishid+' AND comment IS NOT NULL ORDER BY TIMESTAMP DESC LIMIT '+n, function (error, results, fields) {
+        // If some error occurs, we throw an error.
+        if (error) throw error;
+
+        // Getting the 'response' from the database and sending it to our route. This is were the data is.
+        res.send(results)
+        });
+        connection.release();
+    });
+});
+
+
+
+///////////////////
+// DB Operations //
+//////////////////
 
 app.get('/CreateDB', function (req, res) {
     // Connecting to the database.
@@ -174,7 +315,7 @@ app.get('/query', function (req, res) {
     connection.getConnection(function (err, connection) {
         if(err) throw err;
         // Executing the MySQL query (select all data from the 'users' table).
-        const query = req.query.query
+        const query = req.query.query;
         connection.query(query, function (error, results, fields) {
         // If some error occurs, we throw an error.
         if (error) throw error;

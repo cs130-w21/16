@@ -3,9 +3,11 @@ import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native";
 import { Card, Rating, Avatar, Icon } from "react-native-elements";
 import colors from "../config/colors";
 import PropTypes, { any } from "prop-types";
-import minRemainingToString from "../util/TimeConversion";
+import {minRemainingToString} from "../util/TimeConversion";
 import {getChefInfo} from "../util/Queries";
 import Chef from "../objects/Chef";
+import Dish from "../objects/Dish";
+import DishPage from "../screens/DishPage";
 
 // general design/architecture notes:
 // from the landing page, make query to get all of the dishes
@@ -17,6 +19,7 @@ import Chef from "../objects/Chef";
 
 export default function MenuCard(props) {
   const [ChefObject, setChefObject] = useState(null);
+  const [dishPageVisible, setDishPageVisible] = useState(false);
   
   useEffect(()=>{
     getChefInfo(props.Dish.chefid).then(function(results) {
@@ -28,9 +31,11 @@ export default function MenuCard(props) {
   }, [props.Dish]);
 
   function onPress(){
-    props.navigation.push("DishPage", {
-      Dish: props.Dish,
-    })
+    setDishPageVisible(true);
+  }
+
+  function hideModal(){
+    setDishPageVisible(false);
   }
 
   function onPressChef(){
@@ -53,12 +58,16 @@ export default function MenuCard(props) {
             <View style={styles.horizontal}>
               <Text style={styles.desc}>{props.Dish.shortDesc}</Text>
               <Text style={styles.price}>${props.Dish.price}</Text>
-              <Rating
-                readonly={true}
-                imageSize={13}
-                fractions={1}
-                startingValue={props.Dish.rating ? props.Dish.rating : 0.0}
-              />
+              <View style={styles.ratingsContainer}>
+                <Rating
+                  style={styles.rating}
+                  readonly={true}
+                  imageSize={13}
+                  fractions={1}
+                  startingValue={props.Dish.rating ? props.Dish.rating : 0.0}
+                />
+                <Text style={styles.numReviews}>({props.Dish.numReviews})</Text>
+              </View>
               <TouchableOpacity onPress={onPressChef}>
               <View style={styles.card}>
                 <Image source={{uri: props.Dish.Chef!=null ? props.Dish.Chef.profilePicURL : "https://reactnative.dev/img/header_logo.svg"}} style={styles.icon}/>
@@ -69,6 +78,10 @@ export default function MenuCard(props) {
           </View>
         </TouchableOpacity>
       </Card>
+      <View style={styles.centeredContent}>
+        {props.Dish!=null && dishPageVisible && <DishPage Dish={props.Dish} visible={dishPageVisible} hideModal={hideModal}/>}
+      </View>
+      
     </View>
   );
 }
@@ -79,6 +92,11 @@ MenuCard.propTypes = {
 };
 
 const styles = StyleSheet.create({
+  centeredContent: {
+    flex:1,
+    justifyContent:'center',
+    alignItems: 'center'
+  },
   container: {
     width: "100%"
   },
@@ -129,5 +147,21 @@ const styles = StyleSheet.create({
     width: 25,
     height: 25,
     borderRadius: 12.5
+  },
+  ratingsContainer: {
+    width: '100%',
+    flexDirection: "row",
+    alignContent: 'center',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  numReviews: {
+    marginLeft: 5,
+    fontSize: 12,
+    color: 'grey',
+    left: 45
+  },
+  rating: {
+    position: 'absolute'
   }
 });

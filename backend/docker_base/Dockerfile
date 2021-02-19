@@ -6,7 +6,7 @@ RUN apt install -y nodejs npm
 
 COPY secrets.js /tmp/
 
-RUN git clone --single-branch --branch dev https://github.com/cs130-w21/16.git
+RUN git clone --branch dev https://github.com/cs130-w21/16.git
 WORKDIR /16
 RUN cp /tmp/secrets.js backend/
 RUN npm install
