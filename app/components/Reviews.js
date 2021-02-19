@@ -33,9 +33,11 @@ function Reviews(props){
                     rating={review.rating}
                     timestamp={review.timestamp}
                     comment={review.comment}
+                    name={review.name!=null ? review.name : null}
                 />) : <Text></Text>}
-            <Button title="More Reviews" type="outline" onPress={allReviewsOnPress} containerStyle={styles.buttonContainer} titleStyle={styles.button} buttonStyle={styles.button}/>
-            {props.dishid!=null && allReviewsVisible && <AllReviews dishid={props.dishid} visible={allReviewsVisible} hideModal={hideModal}/>}
+            {props.reviews!=null && props.reviews.length==0 && <Text style={styles.noReviews}>No Reviews with Comments</Text>}
+            {props.reviews!=null && props.reviews.length>0 && <Button title="More Reviews" type="outline" onPress={allReviewsOnPress} containerStyle={styles.buttonContainer} titleStyle={styles.button} buttonStyle={styles.button}/>}
+            {(props.dishid!=null || props.chefid!=null) && allReviewsVisible && <AllReviews dishid={props.dishid} chefid={props.chefid} visible={allReviewsVisible} hideModal={hideModal}/>}
         </View>
     );
 }
@@ -58,6 +60,7 @@ const styles = StyleSheet.create({
     },
     rating: {
         color: 'gray',
+        fontFamily: 'Avenir',
     },
     ReviewContainer: {
         marginTop: 15,
@@ -67,7 +70,8 @@ const styles = StyleSheet.create({
     reviewerText: {
         //fontWeight: 'bold',
         color: 'black',
-        marginBottom: 7
+        marginBottom: 7,
+        fontFamily: 'Avenir',
     },
     starContainer: {
         alignItems: 'center',
@@ -83,7 +87,8 @@ const styles = StyleSheet.create({
         color: 'grey'
     },
     comment: {
-        color: 'grey'
+        color: 'grey',
+        fontFamily: 'Avenir',
     },
     divider: {
         width: '100%',
@@ -100,6 +105,11 @@ const styles = StyleSheet.create({
         color: colors.primary,
         borderColor: colors.primary
     },
+    noReviews: {
+        padding: 15,
+        alignSelf: 'center',
+        fontSize: 18
+    }
 });
 
 export default Reviews;

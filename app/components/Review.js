@@ -3,6 +3,8 @@ import { LogBox } from 'react-native';
 import {StyleSheet, View, Text} from 'react-native';
 import {Rating, Divider} from "react-native-elements";
 import { timeDifference } from '../util/TimeConversion';
+import colors from "../config/colors";
+
 
 function Review(props){
     LogBox.ignoreLogs(['Each child in a list should have a unique "key" prop.']);
@@ -11,6 +13,7 @@ function Review(props){
             {props.index != 0 ? <Divider style={styles.divider}/> : <View></View>}
             <View style={styles.ReviewContainer}>
                 <Text style={styles.reviewerText}>{props.reviewer}</Text>
+                {(props.name != null) && <Text style={styles.dishText}>{props.name}</Text>}
                 <View style={styles.starContainer}>
                     <Rating
                         style={styles.stars}
@@ -39,7 +42,16 @@ const styles = StyleSheet.create({
     reviewerText: {
         //fontWeight: 'bold',
         color: 'black',
-        marginBottom: 7
+        marginBottom: 7,
+        fontFamily: 'Avenir',
+        fontWeight: 'bold'
+    },
+    dishText: {
+        //fontWeight: 'bold',
+        color: colors.secondary,
+        marginBottom: 7,
+        fontFamily: 'Avenir',
+        fontWeight: 'bold'
     },
     starContainer: {
         alignItems: 'center',
@@ -52,10 +64,12 @@ const styles = StyleSheet.create({
     },
     timestamp: {
         fontSize: 10,
-        color: 'grey'
+        color: 'grey',
+        fontFamily: 'Avenir',
     },
     comment: {
-        color: 'grey'
+        color: 'grey',
+        fontFamily: 'Avenir',
     },
     divider: {
         width: '100%',
