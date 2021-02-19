@@ -1,21 +1,34 @@
-import React, { Component } from "react";
-import { Header, Icon } from "react-native-elements";
-import { Text, StyleSheet } from "react-native";
-
+import React, { Component, View } from "react";
+import { Header, Icon, Badge } from "react-native-elements";
+import { Text, StyleSheet, TouchableOpacity } from "react-native";
+import { cartSum } from "./ShoppingCart";
 import colors from "../config/colors";
 
 class RightElement extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { sum: cartSum() };
+  }
   render() {
     const { navigation } = this.props;
     return (
-      <Icon
-        name="shopping-cart"
-        color="white"
+      <TouchableOpacity
         onPress={() => {
           console.log("CART");
           navigation.navigate("ShoppingCart");
+          this.setState({ sum: cartSum() });
         }}
-      />
+      >
+        <Icon name="shopping-cart" color="white" />
+        {cartSum() > 0 ? (
+          <Badge
+            status="error"
+            containerStyle={{ position: "absolute", top: -4, right: -4 }}
+          />
+        ) : (
+          <></>
+        )}
+      </TouchableOpacity>
     );
   }
 }

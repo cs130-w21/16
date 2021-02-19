@@ -1,100 +1,134 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native";
-import { Card, Rating, Avatar, Icon } from "react-native-elements";
+import { View, StyleSheet, Text, ScrollView } from "react-native";
+import { Card, Button } from "react-native-elements";
 import colors from "../config/colors";
 import PropTypes, { any } from "prop-types";
-import minRemainingToString from "../util/TimeConversion";
-import { getChefInfo } from "../util/Queries";
-import Chef from "../objects/Chef";
 
 global.cart = [];
 
-export default function CartCard(props) {
-  const [ChefObject, setChefObject] = useState(null);
+export function cartSum() {
+  let sum = 0;
+  global.cart.forEach(item => (sum += item.count));
+  console.log(sum);
+  return sum;
+}
 
-  // useEffect(() => {
-  //   getChefInfo(props.Dish.chefid)
-  //     .then(
-  //       function(results) {
-  //         var chef = new Chef(results[0]);
-  //         props.Dish.setChef(chef);
-  //         setChefObject(chef);
-  //       },
-  //       () => {
-  //         console.log("Error");
-  //       }
-  //     )
-  //     .catch(err => {
-  //       console.log("Use Effect Error: ", err);
-  //     });
-  // }, [props.Dish]);
+export function addToCart(item) {
+  global.cart.push(item);
+}
 
-  function onPress() {
-    props.navigation.push("DishPage", {
-      Dish: props.Dish
-    });
-  }
+export function addQuantity(index, count) {
+  global.cart[index].count += count;
+}
 
-  function onPressChef() {
-    if (props.Dish.Chef == null) {
-      return;
+function CartCard(props) {
+  const [total, setTotal] = useState(props.price);
+  const [count, setCount] = useState(props.quantity);
+
+  function remove(count, setCount) {
+    const found = global.cart.findIndex(
+      item => item["Dish"]["dishid"] == props.dishid
+    );
+    if (count > 1) {
+      setCount(count - 1);
+      global.cart[found].count--;
+    } else {
+      //remove from array so that the card doesn't show up
+      //item count == 0
+      global.cart.splice(found, 1);
+      setCount(0);
     }
-    props.navigation.push("Chef", {
-      Chef: props.Dish.Chef
-    });
   }
+
+  useEffect(() => {
+    setTotal(count * props.price);
+  }, [count]);
 
   return (
     <View style={styles.container}>
       <Card containerStyle={styles.cardContainer}>
-        <TouchableOpacity onPress={onPress}>
-          <Card.Title>
-            <Text style={styles.title}>{props.Dish.name}</Text>
-          </Card.Title>
-          <Card.Divider />
-          <View style={styles.cardlayout}>
-            <View style={styles.horizontal}>
-              <Card.Image
-                source={{ uri: props.Dish.primaryImageURL }}
-                style={styles.image}
+        <Card.Title>
+          <Text style={styles.title}>{props.title}</Text>
+        </Card.Title>
+        <Card.Divider />
+        <View style={styles.cardlayout}>
+          <View style={styles.horizontal}>
+            <View style={styles.checkout}>
+              <Button
+                type="solid"
+                title=" - "
+                onPress={() => {
+                  remove(count, setCount);
+                }}
+                titleStyle={styles.buttonText}
+                buttonStyle={styles.minusButton}
               />
-            </View>
-            <View style={styles.horizontal}>
-              <Text style={styles.desc}>{props.Dish.shortDesc}</Text>
-              <Text style={styles.price}>${props.Dish.price}</Text>
-              <Rating
-                readonly={true}
-                imageSize={13}
-                fractions={1}
-                startingValue={props.Dish.rating ? props.Dish.rating : 0.0}
+              <Text style={styles.quantity}>{count}</Text>
+              <Button
+                type="solid"
+                style={styles.plusButtonPadding}
+                title=" + "
+                onPress={() => {
+                  setCount(count + 1);
+                  const found = global.cart.findIndex(
+                    item => item["Dish"]["dishid"] == props.dishid
+                  );
+                  global.cart[found].count++;
+                }}
+                titleStyle={styles.buttonText}
+                buttonStyle={styles.plusButton}
               />
-              <TouchableOpacity onPress={onPressChef}>
-                <View style={styles.card}>
-                  <Image
-                    source={{
-                      uri:
-                        props.Dish.Chef != null
-                          ? props.Dish.Chef.profilePicURL
-                          : "https://reactnative.dev/img/header_logo.svg"
-                    }}
-                    style={styles.icon}
-                  />
-                  <Text style={styles.text}>
-                    {props.Dish.Chef != null ? props.Dish.Chef.name : "Loading"}
-                  </Text>
-                </View>
-              </TouchableOpacity>
             </View>
           </View>
-        </TouchableOpacity>
+          <View style={styles.horizontal}>
+            <Text style={styles.text}>
+              {count} x ${props.price} each =
+            </Text>
+            <Text style={styles.price}>${total}</Text>
+          </View>
+        </View>
       </Card>
     </View>
   );
 }
 
-CartCard.propTypes = {
-  Dish: any.isRequired,
+export default function ShoppingCart(props) {
+  const [cart, setCart] = useState(global.cart); //constantly updated
+
+  useEffect(() => {
+    setCart(global.cart);
+  }, [props.cart]);
+
+  return (
+    <View style={styles.container}>
+      <ScrollView>
+        {cart.length == 0 ? (
+          <Text style={styles.empty}>No items yet!</Text>
+        ) : (
+          cart.map(item => (
+            <CartCard
+              title={item["Dish"]["name"]}
+              quantity={item["count"]}
+              price={item["Dish"]["price"]}
+              dishid={item["Dish"]["dishid"]}
+            />
+          ))
+        )}
+      </ScrollView>
+    </View>
+  );
+}
+
+ShoppingCart.propTypes = {
+  cart: PropTypes.array,
   navigation: any
+};
+
+CartCard.propTypes = {
+  title: PropTypes.string,
+  quantity: PropTypes.number,
+  price: PropTypes.number,
+  dishid: PropTypes.number
 };
 
 const styles = StyleSheet.create({
@@ -104,7 +138,7 @@ const styles = StyleSheet.create({
   cardContainer: {
     alignItems: "flex-end",
     alignContent: "stretch",
-    height: 225
+    height: 125
   },
   title: {
     fontWeight: "bold",
@@ -114,12 +148,7 @@ const styles = StyleSheet.create({
   text: {
     paddingVertical: 4,
     textAlign: "center",
-    color: colors.secondary,
-    fontWeight: "bold"
-  },
-  desc: {
-    fontSize: 12,
-    textAlign: "center"
+    color: colors.primary
   },
   card: {
     flexDirection: "row",
@@ -127,16 +156,15 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly"
   },
   price: {
-    fontSize: 10,
+    fontSize: 20,
     alignSelf: "center",
-    paddingVertical: 4,
+    paddingVertical: 2,
     color: colors.black,
     fontWeight: "bold"
   },
   horizontal: {
     width: "50%",
     justifyContent: "space-around",
-    padding: 8,
     alignItems: "stretch"
   },
   cardlayout: {
@@ -144,9 +172,40 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     flexDirection: "row"
   },
-  icon: {
-    width: 25,
-    height: 25,
-    borderRadius: 12.5
+  quantity: {
+    fontWeight: "800",
+    fontSize: 20,
+    textAlign: "center",
+    paddingHorizontal: 8,
+    paddingVertical: 0
+  },
+  buttonText: {
+    fontWeight: "bold"
+  },
+  plusButton: {
+    borderBottomRightRadius: 20,
+    borderTopRightRadius: 20,
+    backgroundColor: colors.secondary
+  },
+
+  plusButtonPadding: {
+    paddingRight: 10
+  },
+  checkout: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "flex-start",
+    flexDirection: "row"
+  },
+  minusButton: {
+    borderBottomLeftRadius: 20,
+    borderTopLeftRadius: 20,
+    backgroundColor: colors.secondary
+  },
+  empty: {
+    fontWeight: "bold",
+    textAlign: "center",
+    fontSize: 16,
+    padding: 20
   }
 });
