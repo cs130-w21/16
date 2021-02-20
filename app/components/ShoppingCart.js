@@ -44,7 +44,7 @@ function CartCard(props) {
   }, [count]);
 
   return (
-    <View style={styles.container}>
+    <View style={styles.cartCardContainer}>
       <Card containerStyle={styles.cardContainer}>
         <Card.Title>
           <Text style={styles.title}>{props.title}</Text>
@@ -115,6 +115,17 @@ export default function ShoppingCart(props) {
           ))
         )}
       </ScrollView>
+      <View style={styles.checkoutTab}>
+            <Button
+              type="solid"
+              title="Checkout"
+              titleStyle={styles.checkoutText}
+              buttonStyle={styles.checkoutButton}
+              onPress={() => {
+                // TODO: do the checkout
+              }}
+            />
+      </View>
     </View>
   );
 }
@@ -133,6 +144,10 @@ CartCard.propTypes = {
 
 const styles = StyleSheet.create({
   container: {
+    width: "100%",
+    height: "100%"
+  },
+  cartCardContainer: {
     width: "100%"
   },
   cardContainer: {
@@ -203,12 +218,31 @@ const styles = StyleSheet.create({
     backgroundColor: colors.secondary
   },
   scrollView: {
-    height: "100%"
+    width: "100%",
   },
   empty: {
     fontWeight: "bold",
     textAlign: "center",
     fontSize: 16,
     padding: 20
+  },
+  checkoutTab: {
+    flex: 1,
+    backgroundColor: colors.primary,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    width: "100%",
+    height: "7%",
+    position: "absolute",
+    bottom: 0
+  },
+  checkoutButton: {
+    borderRadius: 20,
+    backgroundColor: colors.secondary,
+  },
+  checkoutText: {
+    fontWeight: "bold"
   }
+
 });
