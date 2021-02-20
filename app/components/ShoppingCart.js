@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Text, ScrollView } from "react-native";
+import { Alert, View, StyleSheet, Text, ScrollView } from "react-native";
 import { Card, Button } from "react-native-elements";
 import colors from "../config/colors";
 import PropTypes, { any } from "prop-types";
@@ -115,17 +115,7 @@ export default function ShoppingCart(props) {
           ))
         )}
       </ScrollView>
-      <View style={styles.checkoutTab}>
-            <Button
-              type="solid"
-              title="Checkout"
-              titleStyle={styles.checkoutText}
-              buttonStyle={styles.checkoutButton}
-              onPress={() => {
-                // TODO: do the checkout
-              }}
-            />
-      </View>
+      
     </View>
   );
 }
@@ -145,7 +135,7 @@ CartCard.propTypes = {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    height: "100%"
+    height: "100%",
   },
   cartCardContainer: {
     width: "100%"
