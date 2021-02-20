@@ -4,7 +4,7 @@ import {Button, Icon, Divider, Rating, Header} from 'react-native-elements'
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import Review from '../components/Review';
 import colors from '../config/colors';
-import { getDishReviews } from '../util/Queries';
+import { getDishReviews, getChefReviews } from '../util/Queries';
 
 
 export default function AllReviews(props){
@@ -16,10 +16,20 @@ export default function AllReviews(props){
     })
 
     useEffect(() => {
-        getDishReviews(props.dishid).then(function(results) {
-            setReviews(results);
-        }, () => {console.log("Error in useEffect getDishReviews")})
-        .catch((err) => {console.log("use Effect Err Get Dish Reviews: ", err)});
+        if(props.dishid!=null && props.chefid==null){
+            getDishReviews(props.dishid).then(function(results) {
+                setReviews(results);
+            }, () => {console.log("Error in useEffect getDishReviews")})
+            .catch((err) => {console.log("use Effect Err Get Dish Reviews: ", err)});
+        } else if (props.dishid==null && props.chefid!=null){
+            getChefReviews(props.chefid).then(function(results) {
+                setReviews(results);
+            }, () => {console.log("Error in useEffect getDishReviews")})
+            .catch((err) => {console.log("use Effect Err Get Dish Reviews: ", err)});
+        } else if (props.dishid==null && props.chefid!=null){
+            console.log("Error! Dishid and Chefid are not null");
+        }
+        
     }, [])
 
     function close(){
@@ -55,6 +65,7 @@ export default function AllReviews(props){
                                     rating={review.rating}
                                     timestamp={review.timestamp}
                                     comment={review.comment}
+                                    name={review.name!=null ? review.name : null}
                                 /></View>) : <Text></Text>}
                         </ScrollView>
                     </View>
@@ -125,6 +136,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 24,
         alignSelf: 'center',
-        marginTop: 5
+        marginTop: 5,
+        fontFamily: 'Avenir',
     }
 });
