@@ -100,7 +100,7 @@ export default function ShoppingCart(props) {
 
   return (
     <View style={styles.container}>
-      <ScrollView>
+      <ScrollView style={styles.scrollView}>
         {cart.length == 0 ? (
           <Text style={styles.empty}>No items yet!</Text>
         ) : (
@@ -201,6 +201,9 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 20,
     borderTopLeftRadius: 20,
     backgroundColor: colors.secondary
+  },
+  scrollView: {
+    height: "100%"
   },
   empty: {
     fontWeight: "bold",
