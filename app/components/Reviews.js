@@ -28,13 +28,6 @@ function Reviews(props){
         setLeaveReviewVisible(false);
     }
 
-    function refresh(){
-        getNDishReviews(props.dishid, 5).then(function(results) {
-            setReviews(results);
-        }, () => {console.log("Error in useEffect getNDishReviews")})
-        .catch((err) => {console.log("use Effect Err Get N Dish Reviews: ", err)});
-    }
-
     function ratingTapped(rating){
         setLeaveReviewVisible(true);
         setLeftRating(rating);
@@ -59,7 +52,7 @@ function Reviews(props){
                     dishid={props.dishid}
                     hideModal={hideModal}    
                     rating={leftRating}
-                    refresh={refresh}
+                    refresh={props.refresh}
                 />}
             </View>}
             {props.reviews!=null ? props.reviews.map((review, index)=>
@@ -71,6 +64,7 @@ function Reviews(props){
                     timestamp={review.timestamp}
                     comment={review.comment}
                     name={review.name!=null ? review.name : null}
+                    dishid={props.dishid}
                 />) : <Text></Text>}
             {props.reviews!=null && props.reviews.length==0 && <Text style={styles.noReviews}>No Reviews with Comments</Text>}
             {props.reviews!=null && props.reviews.length>0 && <Button title="More Reviews" type="outline" onPress={allReviewsOnPress} containerStyle={styles.buttonContainer} titleStyle={styles.button} buttonStyle={styles.button}/>}

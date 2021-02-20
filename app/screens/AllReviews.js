@@ -66,6 +66,7 @@ export default function AllReviews(props){
                                     timestamp={review.timestamp}
                                     comment={review.comment}
                                     name={review.name!=null ? review.name : null}
+                                    dishid={props.dishid}
                                 /></View>) : <Text></Text>}
                         </ScrollView>
                     </View>

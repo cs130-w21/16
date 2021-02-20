@@ -1,6 +1,6 @@
 import React from 'react';
 import { LogBox } from 'react-native';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import {Rating, Divider} from "react-native-elements";
 import { timeDifference } from '../util/TimeConversion';
 import colors from "../config/colors";
@@ -8,12 +8,16 @@ import colors from "../config/colors";
 
 function Review(props){
     LogBox.ignoreLogs(['Each child in a list should have a unique "key" prop.']);
+
+    function onPressDish(){
+        
+    }
     return(
         <View style={{minWidth: '100%'}}>
             {props.index != 0 ? <Divider style={styles.divider}/> : <View></View>}
             <View style={styles.ReviewContainer}>
                 <Text style={styles.reviewerText}>{props.reviewer}</Text>
-                {(props.name != null) && <Text style={styles.dishText}>{props.name}</Text>}
+                {(props.name != null) && <TouchableOpacity onPress={onPressDish}><Text style={styles.dishText}>{props.name}</Text></TouchableOpacity>}
                 <View style={styles.starContainer}>
                     <Rating
                         style={styles.stars}
