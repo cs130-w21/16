@@ -18,7 +18,6 @@ function CheckoutSubtotal(props) {
                         <Text style={styles.textStyle}>
                             {item["count"] + " x " + item["dish"]["name"] + " by " + item["dish"]["Chef"]["name"]}
                         </Text>
-                        <>{console.log(item)}</>
                         <Text style={styles.textStyle}>
                             {"$" + (item["count"] * item["dish"]["price"]).toFixed(2)}
                         </Text>
