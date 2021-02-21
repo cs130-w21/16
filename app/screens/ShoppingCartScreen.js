@@ -6,6 +6,7 @@ import colors from "../config/colors";
 import ShoppingCart from "../components/ShoppingCart";
 
 function ShoppingCartScreen(props) {
+  const navigation = props.navigation;
   return (
     <SafeAreaView style={styles.container}>
       <ShoppingCart cart={global.cart}></ShoppingCart>
@@ -17,7 +18,7 @@ function ShoppingCartScreen(props) {
               buttonStyle={styles.checkoutButton}
               onPress={() => {
                 if (global.cart.length > 0) {
-                  // proceed to checkout screen
+                  navigation.navigate("Checkout")
                 } else {
                   Alert.alert(
                     "Can't checkout", 
@@ -38,11 +39,12 @@ const styles = StyleSheet.create({
   checkoutTab: {
     flex: 1,
     backgroundColor: colors.primary,
+    justifyContent: "space-evenly",
+    alignContent: "center",
     alignItems: "center",
-    justifyContent: "center",
     flexDirection: "row",
     width: "100%",
-    height: "7%",
+    height: "12%",
     position: "absolute",
     bottom: 0
   },
@@ -51,7 +53,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.secondary,
   },
   checkoutText: {
-    fontWeight: "bold"
+    fontWeight: "bold",
+    fontFamily: "Avenir"
   }
 });
 

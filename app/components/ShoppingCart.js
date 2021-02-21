@@ -20,6 +20,27 @@ export function addQuantity(index, count) {
   global.cart[index].count += count;
 }
 
+export function subTotal() {
+  let tot = 0.0;
+  global.cart.forEach(item => (tot += (item.dish.price * item.count)))
+  return tot.toFixed(2);
+}
+
+export function getLongestTime() {
+  let max = 0;
+  global.cart.forEach(item => ((item.dish.timeMin > max) ? (max = item.dish.timeMin) : (max = max)))
+
+  if (max < 60) {
+    return max + " minutes"
+  } else {
+    if (max % 60 === 0) {
+      return (max / 60) + " hours"
+    } else {
+      return (max / 60) + " hours " + (max % 60) + " minutes"
+    }
+  }
+}
+
 function CartCard(props) {
   const [total, setTotal] = useState(props.price);
   const [count, setCount] = useState(props.quantity);
