@@ -19,6 +19,7 @@ import colors from "../config/colors";
 import { getChefInfo, getDishInfo, getNDishReviews } from "../util/Queries";
 import { addToCart, addQuantity } from "../components/ShoppingCart";
 import Chef from "../objects/Chef";
+import Dish from "../objects/Dish";
 
 const SLIDER_WIDTH = Dimensions.get("window").width;
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH);
@@ -45,29 +46,30 @@ function DishPage(props) {
   const [index, setIndex] = React.useState(0);
   const isCarousel = React.useRef(null);
   const [first5Reviews, setFirst5Reviews] = useState(null);
-  const [Dish, setDish] = useState(props.Dish);
+  const [dish, setDish] = useState(props.Dish!=null ? props.Dish : new Dish({}));
 
   useEffect(() => {
-    getNDishReviews(Dish.dishid, 5)
-      .then(
-        function(results) {
-          setFirst5Reviews(results);
-        },
-        () => {
-          console.log("Error in useEffect getNDishReviews");
-        }
-      )
-      .catch(err => {
-        console.log("use Effect Err Get N Dish Reviews: ", err);
-      });
+      if(dish.dishid != null){
+          getNDishReviews(dish.dishid, 5).then(function(results) {
+              setFirst5Reviews(results);
+          }, () => {console.log("Error in useEffect getNDishReviews")})
+          .catch(err => {console.log("use Effect Err Get N Dish Reviews: ", err)});
+      }
   }, []);
 
   useEffect(() => {
     setVisible(props.visible);
   });
 
-  function refresh(){
-    getNDishReviews(Dish.dishid, 5)
+  useEffect(()=> {
+      if(props.dishid!=null){
+          refresh(props.dishid);
+      }
+      
+  }, [props.dishid])
+
+  function refresh(dishid){
+    getNDishReviews(dishid, 5)
     .then(
       function(results) {
         setFirst5Reviews(results);
@@ -80,14 +82,14 @@ function DishPage(props) {
       console.log("use Effect Err Get N Dish Reviews: ", err);
     });
 
-    getDishInfo(Dish.dishid)
+    getDishInfo(dishid)
     .then(
         function(results){
-            var dish = new Dish(results[0]);
-            setDish(dish);
-            getChefInfo(Dish.chefid).then(function(results){
+            var d = new Dish(results[0]);
+            setDish(d);
+            getChefInfo(d.chefid).then(function(results){
                 var chef = new Chef(results[0]);
-                Dish.setChef(chef);
+                dish.setChef(chef);  
             }, () => {console.log("Error")})
             .catch((err) => {console.log("Refresh get Chef error: ", err)})
         },
@@ -98,19 +100,19 @@ function DishPage(props) {
     .catch(err => {
         console.log("refresh Err get dish info: ", err);
     });
-
-    
   }
 
+
   let carouselData = [];
-  if (Dish.imagesURLs != null) {
-    Dish.imagesURLs.forEach(imageURL => {
+  if (dish.imagesURLs != null) {
+    dish.imagesURLs.forEach(imageURL => {
       if (imageURL != null) {
         carouselData.push({ image: { uri: imageURL } });
       }
     });
   }
-  console.log(Dish);
+
+  if(dish == null){return(<View></View>);}
   return (
     <Modal
       animationType="slide"
@@ -147,8 +149,8 @@ function DishPage(props) {
             <Divider style={styles.divider2} />
             <View style={styles.textContainer}>
               <View style={styles.title}>
-                <Text style={styles.titleText}>{Dish.name}</Text>
-                <Text adjustsFontSizeToFit={true} numberOfLines={1} style={styles.price}>${Dish.price}</Text>
+                <Text style={styles.titleText}>{dish.name}</Text>
+                <Text adjustsFontSizeToFit={true} numberOfLines={1} style={styles.price}>${dish.price}</Text>
               </View>
               <View style={styles.ratingsContainer}>
                 <Rating
@@ -156,32 +158,32 @@ function DishPage(props) {
                   readonly={true}
                   imageSize={20}
                   fractions={1}
-                  startingValue={Dish.rating ? Dish.rating : 0.0}
+                  startingValue={dish.rating ? dish.rating : 0.0}
                 />
                 <Text style={styles.numReviews}>
-                  ({Dish.numReviews} Reviews)
+                  ({dish.numReviews} Reviews)
                 </Text>
               </View>
               <View style={styles.spacer} />
 
               <Text style={styles.descriptionText}>
-                {Dish.description}
+                {dish.description}
               </Text>
               <Divider style={styles.divider} />
               <Text style={styles.descriptionText}>
-                Ingredients: {Dish.ingredients}
+                Ingredients: {dish.ingredients}
               </Text>
               <Divider style={styles.divider} />
               <Text style={styles.descriptionText}>
-                Estimated Time: {Dish.timeString}
+                Estimated Time: {dish.timeString}
               </Text>
               <View style={styles.spacer}></View>
               <Reviews
-                rating={Dish.rating}
-                numReviews={Dish.numReviews}
+                rating={dish.rating}
+                numReviews={dish.numReviews}
                 reviews={first5Reviews}
-                dishid={Dish.dishid}
-                refresh={refresh}
+                dishid={dish.dishid}
+                refresh={() => {refresh(dish.dishid)}}
               />
               <View style={styles.spacer} />
               <View style={styles.spacer} />
@@ -240,10 +242,10 @@ function DishPage(props) {
             onPress={() => {
               if (count > 0) {
                 const found = global.cart.findIndex(
-                  item => item["dish"] == Dish
+                  item => item["dish"] == dish
                 );
                 if (found < 0) {
-                  const dish = Dish;
+                  const d = dish;
                   addToCart({ dish, count });
                 } else {
                   addQuantity(found, count);

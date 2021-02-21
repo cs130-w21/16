@@ -60,7 +60,7 @@ app.get('/DishInfo', function (req, res) {
         if(err) {console.log(err)};
         // Executing the MySQL query (select all data from the 'users' table).
         const dishid = req.query.dishid;
-        connection.query('SELECT dishid, C.chefid AS chefid, D.name AS name, description, D.shortDesc AS shortDesc, ingredients, timeMin, D.rating as rating, D.numReviews as numReviews, primaryImage, secondImage, thirdImage, fourthImage, available, C.name as chefName FROM Dish D JOIN Chef C on D.chefid = C.chefid WHERE dishid ='+dishid, function (error, results, fields) {
+        connection.query('SELECT dishid, C.chefid AS chefid, D.name AS name, price, description, D.shortDesc AS shortDesc, ingredients, timeMin, D.rating as rating, D.numReviews as numReviews, primaryImage, secondImage, thirdImage, fourthImage, available, C.name as chefName FROM Dish D JOIN Chef C on D.chefid = C.chefid WHERE dishid ='+dishid, function (error, results, fields) {
         // If some error occurs, we throw an error.
         if (error) {console.log(error)};
 

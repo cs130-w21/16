@@ -64,7 +64,7 @@ function Reviews(props){
                     timestamp={review.timestamp}
                     comment={review.comment}
                     name={review.name!=null ? review.name : null}
-                    dishid={props.dishid}
+                    dishid={review.dishid}
                 />) : <Text></Text>}
             {props.reviews!=null && props.reviews.length==0 && <Text style={styles.noReviews}>No Reviews with Comments</Text>}
             {props.reviews!=null && props.reviews.length>0 && <Button title="More Reviews" type="outline" onPress={allReviewsOnPress} containerStyle={styles.buttonContainer} titleStyle={styles.button} buttonStyle={styles.button}/>}
