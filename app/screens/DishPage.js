@@ -110,7 +110,7 @@ function DishPage(props) {
             <View style={styles.textContainer}>
               <View style={styles.title}>
                 <Text style={styles.titleText}>{props.Dish.name}</Text>
-                <Text style={styles.price}>${props.Dish.price}</Text>
+                <Text adjustsFontSizeToFit={true} numberOfLines={1} style={styles.price}>${props.Dish.price}</Text>
               </View>
               <View style={styles.ratingsContainer}>
                 <Rating
