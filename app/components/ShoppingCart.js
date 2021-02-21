@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Text, ScrollView } from "react-native";
+import { Alert, View, StyleSheet, Text, ScrollView } from "react-native";
 import { Card, Button } from "react-native-elements";
 import colors from "../config/colors";
 import PropTypes, { any } from "prop-types";
@@ -18,6 +18,27 @@ export function addToCart(item) {
 
 export function addQuantity(index, count) {
   global.cart[index].count += count;
+}
+
+export function subTotal() {
+  let tot = 0.0;
+  global.cart.forEach(item => (tot += (item.dish.price * item.count)))
+  return tot.toFixed(2);
+}
+
+export function getLongestTime() {
+  let max = 0;
+  global.cart.forEach(item => ((item.dish.timeMin > max) ? (max = item.dish.timeMin) : (max = max)))
+
+  if (max < 60) {
+    return max + " minutes"
+  } else {
+    if (max % 60 === 0) {
+      return (max / 60) + " hours"
+    } else {
+      return (max / 60) + " hours " + (max % 60) + " minutes"
+    }
+  }
 }
 
 function CartCard(props) {
@@ -44,7 +65,7 @@ function CartCard(props) {
   }, [count]);
 
   return (
-    <View style={styles.container}>
+    <View style={styles.cartCardContainer}>
       <Card containerStyle={styles.cardContainer}>
         <Card.Title>
           <Text style={styles.title}>{props.title}</Text>
@@ -115,6 +136,7 @@ export default function ShoppingCart(props) {
           ))
         )}
       </ScrollView>
+      
     </View>
   );
 }
@@ -133,6 +155,10 @@ CartCard.propTypes = {
 
 const styles = StyleSheet.create({
   container: {
+    width: "100%",
+    height: "100%",
+  },
+  cartCardContainer: {
     width: "100%"
   },
   cardContainer: {
@@ -203,12 +229,31 @@ const styles = StyleSheet.create({
     backgroundColor: colors.secondary
   },
   scrollView: {
-    height: "100%"
+    width: "100%",
   },
   empty: {
     fontWeight: "bold",
     textAlign: "center",
     fontSize: 16,
     padding: 20
+  },
+  checkoutTab: {
+    flex: 1,
+    backgroundColor: colors.primary,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    width: "100%",
+    height: "7%",
+    position: "absolute",
+    bottom: 0
+  },
+  checkoutButton: {
+    borderRadius: 20,
+    backgroundColor: colors.secondary,
+  },
+  checkoutText: {
+    fontWeight: "bold"
   }
+
 });

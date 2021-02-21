@@ -10,6 +10,7 @@ import ChefScreen from "./app/screens/ChefScreen";
 import ShoppingCartScreen from "./app/screens/ShoppingCartScreen";
 import colors from "./app/config/colors";
 import Search from "./app/screens/Search";
+import CheckoutScreen from "./app/screens/CheckoutScreen"
 
 const Stack = createStackNavigator();
 
@@ -26,6 +27,26 @@ const App = () => {
           component={ShoppingCartScreen}
           options={{
             title: "CART",
+            headerShown: true,
+            headerStyle: {
+              backgroundColor: colors.primary
+            },
+            headerTintColor: "white",
+            headerTitleStyle: {
+              fontWeight: "bold",
+              color: "white",
+              fontFamily: "Avenir",
+              fontSize: 20
+            },
+            headerTruncatedBackTitle: "",
+            headerBackTitle: ""
+          }}
+        />
+        <Stack.Screen  
+          name="Checkout"
+          component={CheckoutScreen}
+          options={{
+            title: "ORDER SUMMARY",
             headerShown: true,
             headerStyle: {
               backgroundColor: colors.primary
