@@ -44,7 +44,6 @@ export default function MenuCard(props) {
       Chef: props.Dish.Chef
     })
   }
-
   return (
     <View style={styles.container}>
       <Card containerStyle={styles.cardContainer}>

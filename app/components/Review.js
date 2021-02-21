@@ -1,19 +1,32 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { LogBox } from 'react-native';
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import {Rating, Divider} from "react-native-elements";
 import { timeDifference } from '../util/TimeConversion';
 import colors from "../config/colors";
+import DishPage from '../screens/DishPage';
 
 
 function Review(props){
     LogBox.ignoreLogs(['Each child in a list should have a unique "key" prop.']);
+    const [dishPageVisible, setDishPageVisible] = useState(false);
+
+    function onPressDish(){
+        setDishPageVisible(true);
+    }
+
+    function hideModal(){
+        setDishPageVisible(false);
+    }
     return(
         <View style={{minWidth: '100%'}}>
             {props.index != 0 ? <Divider style={styles.divider}/> : <View></View>}
             <View style={styles.ReviewContainer}>
                 <Text style={styles.reviewerText}>{props.reviewer}</Text>
-                {(props.name != null) && <Text style={styles.dishText}>{props.name}</Text>}
+                {(props.name != null) && <TouchableOpacity onPress={onPressDish}>
+                    <Text style={styles.dishText}>{props.name}</Text>
+                </TouchableOpacity>}
+                {dishPageVisible && props.dishid != null && <DishPage dishid={props.dishid} visible={dishPageVisible} hideModal={hideModal}/>}
                 <View style={styles.starContainer}>
                     <Rating
                         style={styles.stars}
