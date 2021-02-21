@@ -17,7 +17,7 @@ function dishCard(content, navigation){
                 navigation={navigation}/>
 }
 
-class Cards extends Component{
+export class Cards extends Component{
     constructor(props){
         super(props);
     }
