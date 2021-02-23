@@ -7,6 +7,6 @@ RUN git checkout -b $branch
 RUN git pull origin $branch
 RUN npm install
 RUN echo $branch > /branch
-ENTRYPOINT git pull origin `cat /branch`; npm install; node backend/routes.js 8080
+ENTRYPOINT git pull origin `cat /branch`; npm install; cd backend ; node routes.js 8080
 
 
