@@ -140,7 +140,7 @@ function ChefScreen(props) {
                         </TableWrapper>
                     </Table>
                     <View style={styles.spacer}/>
-                    <Reviews rating={rating} numReviews={numReviews} chefid={id} reviews={first5Reviews}/>
+                    {numReviews!=null && <Reviews rating={rating} numReviews={numReviews} chefid={id} reviews={first5Reviews}/>}
                     <View style={styles.spacer}/>
                     <View style={styles.spacer}/>
                 </View>
