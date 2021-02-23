@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import { LogBox } from 'react-native';
 import {Dimensions, Image, Modal, ScrollView, StyleSheet, Text, View} from 'react-native';
-import {Button, Icon, Divider} from 'react-native-elements'
+import {Button, Icon, Divider, Header} from 'react-native-elements'
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import colors from '../config/colors';
-import DropDownPicker from 'react-native-dropdown-picker';
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { ShadowPropTypesIOS } from 'react-native';
+import { relativeTimeRounding } from 'moment';
 
 
 const SLIDER_WIDTH = Dimensions.get('window').width
@@ -20,11 +20,14 @@ const ITEM_WIDTH = Math.round(SLIDER_WIDTH)
 function FilterPage(props) {
     LogBox.ignoreLogs(['Non-serializable values were found in the navigation state']);
 
-    const [count, setCount] = useState(0);
-    const [index, setIndex] = React.useState(0)
-    const [ratingsOfficial,setRatingsOfficial] = useState("hello")
     const [pricePressed,setPrice] = useState([false,false,false])
-    
+    let categories = ['American','Asian','Baked Goods', 'Chinese','Dessert','Indian','Italian','Japanese','Korean','Mediterranean','Mexican','Thai','Vietnamese']
+    let initial = []
+    for (let i=0;i<categories.length;i++)
+    {
+        initial.push(false)
+    }
+    const [categoriesArr,setCategories]=useState(initial)
 
     function closeApply() {
         props.update()
@@ -34,7 +37,7 @@ function FilterPage(props) {
     useEffect(() => {
 
         let temp = []
-
+        let tempCategories = []
         for (let i=0;i<props.priceFilter.length;i++)
         {
             if (props.priceFilter[i])
@@ -46,7 +49,19 @@ function FilterPage(props) {
                 temp.push(false)
             }
         }
+        for (let i=0;i<props.categoriesArr.length;i++)
+        {
+            if (props.categoriesArr[i])
+            {
+                tempCategories.push(true)
+            }
+            else
+            {
+                tempCategories.push(false)
+            }
+        }
         setPrice(temp)
+        setCategories(tempCategories)
     }, [])
     
     
@@ -58,7 +73,7 @@ function FilterPage(props) {
         let retHolder = -1
         for (let i=0;i<4;i++)
         {
-            if (buttonNum==i)
+            if (buttonNum==i || (props.timeFilter[i] && buttonNum ==5) ) 
             {
                 timeFilter.push(true)
                 retHolder=i
@@ -104,7 +119,6 @@ function FilterPage(props) {
         {
             temp3 = !(pricePressed[2])
         }
-        console.log([temp1,temp2,temp3])
         setPrice([temp1,temp2,temp3])
 
         if (temp3 && !temp2 && !temp1)
@@ -161,7 +175,6 @@ function FilterPage(props) {
 
     function colorTellerTime(buttonNum)
     {
-        
         if (props.timeFilter[buttonNum] == false)
         {
             return colors.secondary
@@ -177,6 +190,60 @@ function FilterPage(props) {
         }
         return colors.primary
     }
+    function colorTellerCategories(buttonNum)
+    {
+        if (categoriesArr[buttonNum]==false)
+            return colors.secondary
+        return colors.primary
+    }
+
+    function retCategoryButtons(buttonNum)
+    {
+        return (
+        <Button
+        title = {categories[buttonNum]}
+        buttonStyle = {{backgroundColor: colorTellerCategories(buttonNum) , marginRight: 10, marginBottom: 10}}
+        onPress = {() => handleCategoryPress(buttonNum)}
+        />
+        )
+
+    }
+    function handleCategoryPress(buttonNum)
+    {
+        let tempCategories = categoriesArr
+        let holder = tempCategories[buttonNum]
+        tempCategories[buttonNum]= !(holder)
+        var removeAll = (keys, arr) => {for (prop of keys) arr.delete(prop); return arr};
+        setCategories(tempCategories)
+        props.setCategoriesArr(tempCategories)
+        
+        let tempSet = props.categoriesSet
+        if (holder)
+        {
+            
+            tempSet.delete(categories[buttonNum])
+        }
+        else
+        {
+            tempSet.add(categories[buttonNum])
+        }
+        props.setCategoriesSet(tempSet)
+        handleTimePress(5)
+        
+            
+
+    }
+    function retAllButtons()
+    {
+        let buttons = []
+        for (let i=0;i<categories.length;i++)
+        {
+            
+            buttons.push(retCategoryButtons(i))
+        }
+        return buttons
+    }
+
 
     function Clear() {
         props.setRatingFilter([false,false,true])
@@ -185,15 +252,33 @@ function FilterPage(props) {
         setPrice([false,false,false])
         props.setTimeFilter([false,false,false,true])
         props.setTime([0,10000000000000000])
+        let initial = []
+        for (let i=0;i<categories.length;i++)
+        {
+            initial.push(false)
+        }
+        props.setCategoriesArr(initial)
+        setCategories(initial)
+        props.setCategoriesSet(new Set())
+        
     }
 
     return(
             <View style={styles.container}>
                
+               <Header
+                            containerStyle={styles.headerContainer}
+                            centerComponent={<View style={{flexDirection: 'column'}}><Text style={styles.header}>Filter</Text></View>}
+                            rightComponent={<Button onPress={() => props.closeModal(false)} containerStyle={styles.buttonContainer} buttonStyle={styles.closeButtonStyle} icon={<Icon name='close' size={25} color='black' style={{backgroundColor: 'white', borderRadius:15, outline:"black solid 2px"}}/>} />}
+                            
+                />
                 
-                <View style={styles.textContainer}>
+            <View style={styles.applyContainer}>
+                <Button title = "Clear" buttonStyle = {{backgroundColor: 'transparent',alignSelf: 'flex-end'}}  titleStyle = {{fontFamily: 'Avenir', color: "black", fontSize:20}} onPress = {Clear} />
+                <ScrollView>  
+                 <View style={{alignItems:'flex-start'}}>
+                    <Text style = {styles.text}>Sort By Rating</Text>   
                     
-                    <Text style = {styles.textTop}>Sort By Rating</Text>
                     <View style={styles.ratingsRow}>
                         <Button
                         title = "High to Low"
@@ -214,7 +299,7 @@ function FilterPage(props) {
                         onPress = {() => handleRatingPress(2)}
                         />
                     </View>
-                    <Divider style={styles.divider} /> 
+                    
                     <Text style={styles.text}>Price</Text>
                     <View style={styles.ratingsRow}>
                         <Button
@@ -236,25 +321,25 @@ function FilterPage(props) {
                         onPress = {() => handlePriceRange("high")}
                         />
                     </View>
-                    <Divider style={styles.divider} /> 
+                    
                     <Text style={styles.text}>Time</Text>
                     <View style={styles.ratingsRow}>
                         <Button
                         title = "< 30 Min."
                         color = "white"
-                        buttonStyle = {{backgroundColor: colorTellerTime(0) , marginRight: 10}}
+                        buttonStyle = {{backgroundColor: colorTellerTime(0) , marginRight: 10, marginBottom:10}}
                         onPress = {() => handleTimePress(0)}
                         />
                         <Button
                         title = "< 60 Min."
                         color = "white"
-                        buttonStyle = {{backgroundColor: colorTellerTime(1), marginRight: 10 }}
+                        buttonStyle = {{backgroundColor: colorTellerTime(1), marginRight: 10, marginBottom:10 }}
                         onPress = {() => handleTimePress(1)}
                         />
                         <Button
                         title = "< 120 Min."
                         color = "white"
-                        buttonStyle = {{backgroundColor: colorTellerTime(2), marginRight: 10 }}
+                        buttonStyle = {{backgroundColor: colorTellerTime(2), marginRight: 10 , marginBottom:10}}
                         onPress = {() => handleTimePress(2)}
                         />
                          <Button
@@ -264,118 +349,27 @@ function FilterPage(props) {
                         onPress = {() => handleTimePress(3)}
                         />
                     </View>
-                    <Divider style={styles.divider} />
                     <Text style={styles.text}>Categories</Text> 
                     <View style={styles.ratingsRow}>
-                        <Button
-                        title = "Italian"
-                        color = "white"
-                        buttonStyle = {{backgroundColor: colors.secondary , marginRight: 10, marginBottom: 10}}
-                        onPress = {() => console.log("Implement")}
-                        />
-                        <Button
-                        title = "Indian"
-                        color = "white"
-                        buttonStyle = {{backgroundColor: colors.secondary, marginRight: 10,  marginBottom: 10 }}
-                        onPress = {() => console.log("Implement")}
-                        />
-                        <Button
-                        title = "Asian"
-                        color = "white"
-                        buttonStyle = {{backgroundColor: colors.secondary, marginRight: 10, marginBottom: 10 }}
-                        onPress = {() => console.log("Implement")}
-                        />
-                        <Button
-                        title = "Italian"
-                        color = "white"
-                        buttonStyle = {{backgroundColor: colors.secondary , marginRight: 10, marginBottom: 10}}
-                        onPress = {() => console.log("Implement")}
-                        />
-                        <Button
-                        title = "Indian"
-                        color = "white"
-                        buttonStyle = {{backgroundColor: colors.secondary, marginRight: 10, marginBottom: 10 }}
-                        onPress = {() => console.log("Implement")}
-                        />
-                        <Button
-                        title = "Asian"
-                        color = "white"
-                        buttonStyle = {{backgroundColor: colors.secondary, marginRight: 10, marginBottom: 10 }}
-                        onPress = {() => console.log("Implement")}
-                        />
-                        <Button
-                        title = "Asian"
-                        color = "white"
-                        buttonStyle = {{backgroundColor: colors.secondary, marginRight: 10, marginBottom: 10 }}
-                        onPress = {() => console.log("Implement")}
-                        />
-                        <Button
-                        title = "Italian"
-                        color = "white"
-                        buttonStyle = {{backgroundColor: colors.secondary , marginRight: 10, marginBottom: 10}}
-                        onPress = {() => console.log("Implement")}
-                        />
-                        <Button
-                        title = "Indian"
-                        color = "white"
-                        buttonStyle = {{backgroundColor: colors.secondary, marginRight: 10, marginBottom: 10 }}
-                        onPress = {() => console.log("Implement")}
-                        />
-                        <Button
-                        title = "Asian"
-                        color = "white"
-                        buttonStyle = {{backgroundColor: colors.secondary, marginRight: 10, marginBottom: 10 }}
-                        onPress = {() => console.log("Implement")}
-                        />
-                        <Button
-                        title = "Asian"
-                        color = "white"
-                        buttonStyle = {{backgroundColor: colors.secondary, marginRight: 10, marginBottom: 10 }}
-                        onPress = {() => console.log("Implement")}
-                        />
-                        <Button
-                        title = "Italian"
-                        color = "white"
-                        buttonStyle = {{backgroundColor: colors.secondary , marginRight: 10, marginBottom: 10}}
-                        onPress = {() => console.log("Implement")}
-                        />
-                        <Button
-                        title = "Indian"
-                        color = "white"
-                        buttonStyle = {{backgroundColor: colors.secondary, marginRight: 10, marginBottom: 10 }}
-                        onPress = {() => console.log("Implement")}
-                        />
-                        <Button
-                        title = "Asian"
-                        color = "white"
-                        buttonStyle = {{backgroundColor: colors.secondary, marginRight: 10, marginBottom: 10 }}
-                        onPress = {() => console.log("Implement")}
-                        />
-                    
+                        {retAllButtons()}
                     </View>
-                   
-                   
-                </View>
-                <View style={styles.closeButton} >
-                    <Button onPress={() => props.closeModal(false)} buttonStyle={styles.closeButtonStyle} icon={<Icon name='close' size={25} color='white' style={{backgroundColor: 'black', borderRadius:15, outline:"white solid 1px"}}/>} />
-                </View>
-                <View style={styles.checkout}>
-                <View >
-                    <Button
-                    title = "Apply"
-                    color = "#ACBD89"
-                    buttonStyle = {{backgroundColor: colors.secondary, paddingLeft:10, marginBottom: 10, width:"100%" }}
-                    onPress = {closeApply}
-                    />
-                    <Button
-                    title = "Clear"
-                    color = "#ACBD89"
-                    buttonStyle = {{backgroundColor: colors.secondary, paddingLeft:10, width:"100%" }}
-                    onPress = {Clear}
-                    />
+                
                     </View>
+                    </ScrollView>   
+
+                    <Button
+                        title = "Apply"
+                        buttonStyle = {{justifyContent:'center', backgroundColor: 'transparent', paddingBottom: '2%'}}
+                        titleStyle = {{fontFamily: 'Avenir', color: "black", fontSize:20}}
+                        onPress = {closeApply}
+                    />
+                    <Divider style={styles.divider}></Divider>
                     
-                </View>
+                
+                        
+                   
+            </View>
+ 
             </View>
         
     );
@@ -384,185 +378,95 @@ function FilterPage(props) {
 
 const styles = StyleSheet.create({
     container: {
-        paddingTop: '10%',
         flex: 1,
-        backgroundColor: colors.primary,
+        backgroundColor: "white",
         minWidth: '100%',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        flexDirection: 'column'
+        flexDirection: 'column',
+        borderRadius: 30
     },
 
     ratingsRow: {
         paddingLeft: 10,
         flexDirection: "row",
         flexWrap: "wrap",
-        paddingBottom: 10,
+        paddingBottom: 20,
         
 
     },
-
-    carouselItem: {
-        width: '100%',
-        height: '100%',
+    
+    bottom: {
+        backgroundColor: "white",
+        alignItems: 'center',
+        justifyContent: 'center',
+        flexDirection: 'column',
+        width: "100%"
+        
     },
-
-    dots: {
-        position: 'absolute',
-        alignSelf: 'center',
-        top: 305,
-    },
-
-    dotStyle: {
-        width: 10,
-        height: 10,
-        borderRadius: 5,
-        marginHorizontal: 0,
-        backgroundColor: colors.black
-    },
-
+    
+   
     closeButton:{
-        alignSelf:'flex-end',
+        alignSelf:'flex-start',
         position:'absolute',
-        top:40,
-        right: 0
+        flexDirection: 'row',
+        top:0,
+        left: 0,
     },
 
     closeButtonStyle: {
         backgroundColor: 'transparent',
     },
-    
-    minusButton: {
-        borderBottomLeftRadius: 20,
-        borderTopLeftRadius: 20,
-        backgroundColor: colors.secondary
-    },
+ 
     text: {
         paddingLeft: 10,
-        fontSize: 35,
+        fontSize: 20,
         color: "black",
         fontWeight: 'bold',
         fontFamily: "Avenir",
+        marginBottom: 10
     },
-    textTop: {
-        paddingTop: "10%",
-        paddingLeft: 10,
-        fontSize: 35,
-        color: "black",
-        fontWeight: 'bold',
-        fontFamily: "Avenir",
-    },
-    plusButton: {
-        borderBottomRightRadius: 20,
-        borderTopRightRadius: 20,
-        backgroundColor: colors.secondary
+    
+
+    buttonContainer: {
+        alignSelf: 'flex-end'
     },
 
-    plusButtonPadding: {
-        paddingRight:10
-    },
-    divider: {
-        width: '90%',
-        alignSelf: 'center',
-        backgroundColor: colors.secondary,
-        height: 1
-    }, 
-    addToCartButton: {
-        borderRadius:20,
-        backgroundColor: colors.secondary,
-        paddingLeft:10
-    },
-
-    addToCartText: {
-        fontWeight: 'bold',
-        paddingRight:10
-    },
-
-    buttonText: {
-        fontWeight: 'bold'
-    },
-
-    cartPadding: {
-        paddingLeft:10,
-        paddingRight:10
-    },
-
-    textContainer: {
+    applyContainer: {
         flex: 5,
         backgroundColor: "white",
-        paddingTop: "0%",
+        paddingTop: "2%",
         width: '100%',
-        alignItems: 'flex-start',
-        flexDirection: 'column'
+        alignItems: 'center',
+        flexDirection: 'column',
+        borderRadius: 20
     },
 
-    image: {
-        flex: 3,
-        width: '100%',
-        height: '100%',
-        justifyContent: 'center',
-        paddingBottom: 20,
-    },
-    
-    title: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: '100%'
-    },
-    
+   
     divider: {
-        width: '90%',
         alignSelf: 'center',
         backgroundColor: colors.secondary,
         height: 1
     }, 
 
-    titleText: {
-        fontSize: 30,
-        padding: 10,
-        color: "black",
-        fontWeight: 'bold',
-        fontFamily: "Avenir",
-    },
-
-    countStyle: {
-        fontSize: 20,
-        padding: 10,
-        color: "white",
-        height: 40,
-        fontWeight: 'bold',
-        fontFamily: "Avenir",
-    },
-
-    price: {
-        alignSelf: 'flex-end',
-        fontSize: 30,
-        padding: 10,
-        color: colors.black,
-        fontWeight: 'bold',
-        fontFamily: "Avenir",
-    },
-
-    description: {
-        alignSelf: 'flex-start',
-        flex: 2,
-        paddingLeft: 20,
-    },
-
-    descriptionText: {
-        fontSize: 20,
-        padding: 10,
-        color: "gray",
-        fontFamily: "Avenir",
-    },
-    
-    checkout: {
-        flex: 1,
-        backgroundColor: colors.primary,
+    headerContainer:{
+        backgroundColor: colors.primary, 
+        borderTopLeftRadius: 20, 
+        borderTopRightRadius: 20,
+        alignContent: 'center',
         alignItems: 'center',
-        justifyContent: 'flex-start',
-        flexDirection: 'row',
+        justifyContent: 'center',
+        flexDirection: 'column'
+    },
+    header:{
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: 24,
+        alignSelf: 'center',
+        marginTop: 5,
+        fontFamily: 'Avenir',
     }
+
 });
 
 export default FilterPage;

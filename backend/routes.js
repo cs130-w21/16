@@ -448,7 +448,7 @@ app.get('/insertDishes', function (req, res) {
 var args = process.argv.slice(2);
 var port;
 if(args.length == 0){
-    port=8888;
+    port=8080;
 }
 else{port = parseInt(args[0]);}
 app.listen(port, () => {

@@ -55,6 +55,7 @@ export default function AllReviews(props){
                             centerComponent={<View style={{flexDirection: 'column'}}><Text style={styles.header}>Reviews</Text></View>}
                             rightComponent={<Button onPress={close} containerStyle={styles.buttonContainer} buttonStyle={styles.closeButtonStyle} icon={<Icon name='close' size={25} color='black' style={{backgroundColor: 'white', borderRadius:15, outline:"black solid 2px"}}/>} />}
                         />
+                        
                         <ScrollView style={styles.ScrollView} showsVerticalScrollIndicator={false} alwaysBounceHorizontal={false} alwaysBounceVertical={false}>
                             {reviews!=null ? reviews.map((review, index)=>
                                 <View style={{marginLeft: 10, marginRight:10}}>

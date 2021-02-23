@@ -1,5 +1,5 @@
 import React, {Component, useCallback, useEffect, useState} from 'react';
-import { ScrollView, Text, View, RefreshControl, Button } from 'react-native';
+import { ScrollView, Text, View,TouchableHighlight, RefreshControl, Button } from 'react-native';
 import {StyleSheet} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 
@@ -48,13 +48,37 @@ function FeaturedMenuScreen(props){
     const [priceFilter,setPriceFilter] = useState([false,false,false])
     const [ratingFilter,setRatingFilter] = useState([false,false,true])
     const [timeFilter,setTimeFilter] = useState([false,false,false,true])
+    let categories = ['American','Asian','Baked Goods', 'Chinese','Dessert','Fast Food','Indian','Italian','Japanese','Korean','Mediterranean','Mexican','Thai','Vietnamese']
+    let initial = []
+    for (let i=0;i<categories.length;i++)
+    {
+        initial.push(false)
+    }
+    const [categoriesArr,setCategoriesArr]=useState(initial)
+    const [categoriesSet,setCategoriesSet]=useState(new Set())
 
     useEffect(() => {
         getAvailableDishes().then(function(results) {
             var dishObjects = [];
             results.forEach((dish) => {
-                console.log(dish)
-                if (dish.timeMin > timeRange[1])
+                let categories = dish.category
+                let categoriesArr = categories.split(',')
+                let selected=false
+                if (categoriesSet.size>0)
+                {
+                    for (let i=0;i<categoriesArr.length;i++)
+                    {
+                        if (categoriesSet.has(categoriesArr[i]))
+                        {
+                            selected = true
+                            break
+                        }
+                    }
+                    if (!selected)
+                        return;
+                }
+
+                if (dish.timeMin > timeRange[1]) 
                 {
                     return;
                 }
@@ -93,6 +117,23 @@ function FeaturedMenuScreen(props){
         getAvailableDishes().then(function(results) {
             var dishObjects = [];
             results.forEach((dish) => {
+                let categories = dish.category
+                let categoriesArr = categories.split(',')
+                let selected=false
+                
+                if (categoriesSet.size>0)
+                {
+                    for (let i=0;i<categoriesArr.length;i++)
+                    {
+                        if (categoriesSet.has(categoriesArr[i]))
+                        {
+                            selected = true
+                            break
+                        }
+                    }
+                    if (!selected)
+                        return;
+                }
                 if (dish.timeMin > timeRange[1])
                 {
                     return;
@@ -141,15 +182,15 @@ function FeaturedMenuScreen(props){
     return(
         <SafeAreaProvider style={styles.container}>
             <NavBarComponent navigation={props.navigation}/>
-            <View style={styles.buttonStyle}>
-                <Button
-                    title = "Filter"
-                    color = "#ACBD89"
-                    onPress = {changeVisible}
-                />
+            <TouchableHighlight onPress={changeVisible}>
+            <View style={styles.button}>
+                <Text style={styles.text}>Filter</Text>
             </View>
-            <Modal animationType="slide" transparent={false} visible={modalVisible}>
-                <FilterPage  ratingFilter = {ratingFilter} setRatingFilter = {setRatingFilter} timeFilter = {timeFilter} setTimeFilter = {setTimeFilter} priceFilter = {priceFilter} setPriceFilter = {setPriceFilter} update={onRefresh} closeModal= {setModalVisible} prices={priceRange} time={timeRange}  setPrices = {setPriceRange} setTime = {setTimeRange} />
+            </TouchableHighlight>
+            <Modal animationType="slide" transparent={true} visible={modalVisible}>
+                <View style={styles.modalContainer}>
+                <FilterPage  categoriesSet={categoriesSet} setCategoriesSet={setCategoriesSet} categoriesArr={categoriesArr} setCategoriesArr={setCategoriesArr} ratingFilter = {ratingFilter} setRatingFilter = {setRatingFilter} timeFilter = {timeFilter} setTimeFilter = {setTimeFilter} priceFilter = {priceFilter} setPriceFilter = {setPriceFilter} update={onRefresh} closeModal= {setModalVisible} prices={priceRange} time={timeRange}  setPrices = {setPriceRange} setTime = {setTimeRange} />
+                </View>
             </Modal>
             
             <ScrollView style={styles.ScrollView} showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
@@ -166,8 +207,25 @@ const styles = StyleSheet.create({
     ScrollView: {
         marginBottom: 20
     },
-    buttonStyle: {
-
+    modalContainer: {
+        flex:1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: "22.5%",
+        marginLeft: '2.5%',
+        marginRight: '2.5%',
+        marginBottom: '4%',
+    },
+    button: {
+        alignItems: "center",
+        backgroundColor: colors.secondary,
+        padding: 10
+      },
+    text: {
+        alignItems: "center",
+        fontSize: 15,
+        color: "white",
+        fontFamily:'Avenir'
     }
 });
 
