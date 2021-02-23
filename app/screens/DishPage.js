@@ -178,6 +178,7 @@ function DishPage(props) {
                 Estimated Time: {dish.timeString}
               </Text>
               <View style={styles.spacer}></View>
+              {dish.numReviews!=null &&
               <Reviews
                 rating={dish.rating}
                 numReviews={dish.numReviews}
@@ -185,6 +186,7 @@ function DishPage(props) {
                 dishid={dish.dishid}
                 refresh={() => {refresh(dish.dishid)}}
               />
+              }
               <View style={styles.spacer} />
               <View style={styles.spacer} />
             </View>

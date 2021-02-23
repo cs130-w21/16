@@ -1,6 +1,6 @@
 FROM brendonng/potluck:base
 
-ENTRYPOINT git pull origin dev; npm install; node backend/routes.js
+ENTRYPOINT git pull origin dev; npm install; cd backend; node routes.js
 
 
 
