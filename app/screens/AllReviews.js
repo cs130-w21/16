@@ -44,6 +44,7 @@ export default function AllReviews(props){
             swipeDirection="down"
             onRequestClose={close}
         >
+
             <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
                     <Header
@@ -65,6 +66,7 @@ export default function AllReviews(props){
                                 dishid={review.dishid}
                             /></View>) : <Text></Text>}
                     </ScrollView>
+
                 </View>
                 
             </View>
