@@ -44,33 +44,32 @@ export default function AllReviews(props){
             swipeDirection="down"
             onRequestClose={close}
         >
-            <TouchableWithoutFeedback onPress={close}>
-                <View style={styles.modalOverlay}/>
-            </TouchableWithoutFeedback>
-            
-                <View style={styles.modalContainer}>
-                    <View style={styles.modalView}>
-                        <Header
-                            containerStyle={styles.headerContainer}
-                            centerComponent={<View style={{flexDirection: 'column'}}><Text style={styles.header}>Reviews</Text></View>}
-                            rightComponent={<Button onPress={close} containerStyle={styles.buttonContainer} buttonStyle={styles.closeButtonStyle} icon={<Icon name='close' size={25} color='black' style={{backgroundColor: 'white', borderRadius:15, outline:"black solid 2px"}}/>} />}
-                        />
-                        <ScrollView style={styles.ScrollView} showsVerticalScrollIndicator={false} alwaysBounceHorizontal={false} alwaysBounceVertical={false}>
-                            {reviews!=null ? reviews.map((review, index)=>
-                                <View style={{marginLeft: 10, marginRight:10}}>
-                                    <Review 
-                                    key={index}
-                                    index={index}
-                                    reviewer={review.reviewer}
-                                    rating={review.rating}
-                                    timestamp={review.timestamp}
-                                    comment={review.comment}
-                                    name={review.name!=null ? review.name : null}
-                                /></View>) : <Text></Text>}
-                        </ScrollView>
-                    </View>
-                    
+
+            <View style={styles.modalContainer}>
+                <View style={styles.modalView}>
+                    <Header
+                        containerStyle={styles.headerContainer}
+                        centerComponent={<View style={{flexDirection: 'column'}}><Text style={styles.header}>Reviews</Text></View>}
+                        rightComponent={<Button onPress={close} containerStyle={styles.buttonContainer} buttonStyle={styles.closeButtonStyle} icon={<Icon name='close' size={25} color='black' style={{backgroundColor: 'white', borderRadius:15, outline:"black solid 2px"}}/>} />}
+                    />
+                    <ScrollView style={styles.ScrollView} showsVerticalScrollIndicator={false} alwaysBounceHorizontal={false} alwaysBounceVertical={false}>
+                        {reviews!=null ? reviews.map((review, index)=>
+                            <View style={{marginLeft: 10, marginRight:10}}>
+                                <Review 
+                                key={index}
+                                index={index}
+                                reviewer={review.reviewer}
+                                rating={review.rating}
+                                timestamp={review.timestamp}
+                                comment={review.comment}
+                                name={review.name!=null ? review.name : null}
+                                dishid={review.dishid}
+                            /></View>) : <Text></Text>}
+                    </ScrollView>
+
                 </View>
+                
+            </View>
           
         </Modal>
     )
