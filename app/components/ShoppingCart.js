@@ -22,21 +22,23 @@ export function addQuantity(index, count) {
 
 export function subTotal() {
   let tot = 0.0;
-  global.cart.forEach(item => (tot += (item.dish.price * item.count)))
+  global.cart.forEach(item => (tot += item.dish.price * item.count));
   return tot.toFixed(2);
 }
 
 export function getLongestTime() {
   let max = 0;
-  global.cart.forEach(item => ((item.dish.timeMin > max) ? (max = item.dish.timeMin) : (max = max)))
+  global.cart.forEach(item =>
+    item.dish.timeMin > max ? (max = item.dish.timeMin) : (max = max)
+  );
 
   if (max < 60) {
-    return max + " minutes"
+    return max + " minutes";
   } else {
     if (max % 60 === 0) {
-      return (max / 60) + " hours"
+      return max / 60 + " hours";
     } else {
-      return (max / 60) + " hours " + (max % 60) + " minutes"
+      return max / 60 + " hours " + (max % 60) + " minutes";
     }
   }
 }
@@ -55,8 +57,8 @@ function CartCard(props) {
     } else {
       //remove from array so that the card doesn't show up
       //item count == 0
-      global.cart.splice(found, 1);
       setCount(0);
+      global.cart[found].count = 0;
     }
   }
 
@@ -64,7 +66,28 @@ function CartCard(props) {
     setTotal(count * props.price);
   }, [count]);
 
-  return (
+  useEffect(() => {
+    const found = global.cart.findIndex(
+      item => item["dish"]["dishid"] == props.dishid
+    );
+    if (found >= 0 && count <= 0) {
+      global.cart.splice(found, 1);
+    }
+    return () => {
+      const found = global.cart.findIndex(
+        item => item["dish"]["dishid"] == props.dishid
+      );
+      if (found >= 0 && count <= 0) {
+        global.cart.splice(found, 1);
+      }
+    };
+  }, []);
+
+  return count == 0 ? (
+    <View style={styles.cartCardContainer}>
+      <Text style={styles.empty}>Item Removed</Text>
+    </View>
+  ) : (
     <View style={styles.cartCardContainer}>
       <Card containerStyle={styles.cardContainer}>
         <Card.Title>
@@ -136,7 +159,6 @@ export default function ShoppingCart(props) {
           ))
         )}
       </ScrollView>
-      
     </View>
   );
 }
@@ -156,7 +178,7 @@ CartCard.propTypes = {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    height: "100%",
+    height: "100%"
   },
   cartCardContainer: {
     width: "100%"
@@ -229,7 +251,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.secondary
   },
   scrollView: {
-    width: "100%",
+    width: "100%"
   },
   empty: {
     fontWeight: "bold",
@@ -250,10 +272,9 @@ const styles = StyleSheet.create({
   },
   checkoutButton: {
     borderRadius: 20,
-    backgroundColor: colors.secondary,
+    backgroundColor: colors.secondary
   },
   checkoutText: {
     fontWeight: "bold"
   }
-
 });
