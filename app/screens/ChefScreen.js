@@ -1,10 +1,14 @@
 import React, {useState, useEffect} from 'react';
-import {Dimensions, Image, Modal, ScrollView, StyleSheet, Text, View, SafeAreaView} from 'react-native';
+import {Dimensions, Image, ScrollView, StyleSheet, Text, View} from 'react-native';
 import {Button, Icon, Divider} from 'react-native-elements'
-import Carousel, {Pagination} from 'react-native-snap-carousel';
+import Carousel from 'react-native-snap-carousel';
 import colors from '../config/colors';
 import { Table, TableWrapper, Row, Rows } from 'react-native-table-component';
+import MapView, { Marker } from 'react-native-maps';
+import MenuCard from '../components/dish';
+import coordDist from '../util/CoordDist';
 
+// import * as Location from 'expo-location';
 import {getChefsDishes, getCoverPhotos} from "../util/Queries";
 import Dish from '../objects/Dish';
 import { LogBox } from 'react-native';
@@ -33,12 +37,15 @@ function ChefScreen(props) {
     let profilePic = Chef.profilePicURL;
     let shortDesc = Chef.shortDesc;
     let tableHead = ['Dish Name', 'Price', 'Rating'];
+    let location=JSON.parse(Chef.location);
+    location['latitudeDelta'] = 0.007;
+    location['longitudeDelta'] = 0.007;
 
     const [carouselData, setCarouselData] = useState([]);
     const [tableData, setTableData] = useState([]);
     const [index, setIndex] = React.useState(0);
     const isCarousel = React.useRef(null);
-
+    const [userLocation, setLocation] = useState(null);
     useEffect(() => {
         getCoverPhotos(id).then(function(results) {
             let photos = [];
@@ -53,78 +60,69 @@ function ChefScreen(props) {
                 dishes.push(new Dish(dish));
             });
             Chef.setDishes(dishes);
-            let td = [];
-            Chef.dishes.forEach((dish) => {
-                td.push(
-                    [<Text style={{color: 'blue', textAlign: 'center'}}
-                    onPress={() => {onPress(dish)}}>
-                    {dish.name}
-                    </Text>,
-                    '$'+dish.price,
-                    dish.rating.toFixed(2)
-                    ]
-                );
-            });
-            setTableData(td);
         }, ()=>{console.log("Error")})
         .catch((err) => {console.log("Use Effect Err Chef's Dishes: ", err)});
         
-        
-    }, [])
-    
-    function onPress(dish){
-        navigation.push("DishPage", {
-            Dish: dish
-        })
-    }
-
+        navigator.geolocation.getCurrentPosition((pos) => {
+            setLocation(pos);
+        }, (err) => {
+            console.warn(`ERROR(${err.code}): ${err.message}`);
+        }, { 
+            enableHighAccuracy: true, timeout: 5000, maximumAge: 0
+        });       
+    }, []);
     return(
-        <SafeAreaView style = {styles.container}>
-            <View style={styles.images}>
-
-                <View style={styles.image}>
-                    <Carousel
-                        layout='default'
-                        data={carouselData}
-                        useScrollView={true}
-                        renderItem={CarouselCardItem}
-                        sliderWidth={SLIDER_WIDTH}
-                        itemWidth={ITEM_WIDTH}
-                        onSnapToItem={(index) => setIndex(index)}
-                        useScrollView={true}
-                        ref={isCarousel}
-                        />
-                    <View style={styles.border}>
-
-                    </View>
-                </View>
-                <View style={styles.chefPicHolder}>
-                    <Image style={styles.chefPic} source={{uri: profilePic}}/>
-                </View>
-            </View>
+        <View style = {styles.container}>
             <View style={styles.closeButton} >
-                    <Button onPress={() => props.navigation.goBack()} buttonStyle={styles.closeButtonStyle} icon={<Icon name='close' size={25} color='white' style={{backgroundColor: 'black', borderRadius:15, outline:"white solid 1px"}}/>} />
+                <Button onPress={() => props.navigation.goBack()} buttonStyle={styles.closeButtonStyle} icon={<Icon name='close' size={25} color='white' style={{backgroundColor: 'black', borderRadius:15, outline:"white solid 1px"}}/>} />
             </View>
-
-            
-              
-           
-            <SafeAreaView style={styles.textContainer}>  
-                <Text style={styles.titleText}>{name}</Text>
-                <Text style={styles.subtitleText}>{shortDesc}</Text>
-                    <Divider style={styles.divider} /> 
-                <ScrollView> 
-                        <Text style={styles.descriptionText}>{description}</Text>
-                        <Divider style={styles.divider} />
-                        <Table style={styles.tableHolder} borderStyle={{borderWidth: 1}}>
-                            <Row data={tableHead} flexArr={[3, 2, 2]} style={styles.head} textStyle={styles.text}/>
-                            <TableWrapper style={styles.wrapper}>
-                                <Rows data={tableData} flexArr={[3,2, 2]} style={styles.row} textStyle={styles.text}/>
-                            </TableWrapper>
-                        </Table>   
-                </ScrollView>   
-            </SafeAreaView>
-        </SafeAreaView>
+            <ScrollView style={styles.scrollContainer}>
+                <View style={styles.images}>
+                    <View style={styles.image}>
+                        <Carousel
+                            layout='default'
+                            data={carouselData}
+                            useScrollView={true}
+                            renderItem={CarouselCardItem}
+                            sliderWidth={SLIDER_WIDTH}
+                            itemWidth={ITEM_WIDTH}
+                            onSnapToItem={(index) => setIndex(index)}
+                            useScrollView={true}
+                            ref={isCarousel}
+                        />
+                    </View>
+                    <View style={styles.chefInfoHolder}>
+                        <Text style={styles.titleText}>{name}</Text>
+                        <Text style={styles.subtitleText}>{shortDesc}</Text>
+                        <Image style={styles.chefPic} source={{uri: profilePic}}/>
+                    </View>
+                    
+                </View>
+                <View style={styles.bodyContainer}>
+                    <Text style={styles.descriptionText}>{description}</Text>
+                    <Divider style={styles.divider} />
+                    <Text style={styles.subHeaderText}>Chef's Location</Text>
+                    <MapView style={styles.map}
+                        initialRegion={location}
+                        showsUserLocation={true}
+                    >
+                        <Marker
+                            coordinate={{ latitude : location.latitude , longitude : location.longitude }}
+                        />
+                    </MapView>
+                    {userLocation && 
+                    <Text style={styles.distanceText}>
+                        You are {coordDist(location.latitude, location.longitude, userLocation.coords.latitude, userLocation.coords.longitude).toFixed(2)} miles away from Chef {name}.
+                    </Text>
+                    }
+                    <Divider style={styles.divider} />
+                    <Text style={styles.subHeaderText}>Chef's Menu</Text>
+                    <ScrollView horizontal={false} showsHorizontalScrollIndicator={false} styles={styles.menuContainer}>
+                        {Chef.dishes.map((content) => <MenuCard key={content.dishid} Dish={content} />)}
+                    </ScrollView>
+                </View>
+            </ScrollView>  
+        </View>
         
     );
 }
@@ -132,65 +130,50 @@ function ChefScreen(props) {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: "white",
-        minWidth: '100%',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-        flexDirection: 'column'
+        flex: 1
     },
-
-    holder: {
-        height: 100
+    scrollContainer: {
+        flex: 1
     },
-
+    menuContainer: {
+        flex: 1
+    },
     carouselItem: {
         width: '100%',
         height: '100%',
     },
-
-    dots: {
-        position: 'absolute',
-        alignSelf: 'center',
-        top: 263,
+    map: {
+        width: '90%',
+        height: 250,
+        borderRadius: 10,
+        margin: '5%'
     },
-
-    dotStyle: {
-        width: 10,
-        height: 10,
-        borderRadius: 5,
-        marginHorizontal: 0,
-        backgroundColor: colors.black
+    distanceText: {
+        fontSize: 15,
+        marginBottom: '5%',
+        color: "#333",
+        fontFamily: "Avenir",
     },
-
-
-    
-  
-  
-
-    textContainer: {
-        flex: 5,
-        backgroundColor: "white",
-        width: '100%',
+    bodyContainer: {
+        backgroundColor: colors.background,
+        width: Dimensions.get('window').width,
         alignItems: 'center',
-        textAlign: 'center'
+        textAlign: 'center',
+        position: 'relative'
     },
 
     images: {
-        flex: 4,
         justifyContent: 'center',
-        width: "100%",
-        height: "40%",
-
-        
+        width: "100%"
     },
-    
+    image: {
+        height: 250
+    },    
     title: {
         flexDirection: 'row',
         justifyContent: 'center',
         width: '100%'
     },
-    
     divider: {
         width: '90%',
         alignSelf: 'center',
@@ -202,15 +185,15 @@ const styles = StyleSheet.create({
         position:'absolute',
         top:40,
         right: 0,
+        zIndex:100
     },
-
     closeButtonStyle: {
         backgroundColor: 'transparent',
 
     },
     titleText: {
         fontSize: 30,
-        padding: 10,
+        marginTop: 50,
         color: "black",
         fontWeight: 'bold',
         fontFamily: "Avenir",
@@ -221,6 +204,14 @@ const styles = StyleSheet.create({
         fontFamily: "Avenir",
         alignSelf: "center",
         marginBottom: 10
+    },
+    subHeaderText: {
+        fontSize: 20,
+        marginTop: '5%',
+        color: "black",
+        fontWeight: 'bold',
+        fontFamily: "Avenir",
+        alignSelf: "center"
     },
     border: {
         backgroundColor: colors.primary,
@@ -235,24 +226,24 @@ const styles = StyleSheet.create({
         fontFamily: "Avenir",
     },
 
-
     descriptionText: {
-        fontSize: 20,
-        padding: 10,
-        color: "gray",
+        fontSize: 15,
+        margin: '5%',
+        color: "#333",
         fontFamily: "Avenir",
     },
-    
     chefPic: {
-      width: 150,
-      height: 150,
-
-      borderRadius: 70
+        position: "absolute",
+        width: 150,
+        height: 150,
+        borderRadius: 70,
+        top: -100,
+        backgroundColor: colors.primary,
     },
-    chefPicHolder: {
-      position: "relative",
-      top: -95,
+    chefInfoHolder: {
       alignItems: "center",
+      width: '100%',
+      backgroundColor: colors.primary,
     },
     
     head: {  height: 40,  backgroundColor: '#f1f8ff'},
