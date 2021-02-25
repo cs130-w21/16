@@ -7,10 +7,29 @@ import { createStackNavigator } from '@react-navigation/stack';
 import WelcomeScreen from './app/screens/WelcomeScreen';
 import DishPage from './app/screens/DishPage';
 import ChefScreen from "./app/screens/ChefScreen";
+// import * as Location from 'expo-location';
 
 const Stack = createStackNavigator();
 
 const App = () => {
+<<<<<<< HEAD
+=======
+  // const [location, setLocation] = useState(null);
+  // const [errorMsg, setErrorMsg] = useState(null);
+
+  // useEffect(() => {
+  //   (async () => {
+  //     let { status } = await Location.requestPermissionsAsync();
+  //     if (status !== 'granted') {
+  //       setErrorMsg('Permission to access location was denied');
+  //       return;
+  //     }
+
+  //     let location = await Location.getCurrentPositionAsync({});
+  //     setLocation(location);
+  //   })();
+  // }, []);
+>>>>>>> bb864a1a401e4e3b5ca02b89042b432115ffb679
 
   return (
     <NavigationContainer>

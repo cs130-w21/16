@@ -25,6 +25,13 @@ const CarouselCardItem = ({ item, index }) => {
     )
 }
 
+const dummyLocationData = {
+    latitude: 34.06913427757264,
+    longitude: -118.44520255977159,
+    latitudeDelta: 0.005,
+    longitudeDelta: 0.005
+}
+
 function ChefScreen(props) {
     LogBox.ignoreLogs(['Non-serializable values were found in the navigation state']);
     const navigation = props.navigation;
@@ -71,6 +78,13 @@ function ChefScreen(props) {
             enableHighAccuracy: true, timeout: 5000, maximumAge: 0
         });       
     }, []);
+    
+    function onPress(dish){
+        navigation.push("DishPage", {
+            Dish: dish
+        })
+    }
+
     return(
         <View style = {styles.container}>
             <View style={styles.closeButton} >
