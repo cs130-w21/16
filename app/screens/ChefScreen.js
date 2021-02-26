@@ -4,7 +4,7 @@ import {Button, Icon, Divider} from 'react-native-elements'
 import Carousel from 'react-native-snap-carousel';
 import colors from '../config/colors';
 import { Table, TableWrapper, Row, Rows } from 'react-native-table-component';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Marker, Polyline } from 'react-native-maps';
 import MenuCard from '../components/dish';
 import coordDist from '../util/CoordDist';
 
@@ -120,19 +120,27 @@ function ChefScreen(props) {
                         initialRegion={location}
                         showsUserLocation={true}
                     >
+                        {userLocation && <Polyline
+                            coordinates={[
+                                { latitude: location.latitude, longitude: location.longitude },
+                                { latitude: userLocation.coords.latitude, longitude: userLocation.coords.longitude }
+                            ]}
+                            strokeColor={colors.primary}
+                            strokeWidth={6}
+                        />}                        
                         <Marker
                             coordinate={{ latitude : location.latitude , longitude : location.longitude }}
                         />
                     </MapView>
                     {userLocation && 
-                    <Text style={styles.distanceText}>
-                        You are {coordDist(location.latitude, location.longitude, userLocation.coords.latitude, userLocation.coords.longitude).toFixed(2)} miles away from Chef {name}.
-                    </Text>
+                        <Text style={styles.distanceText}>
+                            You are {coordDist(location.latitude, location.longitude, userLocation.coords.latitude, userLocation.coords.longitude).toFixed(2)} miles away from Chef {name}.
+                        </Text>
                     }
                     <Divider style={styles.divider} />
                     <Text style={styles.subHeaderText}>Chef's Menu</Text>
                     <ScrollView horizontal={false} showsHorizontalScrollIndicator={false} styles={styles.menuContainer}>
-                        {Chef.dishes.map((content) => <MenuCard key={content.dishid} Dish={content} />)}
+                        {Chef.dishes.map((content) => <MenuCard key={content.dishid} Dish={content} navigation={props.navigation}/>)}
                     </ScrollView>
                 </View>
             </ScrollView>  

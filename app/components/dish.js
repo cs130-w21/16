@@ -59,16 +59,12 @@ export default function MenuCard(props) {
                 fractions={1}
                 startingValue={props.Dish.rating ? props.Dish.rating : 0.0}
               />
-              {!props.inChefMenu &&
-                <>
-                  <TouchableOpacity onPress={onPressChef}>
-                  <View style={styles.card}>
-                    <Image source={{uri: props.Dish.Chef!=null ? props.Dish.Chef.profilePicURL : "https://reactnative.dev/img/header_logo.svg"}} style={styles.icon}/>
-                    <Text style={styles.text}>{props.Dish.Chef!=null ? props.Dish.Chef.name : "Loading"}</Text>
-                  </View>
-                  </TouchableOpacity>
-                </>
-              }              
+              <TouchableOpacity onPress={onPressChef}>
+                <View style={styles.card}>
+                  <Image source={{uri: props.Dish.Chef!=null ? props.Dish.Chef.profilePicURL : "https://reactnative.dev/img/header_logo.svg"}} style={styles.icon}/>
+                  <Text style={styles.text}>{props.Dish.Chef!=null ? props.Dish.Chef.name : "Loading"}</Text>
+                </View>
+              </TouchableOpacity>          
             </View>
           </View>
         </TouchableOpacity>
