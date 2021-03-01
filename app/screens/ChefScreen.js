@@ -39,7 +39,7 @@ function ChefScreen(props) {
     let rating = Chef.rating;
     let numReviews = Chef.numReviews;
     let tableHead = ['Dish Name', 'Price', 'Rating'];
-    let location=JSON.parse(Chef.location);
+    var location=JSON.parse(Chef.location);
     location['latitudeDelta'] = 0.007;
     location['longitudeDelta'] = 0.007;
 
@@ -51,6 +51,7 @@ function ChefScreen(props) {
     const [dishPageFocus, setDishPageFocus] = useState(null);
     const [first5Reviews, setFirst5Reviews] = useState(null);
     const [userLocation, setLocation] = useState(null);
+    const [region, setRegion] = useState(location);
 
 
     useEffect(() => {
@@ -77,6 +78,12 @@ function ChefScreen(props) {
         
         navigator.geolocation.getCurrentPosition((pos) => {
             setLocation(pos);
+            var loc = {};
+            loc['latitude'] = (pos.coords.latitude + location.latitude)/2.0
+            loc['longitude'] = (pos.coords.longitude + location.longitude)/2.0
+            loc['latitudeDelta'] = Math.abs(pos.coords.latitude-loc.latitude)*3;
+            loc['longitudeDelta'] = Math.abs(pos.coords.longitude-loc.longitude)*1.5;
+            setRegion(loc);
         }, (err) => {
             console.warn(`ERROR(${err.code}): ${err.message}`);
         }, {
@@ -169,8 +176,11 @@ function ChefScreen(props) {
                     />
                     <View style={styles.spacer}/>
                     <MapView style={styles.map}
-                        initialRegion={location}
+                        region={region}
                         showsUserLocation={true}
+                        showsMyLocationButton={true}
+                        showsTraffic={true}
+                        pitchEnabled={false}
                     >
                         {userLocation && <Polyline
                             coordinates={[
