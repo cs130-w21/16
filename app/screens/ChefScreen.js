@@ -191,7 +191,7 @@ function ChefScreen(props) {
                             {coordDist(location.latitude, location.longitude, userLocation.coords.latitude, userLocation.coords.longitude).toFixed(2)} miles away
                     </Text>}
                     <View style={styles.spacer}/>
-                    {numReviews!=null && <Reviews rating={rating} numReviews={numReviews} chefid={id} reviews={first5Reviews}/>}
+                    {numReviews!=null && <Reviews rating={rating} numReviews={numReviews} chefid={id} reviews={first5Reviews} navigation={props.navigation}/>}
                     <View style={styles.spacer}/>
                     <View style={styles.spacer}/>
                 </View>
@@ -254,7 +254,7 @@ const styles = StyleSheet.create({
     chefPic: {
         width: 150,
         height: 150,
-  
+
         borderRadius: 75
     },
     chefPicHolder: {

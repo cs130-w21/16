@@ -1,5 +1,3 @@
-const moment = require("moment");
-
 const port = 8888;
 const ip = 'http://3.141.20.190';
 //const ip = 'http://localhost';

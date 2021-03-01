@@ -8,18 +8,22 @@ import {
   Text,
   View,
   Modal,
-  Alert
+  Alert,
+  TouchableOpacity
 } from "react-native";
 import { Button, Icon, Divider, Rating } from "react-native-elements";
 import { color } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Carousel, { Pagination } from "react-native-snap-carousel";
+import MapView, { Marker, Polyline } from 'react-native-maps';
+import PropTypes, { any } from "prop-types";
 import Reviews from "../components/Reviews";
 import colors from "../config/colors";
 import { getChefInfo, getDishInfo, getNDishReviews } from "../util/Queries";
 import { addToCart, addQuantity } from "../components/ShoppingCart";
 import Chef from "../objects/Chef";
 import Dish from "../objects/Dish";
+import coordDist from "../util/CoordDist";
 
 const SLIDER_WIDTH = Dimensions.get("window").width;
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH);
@@ -47,6 +51,11 @@ function DishPage(props) {
   const isCarousel = React.useRef(null);
   const [first5Reviews, setFirst5Reviews] = useState(null);
   const [dish, setDish] = useState(props.Dish!=null ? props.Dish : new Dish({}));
+  var location=dish.Chef != null ? JSON.parse(dish.Chef.location) : {'latitude':0, 'longitude':0};
+  location['latitudeDelta'] = 0.007;
+  location['longitudeDelta'] = 0.007;
+  const [region, setRegion] = useState(location);
+  const [userLoc, setUserLoc] = useState(null);
 
   useEffect(() => {
       if(dish.dishid != null){
@@ -55,6 +64,20 @@ function DishPage(props) {
           }, () => {console.log("Error in useEffect getNDishReviews")})
           .catch(err => {console.log("use Effect Err Get N Dish Reviews: ", err)});
       }
+
+      navigator.geolocation.getCurrentPosition((pos) => {
+        setUserLoc(pos);
+        var loc = {};
+        loc['latitude'] = (pos.coords.latitude + location.latitude)/2.0
+        loc['longitude'] = (pos.coords.longitude + location.longitude)/2.0
+        loc['latitudeDelta'] = Math.abs(pos.coords.latitude-loc.latitude)*(loc.latitude > pos.coords.latitude ? 10: 3);
+        loc['longitudeDelta'] = Math.abs(pos.coords.longitude-loc.longitude)*1.5;
+        setRegion(loc);
+      }, (err) => {
+        console.warn(`ERROR(${err.code}): ${err.message}`);
+      }, {
+        enableHighAccuracy: true, timeout: 5000, maximumAge: 0
+      });
   }, []);
 
   useEffect(() => {
@@ -86,10 +109,10 @@ function DishPage(props) {
     .then(
         function(results){
             var d = new Dish(results[0]);
-            setDish(d);
             getChefInfo(d.chefid).then(function(results){
                 var chef = new Chef(results[0]);
-                dish.setChef(chef);  
+                d.setChef(chef)
+                setDish(d); 
             }, () => {console.log("Error")})
             .catch((err) => {console.log("Refresh get Chef error: ", err)})
         },
@@ -102,6 +125,13 @@ function DishPage(props) {
     });
   }
 
+  function onPressChef(){
+    if(dish.Chef == null) {return;}
+      close(setVisible, props.hideModal)
+      props.navigation.navigate("Chef", {
+        Chef: dish.Chef
+      })
+  }
 
   let carouselData = [];
   if (dish.imagesURLs != null) {
@@ -178,6 +208,43 @@ function DishPage(props) {
                 Estimated Time: {dish.timeString}
               </Text>
               <View style={styles.spacer}></View>
+              {dish.Chef != null &&
+              <TouchableOpacity onPress={onPressChef}>
+              <View style={styles.chefInfoContainer}>
+                <View style={styles.chefPicHolder}>
+                  <Image style={styles.chefPic} source={{uri: dish.Chef.profilePicURL}}/>
+                </View>
+                <View style={styles.chefTextContainer}>
+                  <Text style={styles.chefNameText}>{dish.Chef.name}</Text>
+                  <Text style={styles.chefSubtitleText}>{dish.Chef.shortDesc}</Text>
+                  <Rating
+                    style={{marginTop: 4}}
+                    readonly={true}
+                    imageSize={15}
+                    fractions={1}
+                    startingValue={dish.Chef.rating ? dish.Chef.rating : 0.0}
+                  />
+                </View>
+                <View style={styles.chefMapContainer}>
+                  <MapView style={styles.map}
+                    region={region}
+                    showsUserLocation={true}
+                    showsMyLocationButton={true}
+                    showsTraffic={true}
+                    pitchEnabled={false}
+                  >
+                    <Marker
+                      coordinate={{latitude: location.latitude, longitude: location.longitude}}
+                    />
+                  </MapView>
+                  {userLoc && <Text style={styles.distanceText}>
+                            {coordDist(location.latitude, location.longitude, userLoc.coords.latitude, userLoc.coords.longitude).toFixed(2)} miles away
+                  </Text>}
+                </View>
+              </View>
+              </TouchableOpacity>
+              }
+              <View style={styles.spacer}></View>
               {dish.numReviews!=null &&
               <Reviews
                 rating={dish.rating}
@@ -185,6 +252,7 @@ function DishPage(props) {
                 reviews={first5Reviews}
                 dishid={dish.dishid}
                 refresh={() => {refresh(dish.dishid)}}
+                navigation={props.navigation}
               />
               }
               <View style={styles.spacer} />
@@ -264,6 +332,11 @@ function DishPage(props) {
     </Modal>
   );
 }
+
+
+DishPage.propTypes = {
+  navigation: any.isRequired
+};
 
 const styles = StyleSheet.create({
   scrollView: {
@@ -447,6 +520,61 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flexDirection: "row",
     width: "100%"
+  },
+  chefInfoContainer:{
+    width: '100%',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  chefPic: {
+    width: SLIDER_WIDTH*0.2,
+    height: SLIDER_WIDTH*0.2,
+    borderRadius: SLIDER_WIDTH*0.1,
+  },
+  chefPicHolder: {
+    height: SLIDER_WIDTH*0.2,
+    width: SLIDER_WIDTH*0.2,
+    margin: '5%'
+  },
+  chefTextContainer:{
+    width: '40%',
+    alignSelf: 'center',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  chefNameText:{
+    fontSize: 20,
+    color: colors.secondary,
+    fontWeight: 'bold',
+    fontFamily: "Avenir",
+    alignContent: 'center',
+    textAlign: 'center'
+  },
+  chefSubtitleText:{
+    fontSize: 12,
+    color: 'grey',
+    fontFamily: "Avenir",
+    textAlign: 'center'
+  },
+  chefMapContainer:{
+    width: '20%',
+    marginHorizontal: '5%',
+    marginVertical: '2.5%',
+  },
+  map:{
+    height: SLIDER_WIDTH*0.2,
+    width: SLIDER_WIDTH*0.2,
+    borderRadius: SLIDER_WIDTH*0.02
+  },
+  distanceText: {
+    fontSize: 10,
+    color: 'black',
+    fontFamily: "Avenir",
+    textAlign: 'center',
+    fontWeight: 'bold',
+    marginTop: 5
   },
   ratingsContainer: {
     width: "100%",
