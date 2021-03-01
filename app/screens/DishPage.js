@@ -209,12 +209,11 @@ function DishPage(props) {
               </Text>
               <View style={styles.spacer}></View>
               {dish.Chef != null &&
-              <TouchableOpacity onPress={onPressChef}>
               <View style={styles.chefInfoContainer}>
-                <View style={styles.chefPicHolder}>
+                <TouchableOpacity style={styles.chefPicHolder} onPress={onPressChef}>
                   <Image style={styles.chefPic} source={{uri: dish.Chef.profilePicURL}}/>
-                </View>
-                <View style={styles.chefTextContainer}>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.chefTextContainer} onPress={onPressChef}>
                   <Text style={styles.chefNameText}>{dish.Chef.name}</Text>
                   <Text style={styles.chefSubtitleText}>{dish.Chef.shortDesc}</Text>
                   <Rating
@@ -224,7 +223,7 @@ function DishPage(props) {
                     fractions={1}
                     startingValue={dish.Chef.rating ? dish.Chef.rating : 0.0}
                   />
-                </View>
+                </TouchableOpacity>
                 <View style={styles.chefMapContainer}>
                   <MapView style={styles.map}
                     region={region}
@@ -242,7 +241,6 @@ function DishPage(props) {
                   </Text>}
                 </View>
               </View>
-              </TouchableOpacity>
               }
               <View style={styles.spacer}></View>
               {dish.numReviews!=null &&
