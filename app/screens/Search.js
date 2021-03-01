@@ -9,7 +9,7 @@ import MenuCard from '../components/dish';
 import {getAvailableDishes, getChefs} from '../util/Queries';
 import Dish from '../objects/Dish';
 import { SearchBar } from 'react-native-elements';
-import fuzzy from 'fuzzy';
+import Fuse from 'fuse.js'
 
 function dishCard(content, navigation){
     return <MenuCard
@@ -35,31 +35,21 @@ class Cards extends Component{
     }
 }
 
-function filter(search, searchChange, dishes, setDishes, chefs) {
+function filter(search, searchChange, dishes, setDishes) {
     searchChange(search);
     if(search == ""){
         setDishes(null);
         return;
     }
 
-    console.log(dishes)
-    var results = fuzzy.filter(search, dishes, 
-        {
-            extract: function(dish) 
-                {
-                    var chef = chefs.find((item) => (item.chefid === dish.chefid))
-                    return (
-                        dish.name + " " +
-                        dish.ingredients + " " + 
-                        dish.description + " " + chef.name
-                        
-                    )
-                }
-        }
-    );
-    console.log("\n\n\n\nhere\n\n\n\n")
+    const options = {
+        keys: ["name", "ingredients", "description"]
+    }
+
+    const fuse = new Fuse(dishes, options)
+    var fuseOut = fuse.search(search)
     var output = [] 
-    results.forEach((item) => (output.push(item["original"])))
+    fuseOut.forEach((item) => (output.push(item["item"])))
     setDishes(output);
 }
 function Search(props){
@@ -101,7 +91,7 @@ function Search(props){
     return(
         <SafeAreaProvider style={styles.container}>
             <NavBarComponent search={true} navigation={props.navigation}/>
-            <SearchBar lightTheme={true} round={true} value={search} onChangeText={(val) => filter(val, setSearch, dishes, setShownDishes, chefs)} ></SearchBar>
+            <SearchBar lightTheme={true} round={true} value={search} onChangeText={(val) => filter(val, setSearch, dishes, setShownDishes)} ></SearchBar>
             <ScrollView style={styles.ScrollView} showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
                 <Cards dishes={showDishes} navigation={props.navigation}/>
             </ScrollView>
