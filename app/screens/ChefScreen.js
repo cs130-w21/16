@@ -339,6 +339,7 @@ const styles = StyleSheet.create({
         padding: 10,
         color: "gray",
         fontFamily: "Avenir",
+        textAlign: 'center'
     },
 
     spacer: {
