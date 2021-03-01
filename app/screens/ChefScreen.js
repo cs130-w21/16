@@ -3,7 +3,6 @@ import {Dimensions, Image, Modal, ScrollView, StyleSheet, Text, View, SafeAreaVi
 import {Button, Icon, Divider, Rating} from 'react-native-elements'
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import colors from '../config/colors';
-import { Table, TableWrapper, Row, Rows } from 'react-native-table-component';
 import MapView, { Marker, Polyline } from 'react-native-maps';
 import coordDist from '../util/CoordDist';
 import MenuCard from '../components/dish';
@@ -13,17 +12,9 @@ import Dish from '../objects/Dish';
 import { LogBox } from 'react-native';
 import DishPage from './DishPage';
 import Reviews from '../components/Reviews';
-import { color } from 'react-native-reanimated';
 
 const SLIDER_WIDTH = Dimensions.get('window').width
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH)
-
-const dummyLocationData = {
-    latitude: 34.06913427757264,
-    longitude: -118.44520255977159,
-    latitudeDelta: 0.005,
-    longitudeDelta: 0.005
-}
 
 const CarouselCardItem = ({ item, index }) => {
     return (
@@ -53,8 +44,8 @@ function ChefScreen(props) {
     location['longitudeDelta'] = 0.007;
 
     const [carouselData, setCarouselData] = useState([]);
-    const [tableData, setTableData] = useState([]);
     const [index, setIndex] = React.useState(0);
+    const [dishIndex, setDishIndex] = React.useState(0);
     const isCarousel = React.useRef(null);
     const [dishPageVisible, setDishPageVisible] = useState(false);
     const [dishPageFocus, setDishPageFocus] = useState(null);
@@ -76,19 +67,6 @@ function ChefScreen(props) {
                 dishes.push(new Dish(dish));
             });
             Chef.setDishes(dishes);
-            let td = [];
-            Chef.dishes.forEach((dish) => {
-                td.push(
-                    [<Text style={{color: 'blue', textAlign: 'center'}}
-                    onPress={() => {onPress(dish)}}>
-                    {dish.name}
-                    </Text>,
-                    '$'+dish.price,
-                    dish.rating.toFixed(2)
-                    ]
-                );
-            });
-            setTableData(td);
         }, ()=>{console.log("Error")})
         .catch((err) => {console.log("Use Effect Err Chef's Dishes: ", err)});
 
@@ -98,7 +76,6 @@ function ChefScreen(props) {
         .catch((err) => {console.log("use Effect Err Get N Chef Reviews: ", err)});
         
         navigator.geolocation.getCurrentPosition((pos) => {
-            console.log("callback")
             setLocation(pos);
         }, (err) => {
             console.warn(`ERROR(${err.code}): ${err.message}`);
@@ -115,7 +92,17 @@ function ChefScreen(props) {
         setDishPageVisible(true);
         setDishPageFocus(dish);
     }
-    console.log(userLocation);
+
+    const CarouselDishItem = ({ item, index }) => {
+        return (
+            <MenuCard
+              key={item.dishid}
+              Dish={item}
+              navigation={props.navigation}
+            />
+        )
+    }
+
     return(
         <View style={styles.container}>
             <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false} alwaysBounceHorizontal={false} alwaysBounceVertical={false}>
@@ -155,12 +142,31 @@ function ChefScreen(props) {
                         <Text style={styles.numReviews}>({numReviews} Reviews)</Text>
                     </View>
                     <View style={styles.spacer}/>
-                    <Table style={styles.tableHolder} borderStyle={{borderWidth: 1}}>
-                        <Row data={tableHead} flexArr={[3, 2, 2]} style={styles.head} textStyle={styles.text}/>
-                        <TableWrapper style={styles.wrapper}>
-                            <Rows data={tableData} flexArr={[3,2, 2]} style={styles.row} textStyle={styles.text}/>
-                        </TableWrapper>
-                    </Table>
+                    <Text style={styles.dishesTitle}>Chef's Menu:</Text>
+                    <Carousel
+                        layout='default'
+                        data={Chef.dishes}
+                        useScrollView={true}
+                        renderItem={CarouselDishItem}
+                        sliderWidth={SLIDER_WIDTH}
+                        sliderHeight={Math.round(ITEM_WIDTH*(3.0/4.0))}
+                        itemWidth={ITEM_WIDTH}
+                        itemHeight={Math.round(ITEM_WIDTH*(3.0/4.0))}
+                        onSnapToItem={(i) => setDishIndex(i)}
+                        useScrollView={true}
+                        ref={isCarousel}
+                        style={{paddingBottom: '5%'}}
+                    />
+                    <Pagination
+                        dotsLength={Chef.dishes.length}
+                        activeDotIndex={dishIndex}
+                        carouselRef={isCarousel}
+                        dotStyle={styles.dotStyle}
+                        inactiveDotOpacity={0.4}
+                        inactiveDotScale={0.6}
+                        tappableDots={true}
+                        containerStyle={styles.dots}
+                    />
                     <View style={styles.spacer}/>
                     <MapView style={styles.map}
                         initialRegion={location}
@@ -279,6 +285,25 @@ const styles = StyleSheet.create({
         fontFamily: "Avenir",
         alignSelf: "center",
         marginBottom: 10
+    },
+    dishesTitle: {
+        fontSize: 24,
+        fontFamily: 'Avenir',
+        fontWeight: 'bold',
+        color: 'black',
+        alignSelf: 'center',
+        marginTop: '5%'
+    },
+    dots: {
+        alignSelf: 'center',
+        margin: '-3%'
+    },
+    dotStyle: {
+        width: 10,
+        height: 10,
+        borderRadius: 5,
+        margin: 0,
+        backgroundColor: colors.black,
     },
     map: {
         width: '90%',
