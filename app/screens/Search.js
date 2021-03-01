@@ -9,6 +9,7 @@ import MenuCard from '../components/dish';
 import {getAvailableDishes, getChefs} from '../util/Queries';
 import Dish from '../objects/Dish';
 import { SearchBar } from 'react-native-elements';
+import fuzzy from 'fuzzy';
 
 function dishCard(content, navigation){
     return <MenuCard
@@ -34,22 +35,32 @@ class Cards extends Component{
     }
 }
 
-function filter(search, searchChange, dishes, setDishes) {
+function filter(search, searchChange, dishes, setDishes, chefs) {
     searchChange(search);
     if(search == ""){
         setDishes(null);
         return;
     }
-    var validDishes = [];
-    for(var dish in dishes){
-        const dishName = dishes[dish]['name'];
-        const description = dishes[dish]['description'];
-        const ingredients = dishes[dish]['ingredients'];
-        if(dishName.toLowerCase().includes(search.toLowerCase()) || description.toLowerCase().includes(search.toLowerCase()) || ingredients.toLowerCase().includes(search.toLowerCase())){
-            validDishes.push(dishes[dish]);
+
+    console.log(dishes)
+    var results = fuzzy.filter(search, dishes, 
+        {
+            extract: function(dish) 
+                {
+                    var chef = chefs.find((item) => (item.chefid === dish.chefid))
+                    return (
+                        dish.name + " " +
+                        dish.ingredients + " " + 
+                        dish.description + " " + chef.name
+                        
+                    )
+                }
         }
-    }
-    setDishes(validDishes);
+    );
+    console.log("\n\n\n\nhere\n\n\n\n")
+    var output = [] 
+    results.forEach((item) => (output.push(item["original"])))
+    setDishes(output);
 }
 function Search(props){
     const [dishes, setDishes] = useState(null);
@@ -90,7 +101,7 @@ function Search(props){
     return(
         <SafeAreaProvider style={styles.container}>
             <NavBarComponent search={true} navigation={props.navigation}/>
-            <SearchBar lightTheme={true} round={true} value={search} onChangeText={(val) => filter(val, setSearch, dishes, setShownDishes)} ></SearchBar>
+            <SearchBar lightTheme={true} round={true} value={search} onChangeText={(val) => filter(val, setSearch, dishes, setShownDishes, chefs)} ></SearchBar>
             <ScrollView style={styles.ScrollView} showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
                 <Cards dishes={showDishes} navigation={props.navigation}/>
             </ScrollView>
