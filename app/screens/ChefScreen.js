@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Dimensions, Image, Modal, ScrollView, StyleSheet, Text, View, SafeAreaView} from 'react-native';
+import {Dimensions, Image, ScrollView, StyleSheet, Text, View, SafeAreaView} from 'react-native';
 import {Button, Icon, Divider, Rating} from 'react-native-elements'
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import colors from '../config/colors';
@@ -30,7 +30,6 @@ function ChefScreen(props) {
     const navigation = props.navigation;
     let Chef = props.route.params.Chef;
 
-
     let name = Chef.name;
     let description = Chef.bio;
     let id=Chef.chefid;
@@ -38,7 +37,6 @@ function ChefScreen(props) {
     let shortDesc = Chef.shortDesc;
     let rating = Chef.rating;
     let numReviews = Chef.numReviews;
-    let tableHead = ['Dish Name', 'Price', 'Rating'];
     var location=JSON.parse(Chef.location);
     location['latitudeDelta'] = 0.007;
     location['longitudeDelta'] = 0.007;
@@ -93,11 +91,6 @@ function ChefScreen(props) {
 
     function hideModal(){
         setDishPageVisible(false);
-    }
-    
-    function onPress(dish){
-        setDishPageVisible(true);
-        setDishPageFocus(dish);
     }
 
     const CarouselDishItem = ({ item, index }) => {
@@ -208,19 +201,13 @@ function ChefScreen(props) {
             </View>
             {dishPageFocus!=null && dishPageVisible && <DishPage Dish={dishPageFocus} visible={dishPageVisible} hideModal={hideModal}/>}
         </View>
-            
-            
-       
-        
     );
 }
-
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colors.background,
-        //minWidth: '100%',
         alignItems: 'center',
         justifyContent: 'flex-start',
         flexDirection: 'column'
