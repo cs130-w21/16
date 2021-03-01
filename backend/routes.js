@@ -14,31 +14,20 @@ const connection = mysql.createPool({
 // Starting our app.
 const app = express();
 
-// Creating a GET route that returns data from the 'users' table.
-app.get('/Chefs', function (req, res) {
-    // Connecting to the database.
-    connection.getConnection(function (err, connection) {
-        if(err) throw err;
-        // Executing the MySQL query (select all data from the 'users' table).
-        connection.query('SELECT * FROM Chef', function (error, results, fields) {
-        // If some error occurs, we throw an error.
-        if (error) throw error;
 
-        // Getting the 'response' from the database and sending it to our route. This is were the data is.
-        res.send(results)
-        });
-        connection.release();
-    });
-});
+////////////
+// DISHES //
+///////////
 
+// ALL Dish entries in the Dish table
 app.get('/AllDishes', function (req, res) {
     // Connecting to the database.
     connection.getConnection(function (err, connection) {
-        if(err) throw err;
+        if(err) {console.log(err)};
         // Executing the MySQL query (select all data from the 'users' table).
         connection.query('SELECT * FROM Dish', function (error, results, fields) {
         // If some error occurs, we throw an error.
-        if (error) throw error;
+        if (error) {console.log(error)};
 
         // Getting the 'response' from the database and sending it to our route. This is were the data is.
         res.send(results)
@@ -47,14 +36,15 @@ app.get('/AllDishes', function (req, res) {
     });
 });
 
+// All Dish entries of currently available dishes
 app.get('/AvailableDishes', function (req, res) {
     // Connecting to the database.
     connection.getConnection(function (err, connection) {
-        if(err) throw err;
+        if(err) {console.log(err)};
         // Executing the MySQL query (select all data from the 'users' table).
         connection.query('SELECT * FROM Dish WHERE available', function (error, results, fields) {
         // If some error occurs, we throw an error.
-        if (error) throw error;
+        if (error) {console.log(error)};
 
         // Getting the 'response' from the database and sending it to our route. This is were the data is.
         res.send(results)
@@ -63,15 +53,16 @@ app.get('/AvailableDishes', function (req, res) {
     });
 });
 
-app.get('/ChefInfo', function (req, res) {
+// Dish information for specific dish 
+app.get('/DishInfo', function (req, res) {
     // Connecting to the database.
     connection.getConnection(function (err, connection) {
-        if(err) throw err;
+        if(err) {console.log(err)};
         // Executing the MySQL query (select all data from the 'users' table).
-        const chefid = req.query.id
-        connection.query('SELECT * FROM Chef WHERE chefid = '+chefid, function (error, results, fields) {
+        const dishid = req.query.dishid;
+        connection.query('SELECT dishid, C.chefid AS chefid, D.name AS name, price, description, D.shortDesc AS shortDesc, ingredients, timeMin, D.rating as rating, D.numReviews as numReviews, primaryImage, secondImage, thirdImage, fourthImage, available, C.name as chefName FROM Dish D JOIN Chef C on D.chefid = C.chefid WHERE dishid ='+dishid, function (error, results, fields) {
         // If some error occurs, we throw an error.
-        if (error) throw error;
+        if (error) {console.log(error)};
 
         // Getting the 'response' from the database and sending it to our route. This is were the data is.
         res.send(results)
@@ -80,15 +71,16 @@ app.get('/ChefInfo', function (req, res) {
     });
 });
 
+// All Dish Primary Images for a specified chef ordered by dish rating
 app.get('/CoverPhotos', function (req, res) {
     // Connecting to the database.
     connection.getConnection(function (err, connection) {
-        if(err) throw err;
+        if(err) {console.log(err)};
         // Executing the MySQL query (select all data from the 'users' table).
         const chefid = req.query.id
-        connection.query('SELECT primaryImage FROM Dish WHERE chefid = '+chefid, function (error, results, fields) {
+        connection.query('SELECT primaryImage FROM Dish WHERE chefid = '+chefid+' ORDER BY rating DESC', function (error, results, fields) {
         // If some error occurs, we throw an error.
-        if (error) throw error;
+        if (error) {console.log(error)};
 
         // Getting the 'response' from the database and sending it to our route. This is were the data is.
         res.send(results)
@@ -97,15 +89,16 @@ app.get('/CoverPhotos', function (req, res) {
     });
 });
 
+// All Dish entries for a given chef
 app.get('/ChefsDishes', function (req, res) {
     // Connecting to the database.
     connection.getConnection(function (err, connection) {
-        if(err) throw err;
+        if(err) {console.log(err)};
         // Executing the MySQL query (select all data from the 'users' table).
         const chefid = req.query.id
         connection.query('SELECT * FROM Dish WHERE chefid = '+chefid+' ORDER BY available DESC, rating DESC', function (error, results, fields) {
         // If some error occurs, we throw an error.
-        if (error) throw error;
+        if (error) {console.log(error)};
 
         // Getting the 'response' from the database and sending it to our route. This is were the data is.
         res.send(results)
@@ -114,15 +107,218 @@ app.get('/ChefsDishes', function (req, res) {
     });
 });
 
+
+
+///////////
+// CHEFS //
+//////////
+
+// All Chef entries in Chef table
+app.get('/Chefs', function (req, res) {
+    // Connecting to the database.
+    connection.getConnection(function (err, connection) {
+        if(err) {console.log(err)};
+        // Executing the MySQL query (select all data from the 'users' table).
+        connection.query('SELECT * FROM Chef', function (error, results, fields) {
+        // If some error occurs, we throw an error.
+        if (error) {console.log(error)};
+
+        // Getting the 'response' from the database and sending it to our route. This is were the data is.
+        res.send(results)
+        });
+        connection.release();
+    });
+});
+
+// Table Entry for a specified chef
+app.get('/ChefInfo', function (req, res) {
+    // Connecting to the database.
+    connection.getConnection(function (err, connection) {
+        if(err) {console.log(err)};
+        // Executing the MySQL query (select all data from the 'users' table).
+        const chefid = req.query.id
+        connection.query('SELECT * FROM Chef WHERE chefid = '+chefid, function (error, results, fields) {
+        // If some error occurs, we throw an error.
+        if (error) {console.log(error)};
+
+        // Getting the 'response' from the database and sending it to our route. This is were the data is.
+        res.send(results)
+        });
+        connection.release();
+    });
+});
+
+/////////////
+// Reviews //
+/////////////
+
+// Add a new review
+app.get('/newReview', function (req, res) {
+    // Connecting to the database.
+    connection.getConnection(function (err, connection) {
+        if(err) {console.log(err)};
+        // Executing the MySQL query (select all data from the 'users' table).
+        const dishid = req.query.dishid;
+        const chefid = req.query.chefid;
+        const reviewer = req.query.reviewer;
+        const rating = req.query.rating;
+        const comment = req.query.comment != null ? '"'+req.query.comment+'"' : 'null';
+        const timestamp = req.query.timestamp;
+        connection.query('INSERT INTO Review VALUES ('+dishid+','+chefid+',"'+reviewer+'",'+rating+','+comment+',"'+timestamp+'")', function (error, results, fields) {
+        // If some error occurs, we throw an error.
+        if (error) {console.log(error)};
+
+        // Getting the 'response' from the database and sending it to our route. This is were the data is.
+        res.send(results)
+        });
+        connection.release();
+    });
+});
+
+// Update Ratings on Specific Dish
+app.get('/updateDishWithNewReview', function (req, res) {
+    // Connecting to the database.
+    connection.getConnection(function (err, connection) {
+        if(err) {console.log(err)};
+        // Executing the MySQL query (select all data from the 'users' table).
+        const dishid = req.query.dishid;
+        const rating = req.query.rating;
+        connection.query('UPDATE Dish SET rating = (numReviews*rating+'+rating+')/(numReviews+1), numReviews = numReviews+1 WHERE dishid='+dishid, function (error, results, fields) {
+        // If some error occurs, we throw an error.
+        if (error) {console.log(error)};
+
+        // Getting the 'response' from the database and sending it to our route. This is were the data is.
+        res.send(results)
+        });
+        connection.release();
+    });
+});
+
+// Update Ratings on Specific Chef
+app.get('/updateChefWithNewReview', function (req, res) {
+    // Connecting to the database.
+    connection.getConnection(function (err, connection) {
+        if(err) {console.log(err)};
+        // Executing the MySQL query (select all data from the 'users' table).
+        const chefid = req.query.chefid;
+        const rating = req.query.rating;
+        connection.query('UPDATE Chef SET rating = (numReviews*rating+'+rating+')/(numReviews+1), numReviews = numReviews+1 WHERE chefid='+chefid, function (error, results, fields) {
+        // If some error occurs, we throw an error.
+        if (error) {console.log(error)};
+
+        // Getting the 'response' from the database and sending it to our route. This is were the data is.
+        res.send(results)
+        });
+        connection.release();
+    });
+});
+
+// Return ALL Reviews (for testing)
+app.get('/AllReviews', function (req, res) {
+    // Connecting to the database.
+    connection.getConnection(function (err, connection) {
+        if(err) {console.log(err)};
+        // Executing the MySQL query (select all data from the 'users' table).
+        connection.query('SELECT * FROM Review;', function (error, results, fields) {
+        // If some error occurs, we throw an error.
+        if (error) {console.log(error)};
+
+        // Getting the 'response' from the database and sending it to our route. This is were the data is.
+        res.send(results)
+        });
+        connection.release();
+    });
+});
+
+// Return Reviews for given dish
+app.get('/getDishReviews', function (req, res) {
+    // Connecting to the database.
+    connection.getConnection(function (err, connection) {
+        if(err) {console.log(err)};
+        // Executing the MySQL query (select all data from the 'users' table).
+        const dishid = req.query.dishid;
+        connection.query('SELECT * FROM Review WHERE dishid = '+dishid+' AND comment IS NOT NULL ORDER BY timestamp DESC', function (error, results, fields) {
+        // If some error occurs, we throw an error.
+        if (error) {console.log(error)};
+
+        // Getting the 'response' from the database and sending it to our route. This is were the data is.
+        res.send(results)
+        });
+        connection.release();
+    });
+});
+
+// Return Reviews for given chef
+app.get('/getChefReviews', function (req, res) {
+    // Connecting to the database.
+    connection.getConnection(function (err, connection) {
+        if(err) {console.log(err)};
+        // Executing the MySQL query (select all data from the 'users' table).
+        const chefid = req.query.chefid;
+        connection.query('SELECT R.dishid AS dishid, R.chefid AS chefid, R.reviewer as reviewer, R.rating as rating, R.comment AS comment, R.timestamp AS timestamp, D.name AS name FROM Review R JOIN Dish D ON R.dishid = D.dishid WHERE R.chefid = '+chefid+' AND R.comment IS NOT NULL ORDER BY R.timestamp DESC', function (error, results, fields) {
+        // If some error occurs, we throw an error.
+        if (error) {console.log(error)};
+
+        // Getting the 'response' from the database and sending it to our route. This is were the data is.
+        res.send(results)
+        });
+        connection.release();
+    });
+});
+
+// Return Reviews for given dish
+app.get('/getNDishReviews', function (req, res) {
+    // Connecting to the database.
+    connection.getConnection(function (err, connection) {
+        if(err) {console.log(err)};
+        // Executing the MySQL query (select all data from the 'users' table).
+        const dishid = req.query.dishid;
+        const n=req.query.n;
+        connection.query('SELECT * FROM Review WHERE dishid = '+dishid+' AND comment IS NOT NULL ORDER BY timestamp DESC LIMIT '+n, function (error, results, fields) {
+        // If some error occurs, we throw an error.
+        if (error) {console.log(error)};
+
+        // Getting the 'response' from the database and sending it to our route. This is were the data is.
+        res.send(results)
+        });
+        connection.release();
+    });
+});
+
+// Return Reviews for given chef
+app.get('/getNChefReviews', function (req, res) {
+    // Connecting to the database.
+    connection.getConnection(function (err, connection) {
+        if(err) {console.log(err)};
+        // Executing the MySQL query (select all data from the 'users' table).
+        const chefid = req.query.chefid;
+        const n=req.query.n;
+        connection.query('SELECT R.dishid AS dishid, R.chefid AS chefid, R.reviewer as reviewer, R.rating as rating, R.comment AS comment, R.timestamp AS timestamp, D.name AS name FROM Review R JOIN Dish D ON R.dishid = D.dishid WHERE R.chefid = '+chefid+' AND R.comment IS NOT NULL ORDER BY R.timestamp DESC LIMIT '+n, function (error, results, fields) {
+        // If some error occurs, we throw an error.
+        if (error) {console.log(error)};
+
+        // Getting the 'response' from the database and sending it to our route. This is were the data is.
+        res.send(results)
+        });
+        connection.release();
+    });
+});
+
+
+
+///////////////////
+// DB Operations //
+//////////////////
+
 app.get('/CreateDB', function (req, res) {
     // Connecting to the database.
     connection.getConnection(function (err, connection) {
-        if(err) throw err;
+        if(err) {console.log(err)};
         // Executing the MySQL query (select all data from the 'users' table).
         const chefid = req.query.id
         connection.query('CREATE DATABASE IF NOT EXISTS Potluck;', function (error, results, fields) {
         // If some error occurs, we throw an error.
-        if (error) throw error;
+        if (error) {console.log(error)};
 
         // Getting the 'response' from the database and sending it to our route. This is were the data is.
         res.send(results)
@@ -137,12 +333,12 @@ app.get('/CreateTables', function (req, res) {
     var results_arr = [];
     // Connecting to the database.
     connection.getConnection(function (err, connection) {
-        if(err) throw err;
+        if(err) {console.log(err)};
         // Executing the MySQL query (select all data from the 'users' table).
         queries.forEach((query) => {
             connection.query(query, function (error, results, fields) {
                 // If some error occurs, we throw an error.
-                if (error) throw error;
+                if (error) {console.log(error)};
         
                 // Getting the 'response' from the database and sending it to our route. This is were the data is.
                 results_arr.push(results);
@@ -156,11 +352,11 @@ app.get('/CreateTables', function (req, res) {
 app.get('/ShowTables', function (req, res) {
     // Connecting to the database.
     connection.getConnection(function (err, connection) {
-        if(err) throw err;
+        if(err) {console.log(err)};
         // Executing the MySQL query (select all data from the 'users' table).
         connection.query('SHOW TABLES;', function (error, results, fields) {
         // If some error occurs, we throw an error.
-        if (error) throw error;
+        if (error) {console.log(error)};
 
         // Getting the 'response' from the database and sending it to our route. This is were the data is.
         res.send(results);
@@ -172,12 +368,12 @@ app.get('/ShowTables', function (req, res) {
 app.get('/query', function (req, res) {
     // Connecting to the database.
     connection.getConnection(function (err, connection) {
-        if(err) throw err;
+        if(err) {console.log(err)};
         // Executing the MySQL query (select all data from the 'users' table).
-        const query = req.query.query
+        const query = req.query.query;
         connection.query(query, function (error, results, fields) {
         // If some error occurs, we throw an error.
-        if (error) throw error;
+        if (error) {console.log(error)};
 
         // Getting the 'response' from the database and sending it to our route. This is were the data is.
         res.send(results)
@@ -189,7 +385,7 @@ app.get('/query', function (req, res) {
 app.get('/insertChefs', function (req, res) {
     // Connecting to the database.
     connection.getConnection(function (err, connection) {
-        if(err) throw err;
+        if(err) {console.log(err)};
         // Executing the MySQL query (select all data from the 'users' table).
         var query = "INSERT INTO Chef(chefid, name, bio, shortDesc, location, rating, numReviews, profilePic) VALUES ";
         var fs = require('fs');
@@ -207,7 +403,7 @@ app.get('/insertChefs', function (req, res) {
         query = query.substring(0, query.length-2) +";";
         connection.query(query, function (error, results, fields) {
         // If some error occurs, we throw an error.
-        if (error) throw error;
+        if (error) {console.log(error)};
 
         // Getting the 'response' from the database and sending it to our route. This is were the data is.
         results_arr.push(results)
@@ -220,7 +416,7 @@ app.get('/insertChefs', function (req, res) {
 app.get('/insertDishes', function (req, res) {
     // Connecting to the database.
     connection.getConnection(function (err, connection) {
-        if(err) throw err;
+        if(err) {console.log(err)};
         // Executing the MySQL query (select all data from the 'users' table).
         var query = "INSERT INTO Dish VALUES ";
         var fs = require('fs');
@@ -237,7 +433,7 @@ app.get('/insertDishes', function (req, res) {
         query = query.substring(0, query.length-2) +";";
         connection.query(query, function (error, results, fields) {
         // If some error occurs, we throw an error.
-        if (error) throw error;
+        if (error) {console.log(error)};
 
         // Getting the 'response' from the database and sending it to our route. This is were the data is.
         results_arr.push(results)
