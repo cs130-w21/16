@@ -4,15 +4,26 @@ import {Button, Icon, Divider, Rating} from 'react-native-elements'
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import colors from '../config/colors';
 import { Table, TableWrapper, Row, Rows } from 'react-native-table-component';
+import MapView, { Marker, Polyline } from 'react-native-maps';
+import coordDist from '../util/CoordDist';
+import MenuCard from '../components/dish';
 
 import {getChefsDishes, getCoverPhotos, getNChefReviews} from "../util/Queries";
 import Dish from '../objects/Dish';
 import { LogBox } from 'react-native';
 import DishPage from './DishPage';
 import Reviews from '../components/Reviews';
+import { color } from 'react-native-reanimated';
 
 const SLIDER_WIDTH = Dimensions.get('window').width
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH)
+
+const dummyLocationData = {
+    latitude: 34.06913427757264,
+    longitude: -118.44520255977159,
+    latitudeDelta: 0.005,
+    longitudeDelta: 0.005
+}
 
 const CarouselCardItem = ({ item, index }) => {
     return (
@@ -37,6 +48,9 @@ function ChefScreen(props) {
     let rating = Chef.rating;
     let numReviews = Chef.numReviews;
     let tableHead = ['Dish Name', 'Price', 'Rating'];
+    let location=JSON.parse(Chef.location);
+    location['latitudeDelta'] = 0.007;
+    location['longitudeDelta'] = 0.007;
 
     const [carouselData, setCarouselData] = useState([]);
     const [tableData, setTableData] = useState([]);
@@ -45,6 +59,7 @@ function ChefScreen(props) {
     const [dishPageVisible, setDishPageVisible] = useState(false);
     const [dishPageFocus, setDishPageFocus] = useState(null);
     const [first5Reviews, setFirst5Reviews] = useState(null);
+    const [userLocation, setLocation] = useState(null);
 
 
     useEffect(() => {
@@ -82,7 +97,14 @@ function ChefScreen(props) {
         }, () => {console.log("Error in useEffect getNChefReviews")})
         .catch((err) => {console.log("use Effect Err Get N Chef Reviews: ", err)});
         
-        
+        navigator.geolocation.getCurrentPosition((pos) => {
+            console.log("callback")
+            setLocation(pos);
+        }, (err) => {
+            console.warn(`ERROR(${err.code}): ${err.message}`);
+        }, {
+            enableHighAccuracy: true, timeout: 5000, maximumAge: 0
+        });
     }, [])
 
     function hideModal(){
@@ -93,7 +115,7 @@ function ChefScreen(props) {
         setDishPageVisible(true);
         setDishPageFocus(dish);
     }
-
+    console.log(userLocation);
     return(
         <View style={styles.container}>
             <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false} alwaysBounceHorizontal={false} alwaysBounceVertical={false}>
@@ -139,6 +161,26 @@ function ChefScreen(props) {
                             <Rows data={tableData} flexArr={[3,2, 2]} style={styles.row} textStyle={styles.text}/>
                         </TableWrapper>
                     </Table>
+                    <View style={styles.spacer}/>
+                    <MapView style={styles.map}
+                        initialRegion={location}
+                        showsUserLocation={true}
+                    >
+                        {userLocation && <Polyline
+                            coordinates={[
+                                {latitude: location.latitude, longitude: location.longitude},
+                                {latitude: userLocation.coords.latitude, longitude: userLocation.coords.longitude}
+                            ]}
+                            strokeColor={colors.primary}
+                            strokeWidth={6}
+                        />}
+                        <Marker
+                            coordinate={{latitude: location.latitude, longitude: location.longitude}}
+                        />
+                    </MapView>
+                    {userLocation && <Text style={styles.distanceText}>
+                            {coordDist(location.latitude, location.longitude, userLocation.coords.latitude, userLocation.coords.longitude).toFixed(2)} miles away
+                    </Text>}
                     <View style={styles.spacer}/>
                     {numReviews!=null && <Reviews rating={rating} numReviews={numReviews} chefid={id} reviews={first5Reviews}/>}
                     <View style={styles.spacer}/>
@@ -237,6 +279,20 @@ const styles = StyleSheet.create({
         fontFamily: "Avenir",
         alignSelf: "center",
         marginBottom: 10
+    },
+    map: {
+        width: '90%',
+        height: 250,
+        borderRadius: 10,
+        margin: '5%'
+    },
+    distanceText: {
+        fontSize: 15,
+        marginLeft: '5%',
+        marginBottom: '5%',
+        color: "#333",
+        fontFamily: "Avenir",
+        fontWeight: 'bold'
     },
     ratingsContainer: {
         width: '100%',

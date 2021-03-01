@@ -3,7 +3,7 @@ function Chef(chefJSON){
     this.name = chefJSON.name;
     this.bio = chefJSON.bio;
     this.shortDesc = chefJSON.shortDesc;
-    this.location;
+    this.location = chefJSON.location;
     this.profilePicURL = chefJSON.profilePic;
     this.rating = chefJSON.rating;
     this.numReviews = chefJSON.numReviews
