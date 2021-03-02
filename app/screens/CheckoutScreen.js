@@ -10,6 +10,7 @@ const secrets = require("../../backend/secrets");
 
 function CheckoutScreen(props) {
   const [comment, setComment] = useState("");
+  const navigation = props.navigation;
   return (
     <SafeAreaView style={styles.container}>
       <CheckoutSubtotal></CheckoutSubtotal>
@@ -42,7 +43,7 @@ function CheckoutScreen(props) {
                 comment != "" ? comment : "None",
                 secrets.phone(chef),
                 "Cash"
-              ).then(console.log("message sent from button - pay with cash"))
+              ).then(navigation.navigate("Tracking"))
             );
           }}
         />
@@ -60,7 +61,7 @@ function CheckoutScreen(props) {
                 comment,
                 secrets.phone(chef),
                 "Venmo"
-              ).then(console.log("message sent from button - pay with venmo"))
+              ).then(navigation.navigate("Tracking"))
             );
           }}
         />

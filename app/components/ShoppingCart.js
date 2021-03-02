@@ -86,8 +86,8 @@ function CartCard(props) {
     } else {
       //remove from array so that the card doesn't show up
       //item count == 0
-      global.cart.splice(found, 1);
       setCount(0);
+      global.cart[found].count = 0;
     }
   }
 
@@ -95,7 +95,28 @@ function CartCard(props) {
     setTotal(count * props.price);
   }, [count]);
 
-  return (
+  useEffect(() => {
+    const found = global.cart.findIndex(
+      item => item["dish"]["dishid"] == props.dishid
+    );
+    if (found >= 0 && count <= 0) {
+      global.cart.splice(found, 1);
+    }
+    return () => {
+      const found = global.cart.findIndex(
+        item => item["dish"]["dishid"] == props.dishid
+      );
+      if (found >= 0 && count <= 0) {
+        global.cart.splice(found, 1);
+      }
+    };
+  }, []);
+
+  return count == 0 ? (
+    <View style={styles.cartCardContainer}>
+      <Text style={styles.empty}>Item Removed</Text>
+    </View>
+  ) : (
     <View style={styles.cartCardContainer}>
       <Card containerStyle={styles.cardContainer}>
         <Card.Title>
