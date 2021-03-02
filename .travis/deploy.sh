@@ -15,5 +15,5 @@ ssh -o StrictHostKeyChecking=no ec2-user@ec2-3-141-20-190.us-east-2.compute.amaz
     touch success
     git pull origin dev
     cd backend
-    node routes.js
+    ./run_server.sh
 EOF
