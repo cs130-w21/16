@@ -1,6 +1,6 @@
 #!/bin/bash
 echo $#
-if [[ $# -le 1 ]]; then
+if [[ $# -lt 1 ]]; then
 echo "branch 1"
 eval "$(ssh-agent -s)"
 chmod 600 id_rsa
