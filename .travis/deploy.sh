@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [$# -eq 0]; then
+if [$# -eq 1]; then
 eval "$(ssh-agent -s)"
 chmod 600 id_rsa
 ssh-add id_rsa
