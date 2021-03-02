@@ -45,19 +45,6 @@ export default function ChefRec(props) {
     )
 }
 
-ChefRec.PropTypes = {
-    item: {
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      image: any,
-      rating: PropTypes.number,
-      bio: PropTypes.string.isRequired,
-      location: PropTypes.string.isRequired,
-      cuisine: PropTypes.string.isRequired,
-      onPress: PropTypes.func
-    }
-}
-
 const styles = StyleSheet.create({
     container: {
       width: "20%"

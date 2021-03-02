@@ -21,7 +21,7 @@ import Chef from "../objects/Chef";
 */
 
 function chefRecCard(item, navigation) {
-    return <ChefRec item={item} navigation={navigation} />
+    return <ChefRec key={item.chefid} item={item} navigation={navigation} />
 }
 
 class Cards extends Component{
