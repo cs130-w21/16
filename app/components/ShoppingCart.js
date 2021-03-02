@@ -12,6 +12,29 @@ export function cartSum() {
   return sum;
 }
 
+export function getDishes(dishes) {
+  var dishString = "";
+  dishes.forEach(item => (dishString += item + " | "));
+  return dishString;
+}
+
+export function isolateChefs() {
+  var pairs = {};
+  global.cart.forEach(item => {
+    if (!(item.dish["Chef"]["name"] in pairs)) {
+      let chefEntry = item.dish["Chef"]["name"];
+      pairs[chefEntry] = [];
+      let string = item.count + " " + item.dish["name"];
+      pairs[chefEntry].push(string);
+    } else {
+      let chefEntry2 = item.dish["Chef"]["name"];
+      let string = item.count + " " + item.dish["name"];
+      pairs[chefEntry2].push(string);
+    }
+  });
+  return pairs;
+}
+
 export function addToCart(item) {
   global.cart.push(item);
 }
@@ -36,9 +59,17 @@ export function getLongestTime() {
     return max + " minutes";
   } else {
     if (max % 60 === 0) {
-      return max / 60 + " hours";
+      return (
+        Math.floor(max / 60) + " hour" + (Math.floor(max / 60) == 1 ? "" : "s")
+      );
     } else {
-      return max / 60 + " hours " + (max % 60) + " minutes";
+      return (
+        Math.floor(max / 60) +
+        " hour" +
+        (Math.floor(max / 60) == 1 ? " " : "s ") +
+        (max % 60) +
+        " minutes"
+      );
     }
   }
 }

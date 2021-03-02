@@ -21,6 +21,10 @@ function dishCard(content, navigation){
                 navigation={navigation}/>
 }
 
+function chefRecListCard(content, navigation) {
+    return <ChefRecList data={content}/>
+}
+
 class Cards extends Component{
     constructor(props){
         super(props);
@@ -194,7 +198,8 @@ function FeaturedMenuScreen(props){
             </Modal>
             
             <ScrollView style={styles.ScrollView} showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
-                <Cards dishes={dishes} navigation={props.navigation}/>
+                <ChefRecList data={chefs} navigation={props.navigation}/>
+                <Cards dishes={dishes} chefs={chefs} navigation={props.navigation}/>
             </ScrollView>
         </SafeAreaProvider>
     );
