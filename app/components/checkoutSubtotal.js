@@ -13,20 +13,22 @@ function CheckoutSubtotal(props) {
     <View style={styles.container}>
       <ScrollView style={styles.scrollView}>
         <Text style={styles.headers}>DISHES</Text>
-        {cart.map(item => (
-          <View style={styles.itemContainer}>
-            <Text style={styles.textStyle}>
-              {item["count"] +
-                " x " +
-                item["dish"]["name"] +
-                " by " +
-                item["dish"]["Chef"]["name"]}
-            </Text>
-            <Text style={styles.textStyle}>
-              {"$" + (item["count"] * item["dish"]["price"]).toFixed(2)}
-            </Text>
-          </View>
-        ))}
+        {cart.map(item =>
+          item["count"] > 0 ? (
+            <View style={styles.itemContainer}>
+              <Text style={styles.textStyle}>
+                {item["count"] +
+                  " x " +
+                  item["dish"]["name"] +
+                  " by " +
+                  item["dish"]["Chef"]["name"]}
+              </Text>
+              <Text style={styles.textStyle}>
+                {"$" + (item["count"] * item["dish"]["price"]).toFixed(2)}
+              </Text>
+            </View>
+          ) : null
+        )}
         <View style={styles.subtotalContainer}>
           <Text style={styles.headers}>TOTAL</Text>
           <Text style={styles.headers}>{"$" + subTotal()}</Text>
