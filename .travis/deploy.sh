@@ -20,7 +20,8 @@ EOF
 else
 alias urlencode='python -c "import sys, urllib as ul; \
     print ul.quote_plus(sys.argv[1])"'
-echo `urlencode "$1"`
+echo `python -c "import sys, urllib as ul; \
+    print ul.quote_plus(sys.argv[1])" $1`
 count=`wget https://raw.githubusercontent.com/cs130-w21/16/dev/backend/routes.js -O - | diff backend/routes.js - | wc -l`
 echo $count
 if [[ $count -gt 0 ]]; then
