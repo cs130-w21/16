@@ -1,6 +1,7 @@
 #!/bin/bash
 echo $#
-if [$# -le 1]; then
+if [[ $# -le 1 ]]; then
+echo "branch 1"
 eval "$(ssh-agent -s)"
 chmod 600 id_rsa
 ssh-add id_rsa
@@ -18,6 +19,7 @@ ssh -o StrictHostKeyChecking=no ec2-user@ec2-3-141-20-190.us-east-2.compute.amaz
 EOF
 
 else
+echo "branch 2"
 count=`wget https://raw.githubusercontent.com/cs130-w21/16/dev/backend/routes.js -O - | diff backend/routes.js - | wc -l`
 if [[ $count -gt 0 ]]; then
 eval "$(ssh-agent -s)"
