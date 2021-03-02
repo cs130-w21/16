@@ -18,11 +18,9 @@ ssh -o StrictHostKeyChecking=no ec2-user@ec2-3-141-20-190.us-east-2.compute.amaz
 EOF
 
 else
-alias urlencode='python -c "import sys, urllib as ul; \
-    print ul.quote_plus(sys.argv[1])"'
-echo `python -c "import sys, urllib as ul; \
+branchurl=`python -c "import sys, urllib as ul; \
     print ul.quote_plus(sys.argv[1])" $1`
-count=`wget https://raw.githubusercontent.com/cs130-w21/16/dev/backend/routes.js -O - | diff backend/routes.js - | wc -l`
+count=`wget https://raw.githubusercontent.com/cs130-w21/16/$branchurl/backend/routes.js -O - | diff backend/routes.js - | wc -l`
 echo $count
 if [[ $count -gt 0 ]]; then
 eval "$(ssh-agent -s)"
