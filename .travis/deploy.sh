@@ -11,9 +11,9 @@ git push deploy dev
 ssh -o StrictHostKeyChecking=no ec2-user@ec2-3-141-20-190.us-east-2.compute.amazonaws.com <<EOF
     cd ~/16
     git pull origin dev
-    cd backend
+    cd backend;
     echo "./run_server.sh at `date "+%Y.%m.%d-%H.%M.%S"`" >> ~/logfiles/run_servers.logfile
-    ./run_server.sh > ~/logfiles/run_server8888.`date "+%Y.%m.%d-%H.%M.%S"`.logfile &
+    ./run_server.sh > ~/logfiles/run_server8888.`date "+%Y.%m.%d-%H.%M.%S"`.logfile;
     echo "server ran for dev at `date "+%Y.%m.%d-%H.%M.%S"`" >> ~/logfiles/run_servers.logfile
 EOF
 
@@ -32,9 +32,9 @@ git push deploy dev
 branch=$1
 ssh -o StrictHostKeyChecking=no ec2-user@ec2-3-141-20-190.us-east-2.compute.amazonaws.com <<EOF
     cd ~/16
-    cd backend
+    cd backend;
     echo "./run_server.sh $branch at `date "+%Y.%m.%d-%H.%M.%S"`" >> ~/logfiles/run_servers.logfile
-    ./run_server.sh $branch > ~/logfiles/run_server8080.`date "+%Y.%m.%d-%H.%M.%S"`.logfile &
+    ./run_server.sh $branch > ~/logfiles/run_server8080.`date "+%Y.%m.%d-%H.%M.%S"`.logfile;
     echo "server ran for $branch at `date "+%Y.%m.%d-%H.%M.%S"`" >> ~/logfiles/run_servers.logfile
 EOF
 fi
