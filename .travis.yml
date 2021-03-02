@@ -8,4 +8,3 @@ after_success:
   - test $TRAVIS_BRANCH = "dev" && ".travis/deploy.sh"
   - test $TRAVIS_BRANCH = "master" && ".travis/deploy.sh"
   - test $TRAVIS_BRANCH = "CICD" && ".travis/deploy.sh"
-  - .travis/testDeploy.sh $TRAVIS_BRANCH
