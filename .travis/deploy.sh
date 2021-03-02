@@ -12,5 +12,5 @@ ssh -o StrictHostKeyChecking=no ec2-user@ec2-3-141-20-190.us-east-2.compute.amaz
     cd ~/16
     git pull origin dev
     cd backend
-    ./run_server.sh
+    ./run_server.sh &
 EOF
