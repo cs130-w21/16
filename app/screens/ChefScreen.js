@@ -50,6 +50,7 @@ function ChefScreen(props) {
     const [first5Reviews, setFirst5Reviews] = useState(null);
     const [userLocation, setLocation] = useState(null);
     const [region, setRegion] = useState(location);
+    const [chefDishes, setChefDishes] = useState(Chef.dishes)
 
 
     useEffect(() => {
@@ -66,6 +67,7 @@ function ChefScreen(props) {
                 dishes.push(new Dish(dish));
             });
             Chef.setDishes(dishes);
+            setChefDishes(Chef.dishes);
         }, ()=>{console.log("Error")})
         .catch((err) => {console.log("Use Effect Err Chef's Dishes: ", err)});
 
@@ -145,7 +147,7 @@ function ChefScreen(props) {
                     <Text style={styles.dishesTitle}>Chef's Menu:</Text>
                     <Carousel
                         layout='default'
-                        data={Chef.dishes}
+                        data={chefDishes}
                         useScrollView={true}
                         renderItem={CarouselDishItem}
                         sliderWidth={SLIDER_WIDTH}
@@ -158,7 +160,7 @@ function ChefScreen(props) {
                         style={{paddingBottom: '5%'}}
                     />
                     <Pagination
-                        dotsLength={Chef.dishes.length}
+                        dotsLength={chefDishes.length}
                         activeDotIndex={dishIndex}
                         carouselRef={isCarousel}
                         dotStyle={styles.dotStyle}
@@ -191,7 +193,7 @@ function ChefScreen(props) {
                             {coordDist(location.latitude, location.longitude, userLocation.coords.latitude, userLocation.coords.longitude).toFixed(2)} miles away
                     </Text>}
                     <View style={styles.spacer}/>
-                    {numReviews!=null && <Reviews rating={rating} numReviews={numReviews} chefid={id} reviews={first5Reviews}/>}
+                    {numReviews!=null && <Reviews rating={rating} numReviews={numReviews} chefid={id} reviews={first5Reviews} navigation={props.navigation}/>}
                     <View style={styles.spacer}/>
                     <View style={styles.spacer}/>
                 </View>
@@ -254,7 +256,7 @@ const styles = StyleSheet.create({
     chefPic: {
         width: 150,
         height: 150,
-  
+
         borderRadius: 75
     },
     chefPicHolder: {
@@ -339,6 +341,7 @@ const styles = StyleSheet.create({
         padding: 10,
         color: "gray",
         fontFamily: "Avenir",
+        textAlign: 'center'
     },
 
     spacer: {
