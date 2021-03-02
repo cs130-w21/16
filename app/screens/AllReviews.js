@@ -64,6 +64,7 @@ export default function AllReviews(props){
                                 comment={review.comment}
                                 name={review.name!=null ? review.name : null}
                                 dishid={review.dishid}
+                                navigation={props.navigation}
                             /></View>) : <Text></Text>}
                     </ScrollView>
 

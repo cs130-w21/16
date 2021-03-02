@@ -65,10 +65,11 @@ function Reviews(props){
                     comment={review.comment}
                     name={review.name!=null ? review.name : null}
                     dishid={review.dishid}
+                    navigation={props.navigation}
                 />) : <Text></Text>}
             {props.reviews!=null && props.reviews.length==0 && <Text style={styles.noReviews}>No Reviews with Comments</Text>}
             {props.reviews!=null && props.reviews.length>0 && <Button title="More Reviews" type="outline" onPress={allReviewsOnPress} containerStyle={styles.buttonContainer} titleStyle={styles.button} buttonStyle={styles.button}/>}
-            {(props.dishid!=null || props.chefid!=null) && allReviewsVisible && <AllReviews dishid={props.dishid} chefid={props.chefid} visible={allReviewsVisible} hideModal={hideModal}/>}
+            {(props.dishid!=null || props.chefid!=null) && allReviewsVisible && <AllReviews dishid={props.dishid} chefid={props.chefid} visible={allReviewsVisible} hideModal={hideModal} navigation={props.navigation}/>}
         </View>
     );
 }
