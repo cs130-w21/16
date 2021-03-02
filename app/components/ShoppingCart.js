@@ -22,21 +22,15 @@ export function isolateChefs() {
   var pairs = {};
   global.cart.forEach(item => {
     if (!(item.dish["Chef"]["name"] in pairs)) {
-      // pairs.push(item.dish["Chef"]["name"]);
       let chefEntry = item.dish["Chef"]["name"];
       pairs[chefEntry] = [];
       let string = item.count + " " + item.dish["name"];
       pairs[chefEntry].push(string);
-      // console.log("new chef: " + pairs[chefEntry]);
-      // pairs.chefEntry.dishes.push(item.dish["name"]);
     } else {
       let chefEntry2 = item.dish["Chef"]["name"];
       let string = item.count + " " + item.dish["name"];
       pairs[chefEntry2].push(string);
-      // console.log("existing chef: " + pairs[chefEntry2]);
     }
-    // console.log(item.dish["Chef"]["name"]);
-    // console.log(Object.keys(pairs));
   });
   return pairs;
 }

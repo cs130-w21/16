@@ -58,7 +58,7 @@ function CheckoutScreen(props) {
             Object.keys(pairs).forEach(chef =>
               sendTextMessage(
                 getDishes(pairs[chef]),
-                comment,
+                comment != "" ? comment : "None",
                 secrets.phone(chef),
                 "Venmo"
               ).then(navigation.navigate("Tracking"))

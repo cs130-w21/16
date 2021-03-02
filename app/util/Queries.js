@@ -175,14 +175,6 @@ var requestOptions = {
 };
 
 async function sendTextMessage(dishes, instructions, phone, method) {
-  //   const response = await fetch(ip + ":" + port + "/textChef", {
-  //     method: "POST"
-  //     // headers: { "Content-Type": "text/html" }
-  //   });
-  //   const data = await response.json();
-  //   return "DATA HERE " + data;
-  //   fetch("http://localhost:8888/textChef", requestOptions)
-
   const response = await fetch(
     ip +
       ":" +
