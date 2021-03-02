@@ -8,6 +8,7 @@ import WelcomeScreen from "./app/screens/WelcomeScreen";
 import DishPage from "./app/screens/DishPage";
 import ChefScreen from "./app/screens/ChefScreen";
 import ShoppingCartScreen from "./app/screens/ShoppingCartScreen";
+import Tracking from "./app/screens/Tracking";
 import colors from "./app/config/colors";
 import Search from "./app/screens/Search";
 import CheckoutScreen from "./app/screens/CheckoutScreen"
@@ -47,6 +48,26 @@ const App = () => {
           component={CheckoutScreen}
           options={{
             title: "ORDER SUMMARY",
+            headerShown: true,
+            headerStyle: {
+              backgroundColor: colors.primary
+            },
+            headerTintColor: "white",
+            headerTitleStyle: {
+              fontWeight: "bold",
+              color: "white",
+              fontFamily: "Avenir",
+              fontSize: 20
+            },
+            headerTruncatedBackTitle: "",
+            headerBackTitle: ""
+          }}
+        />
+        <Stack.Screen  
+          name="Tracking"
+          component={Tracking}
+          options={{
+            title: "ORDER TRACKING",
             headerShown: true,
             headerStyle: {
               backgroundColor: colors.primary
