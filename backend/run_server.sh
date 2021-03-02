@@ -4,9 +4,9 @@ if [[ $# -eq 0 ]];
 then
     docker pull brendonng/potluck:master
     docker stop potluck-dev-server
-    docker rm potluck-dev-server;
+    docker rm potluck-dev-server ;
     echo "dev server closed at `date "+%Y.%m.%d-%H.%M.%S"`"  >> ~/logfiles/dev_server_docker.logfile
-    docker run -p 8888:8888 --name potluck-dev-server brendonng/potluck:master > ~/logfiles/docker8888.`date "+%Y.%m.%d-%H.%M.%S"`.logfile &
+    docker run -p 8888:8888 --name potluck-dev-server brendonng/potluck:master 2> ~/logfiles/docker8888.`date "+%Y.%m.%d-%H.%M.%S"`.logfile 1> ~/logfiles/docker8888.`date "+%Y.%m.%d-%H.%M.%S"`.logfile &
     echo "docker ran at `date "+%Y.%m.%d-%H.%M.%S"`"  >> ~/logfiles/dev_server_docker.logfile
 else
     branch=$1
@@ -17,6 +17,6 @@ else
     docker stop potluck-test-server
     docker rm potluck-test-server ;
     echo "test server closed at `date "+%Y.%m.%d-%H.%M.%S"`"  >> ~/logfiles/test_server_docker.logfile
-    docker run -p 8080:8080 --name potluck-test-server brendonng/potluck:$branchclean > ~/logfiles/docker8080.`date "+%Y.%m.%d-%H.%M.%S"`.logfile &
+    docker run -p 8080:8080 --name potluck-test-server brendonng/potluck:$branchclean 2> ~/logfiles/docker8080.`date "+%Y.%m.%d-%H.%M.%S"`.logfile 1> ~/logfiles/docker8080.`date "+%Y.%m.%d-%H.%M.%S"`.logfile &
     echo "docker ran at `date "+%Y.%m.%d-%H.%M.%S"`"  >> ~/logfiles/test_server_docker.logfile
 fi
