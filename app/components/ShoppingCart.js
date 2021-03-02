@@ -59,9 +59,17 @@ export function getLongestTime() {
     return max + " minutes";
   } else {
     if (max % 60 === 0) {
-      return max / 60 + " hours";
+      return (
+        Math.floor(max / 60) + " hour" + (Math.floor(max / 60) == 1 ? "" : "s")
+      );
     } else {
-      return max / 60 + " hours " + (max % 60) + " minutes";
+      return (
+        Math.floor(max / 60) +
+        " hour" +
+        (Math.floor(max / 60) == 1 ? " " : "s ") +
+        (max % 60) +
+        " minutes"
+      );
     }
   }
 }
