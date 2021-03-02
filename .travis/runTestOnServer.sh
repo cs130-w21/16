@@ -1,7 +1,10 @@
 #!/bin/bash
 
+eval "$(ssh-agent -s)"
+chmod 600 id_rsa
+ssh-add id_rsa
 
-
+echo $1
 ssh -o StrictHostKeyChecking=no ec2-user@ec2-3-141-20-190.us-east-2.compute.amazonaws.com <<EOF
     cd ~/16
     cd backend
