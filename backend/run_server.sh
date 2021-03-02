@@ -14,5 +14,5 @@ else
     DOCKER_BUILDKIT=1 docker build --build-arg branch=$branch -t brendonng/potluck:$branchclean .
     docker stop potluck-test-server
     docker rm potluck-test-server
-    docker run -p 8080:8080 --name potluck-test-server brendonng/potluck:$branchclean > ~/logfiles/docker8080.`date "+%Y.%m.%d-%H.%M.%S"`.logfile
+    docker run -p 8080:8080 --name potluck-test-server brendonng/potluck:$branchclean
 fi

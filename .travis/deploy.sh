@@ -31,7 +31,9 @@ branch=$1
 ssh -o StrictHostKeyChecking=no ec2-user@ec2-3-141-20-190.us-east-2.compute.amazonaws.com <<EOF
     cd ~/16
     cd backend
+    echo "./run_server.sh $branch" >> ~/logfiles/run_servers.logfile
     ./run_server.sh $branch > ~/logfiles/run_server8080.`date "+%Y.%m.%d-%H.%M.%S"`.logfile &
+    echo "server ran for $branch" >> ~/logfiles/run_servers.logfile
 EOF
 fi
 fi
