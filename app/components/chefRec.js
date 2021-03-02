@@ -13,33 +13,35 @@ import PropTypes, { any } from "prop-types"
 */
 
 export default function ChefRec(props) {
+  function onPressChef() {
+    if(props.item == null) {return;}
+    props.navigation.push("Chef", {
+      Chef: props.item
+    })
+  }
+
     return (
-        <Card containerStyle={styles.cardContainer}>
-          <TouchableOpacity style={styles.button} onPress={props.item.onPress}>
-            <View containerStyle={styles.title}>
-                <Card.Title>{props.item.name}</Card.Title>
-                <Text numberOfLines={1} style={styles.cuisine}>{props.item.cuisine}</Text>
-                {/* <Card.Divider /> */}
-                <Card.Image source={{uri: props.item.image}} style={styles.image} />
-            </View>
-            <Text numberOfLines={2} style={styles.bio}>{props.item.bio}</Text>
-            {/* <Text numberOfLines={1} style={styles.cuisine}>{props.item.cuisine}</Text> */}
-            <View containerStyle={styles.footer}>
-                <View style={styles.location}>
-                  <Icon name="location-pin" size={11} />
-                  <Text style={styles.text}>{props.item.location}</Text>
-                </View>
-                <Card.Divider />
-                <Rating
-                    style={styles.rating}
-                    readonly={true}
-                    imageSize={13}
-                    fractions={1}
-                    startingValue={props.item.rating ? props.item.rating : 0}
-                />
-            </View>                  
+        <View style={styles.container}>
+          <Card containerStyle={styles.cardContainer}>
+            <TouchableOpacity style={styles.button} onPress={onPressChef}>
+              <Card.Title><Text style={styles.title}>{props.item.name}</Text></Card.Title>
+              <Card.Divider />
+              <View style={styles.imageView}>
+                <Card.Image source={{uri: props.item.profilePicURL}} style={styles.image} />
+              </View>
+              <Text numberOfLines={3} style={styles.bio}>{props.item.shortDesc}</Text>
+              <View style={styles.footer}>
+                  <Rating
+                      style={styles.rating}
+                      readonly={true}
+                      imageSize={13}
+                      fractions={1}
+                      startingValue={props.item.rating ? props.item.rating : 0}
+                  />
+              </View>                  
             </TouchableOpacity>
-        </Card>
+          </Card>
+        </View>
     )
 }
 
@@ -57,81 +59,50 @@ ChefRec.PropTypes = {
 }
 
 const styles = StyleSheet.create({
+    container: {
+      width: "20%"
+    },
     cardContainer: {
-      flexDirection: "column",
-      flex: 1,
-      alignItems: "center",
-      alignContent: "center",
-      height: 250,
-      width: 130
+      alignContent: "stretch",
+      height: 255
+    },
+    imageView: {
+      paddingBottom: 10,
+      paddingTop: 0,
+      alignItems: "center"
     },
     image: {
-      alignSelf: "center",
-      alignItems: "center",
-      alignContent: "center",
-      height: 50,
-      width: 100
+      height: 90,
+      width: 90,
+      borderRadius: 45
     },
     bio: {
+      padding: 8,
+      textAlign: "center",
       fontSize: 12,
-      padding: 10,
-      flexWrap: "wrap",
-      flexShrink: 1,
-      flexDirection: "column",
-      alignSelf: "center",
+      fontFamily: "Avenir",
     },
     cuisine: {
       fontSize: 11,
+      fontFamily: 'Avenir',
       paddingBottom: 8,
       paddingStart: 0,
-      textAlign: "center",
       color: colors.secondary,
       fontWeight: "bold"
     },
-    text: {
-      fontSize: 10,
-      padding: 10,
-      flexWrap: "wrap",
-      flexShrink: 1,
-      flexDirection: "column",
-      alignSelf: "center",
-    },
-    horizontal: {
-      width: "100%",
-      justifyContent: "space-around",
-      alignItems: "stretch",
-      alignSelf: "center"
-    },
     rating: {
-      position: "absolute",
-      alignSelf: "center",
-      bottom: 0
     },
     title: {
-      flexDirection: "column",
-      alignContent: "center",
-      alignItems: "center",
-      justifyContent: "flex-start",
-      flex: 1
+      fontWeight: "bold",
+      fontSize: 16
     },
     footer: {
-      flexDirection: "column",
-      alignContent: "center",
-      alignItems: "center",
-      flex: 1,
-      justifyContent: "flex-end"
+      position: "absolute",
+      bottom: 0,
+      left: 0,
+      right: 0
     },
     button: {
-      height: 250,
-      width: 130,
-      alignItems: "center",
-      padding: 10,
-      flexDirection: "column",
-      flex: 1
+      height: "100%"
     },
-    location: {
-      flexDirection: "row",
-      alignItems: "center",
-      justifyContent: "space-evenly"
-    }
   });
