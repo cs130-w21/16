@@ -67,18 +67,19 @@ export default function MenuCard(props) {
                 />
                 <Text style={styles.numReviews}>({props.Dish.numReviews})</Text>
               </View>
+              {!props.inChefMenu &&
               <TouchableOpacity onPress={onPressChef}>
               <View style={styles.card}>
                 <Image source={{uri: props.Dish.Chef!=null ? props.Dish.Chef.profilePicURL : "https://reactnative.dev/img/header_logo.svg"}} style={styles.icon}/>
                 <Text style={styles.text}>{props.Dish.Chef!=null ? props.Dish.Chef.name : "Loading"}</Text>
               </View>
-              </TouchableOpacity>
+              </TouchableOpacity>}
             </View>
           </View>
         </TouchableOpacity>
       </Card>
       <View style={styles.centeredContent}>
-        {props.Dish!=null && dishPageVisible && <DishPage Dish={props.Dish} visible={dishPageVisible} hideModal={hideModal}/>}
+        {props.Dish!=null && dishPageVisible && <DishPage Dish={props.Dish} visible={dishPageVisible} hideModal={hideModal} navigation={props.navigation}/>}
       </View>
       
     </View>
@@ -87,7 +88,8 @@ export default function MenuCard(props) {
 
 MenuCard.propTypes = {
   Dish: any.isRequired,
-  navigation: any
+  navigation: any,
+  inChefMenu: any
 };
 
 const styles = StyleSheet.create({

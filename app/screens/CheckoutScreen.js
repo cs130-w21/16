@@ -6,6 +6,7 @@ import CheckoutSubtotal from "../components/checkoutSubtotal";
 import colors from "../config/colors";
 
 function CheckoutScreen(props) {
+    const navigation = props.navigation;
     return (
         <SafeAreaView style={styles.container}>
             <CheckoutSubtotal></CheckoutSubtotal>
@@ -17,6 +18,7 @@ function CheckoutScreen(props) {
               buttonStyle={styles.paymentButton}
               onPress={() => {
                 // Do a thing
+                navigation.navigate("Tracking")
               }}
             />
             <Button 
@@ -26,6 +28,7 @@ function CheckoutScreen(props) {
               buttonStyle={styles.paymentButton}
               onPress={() => {
                 // Do a thing
+                navigation.navigate("Tracking")
               }}
             />
       </View>

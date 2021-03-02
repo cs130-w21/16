@@ -1,9 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {Dimensions, Image, Modal, ScrollView, StyleSheet, Text, View, SafeAreaView} from 'react-native';
+import {Dimensions, Image, ScrollView, StyleSheet, Text, View, SafeAreaView} from 'react-native';
 import {Button, Icon, Divider, Rating} from 'react-native-elements'
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import colors from '../config/colors';
-import { Table, TableWrapper, Row, Rows } from 'react-native-table-component';
+import MapView, { Marker, Polyline } from 'react-native-maps';
+import coordDist from '../util/CoordDist';
+import MenuCard from '../components/dish';
 
 import {getChefsDishes, getCoverPhotos, getNChefReviews} from "../util/Queries";
 import Dish from '../objects/Dish';
@@ -28,7 +30,6 @@ function ChefScreen(props) {
     const navigation = props.navigation;
     let Chef = props.route.params.Chef;
 
-
     let name = Chef.name;
     let description = Chef.bio;
     let id=Chef.chefid;
@@ -36,15 +37,20 @@ function ChefScreen(props) {
     let shortDesc = Chef.shortDesc;
     let rating = Chef.rating;
     let numReviews = Chef.numReviews;
-    let tableHead = ['Dish Name', 'Price', 'Rating'];
+    var location=JSON.parse(Chef.location);
+    location['latitudeDelta'] = 0.007;
+    location['longitudeDelta'] = 0.007;
 
     const [carouselData, setCarouselData] = useState([]);
-    const [tableData, setTableData] = useState([]);
     const [index, setIndex] = React.useState(0);
+    const [dishIndex, setDishIndex] = React.useState(0);
     const isCarousel = React.useRef(null);
     const [dishPageVisible, setDishPageVisible] = useState(false);
     const [dishPageFocus, setDishPageFocus] = useState(null);
     const [first5Reviews, setFirst5Reviews] = useState(null);
+    const [userLocation, setLocation] = useState(null);
+    const [region, setRegion] = useState(location);
+    const [chefDishes, setChefDishes] = useState(Chef.dishes)
 
 
     useEffect(() => {
@@ -61,19 +67,7 @@ function ChefScreen(props) {
                 dishes.push(new Dish(dish));
             });
             Chef.setDishes(dishes);
-            let td = [];
-            Chef.dishes.forEach((dish) => {
-                td.push(
-                    [<Text style={{color: 'blue', textAlign: 'center'}}
-                    onPress={() => {onPress(dish)}}>
-                    {dish.name}
-                    </Text>,
-                    '$'+dish.price,
-                    dish.rating.toFixed(2)
-                    ]
-                );
-            });
-            setTableData(td);
+            setChefDishes(Chef.dishes);
         }, ()=>{console.log("Error")})
         .catch((err) => {console.log("Use Effect Err Chef's Dishes: ", err)});
 
@@ -82,16 +76,33 @@ function ChefScreen(props) {
         }, () => {console.log("Error in useEffect getNChefReviews")})
         .catch((err) => {console.log("use Effect Err Get N Chef Reviews: ", err)});
         
-        
+        navigator.geolocation.getCurrentPosition((pos) => {
+            setLocation(pos);
+            var loc = {};
+            loc['latitude'] = (pos.coords.latitude + location.latitude)/2.0
+            loc['longitude'] = (pos.coords.longitude + location.longitude)/2.0
+            loc['latitudeDelta'] = Math.abs(pos.coords.latitude-loc.latitude)*3;
+            loc['longitudeDelta'] = Math.abs(pos.coords.longitude-loc.longitude)*1.5;
+            setRegion(loc);
+        }, (err) => {
+            console.warn(`ERROR(${err.code}): ${err.message}`);
+        }, {
+            enableHighAccuracy: true, timeout: 5000, maximumAge: 0
+        });
     }, [])
 
     function hideModal(){
         setDishPageVisible(false);
     }
-    
-    function onPress(dish){
-        setDishPageVisible(true);
-        setDishPageFocus(dish);
+
+    const CarouselDishItem = ({ item, index }) => {
+        return (
+            <MenuCard
+              key={item.dishid}
+              Dish={item}
+              navigation={props.navigation}
+            />
+        )
     }
 
     return(
@@ -133,14 +144,56 @@ function ChefScreen(props) {
                         <Text style={styles.numReviews}>({numReviews} Reviews)</Text>
                     </View>
                     <View style={styles.spacer}/>
-                    <Table style={styles.tableHolder} borderStyle={{borderWidth: 1}}>
-                        <Row data={tableHead} flexArr={[3, 2, 2]} style={styles.head} textStyle={styles.text}/>
-                        <TableWrapper style={styles.wrapper}>
-                            <Rows data={tableData} flexArr={[3,2, 2]} style={styles.row} textStyle={styles.text}/>
-                        </TableWrapper>
-                    </Table>
+                    <Text style={styles.dishesTitle}>Chef's Menu:</Text>
+                    <Carousel
+                        layout='default'
+                        data={chefDishes}
+                        useScrollView={true}
+                        renderItem={CarouselDishItem}
+                        sliderWidth={SLIDER_WIDTH}
+                        sliderHeight={Math.round(ITEM_WIDTH*(3.0/4.0))}
+                        itemWidth={ITEM_WIDTH}
+                        itemHeight={Math.round(ITEM_WIDTH*(3.0/4.0))}
+                        onSnapToItem={(i) => setDishIndex(i)}
+                        useScrollView={true}
+                        ref={isCarousel}
+                        style={{paddingBottom: '5%'}}
+                    />
+                    <Pagination
+                        dotsLength={chefDishes.length}
+                        activeDotIndex={dishIndex}
+                        carouselRef={isCarousel}
+                        dotStyle={styles.dotStyle}
+                        inactiveDotOpacity={0.4}
+                        inactiveDotScale={0.6}
+                        tappableDots={true}
+                        containerStyle={styles.dots}
+                    />
                     <View style={styles.spacer}/>
-                    {numReviews!=null && <Reviews rating={rating} numReviews={numReviews} chefid={id} reviews={first5Reviews}/>}
+                    <MapView style={styles.map}
+                        region={region}
+                        showsUserLocation={true}
+                        showsMyLocationButton={true}
+                        showsTraffic={true}
+                        pitchEnabled={false}
+                    >
+                        {userLocation && <Polyline
+                            coordinates={[
+                                {latitude: location.latitude, longitude: location.longitude},
+                                {latitude: userLocation.coords.latitude, longitude: userLocation.coords.longitude}
+                            ]}
+                            strokeColor={colors.primary}
+                            strokeWidth={6}
+                        />}
+                        <Marker
+                            coordinate={{latitude: location.latitude, longitude: location.longitude}}
+                        />
+                    </MapView>
+                    {userLocation && <Text style={styles.distanceText}>
+                            {coordDist(location.latitude, location.longitude, userLocation.coords.latitude, userLocation.coords.longitude).toFixed(2)} miles away
+                    </Text>}
+                    <View style={styles.spacer}/>
+                    {numReviews!=null && <Reviews rating={rating} numReviews={numReviews} chefid={id} reviews={first5Reviews} navigation={props.navigation}/>}
                     <View style={styles.spacer}/>
                     <View style={styles.spacer}/>
                 </View>
@@ -150,19 +203,13 @@ function ChefScreen(props) {
             </View>
             {dishPageFocus!=null && dishPageVisible && <DishPage Dish={dishPageFocus} visible={dishPageVisible} hideModal={hideModal}/>}
         </View>
-            
-            
-       
-        
     );
 }
-
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colors.background,
-        //minWidth: '100%',
         alignItems: 'center',
         justifyContent: 'flex-start',
         flexDirection: 'column'
@@ -209,7 +256,7 @@ const styles = StyleSheet.create({
     chefPic: {
         width: 150,
         height: 150,
-  
+
         borderRadius: 75
     },
     chefPicHolder: {
@@ -238,6 +285,39 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         marginBottom: 10
     },
+    dishesTitle: {
+        fontSize: 24,
+        fontFamily: 'Avenir',
+        fontWeight: 'bold',
+        color: 'black',
+        alignSelf: 'center',
+        marginTop: '5%'
+    },
+    dots: {
+        alignSelf: 'center',
+        margin: '-3%'
+    },
+    dotStyle: {
+        width: 10,
+        height: 10,
+        borderRadius: 5,
+        margin: 0,
+        backgroundColor: colors.black,
+    },
+    map: {
+        width: '90%',
+        height: 250,
+        borderRadius: 10,
+        margin: '5%'
+    },
+    distanceText: {
+        fontSize: 15,
+        marginLeft: '5%',
+        marginBottom: '5%',
+        color: "#333",
+        fontFamily: "Avenir",
+        fontWeight: 'bold'
+    },
     ratingsContainer: {
         width: '100%',
         flexDirection: "column",
@@ -261,6 +341,7 @@ const styles = StyleSheet.create({
         padding: 10,
         color: "gray",
         fontFamily: "Avenir",
+        textAlign: 'center'
     },
 
     spacer: {
