@@ -12,6 +12,35 @@ export function cartSum() {
   return sum;
 }
 
+export function getDishes(dishes) {
+  var dishString = "";
+  dishes.forEach(item => (dishString += item + " | "));
+  return dishString;
+}
+
+export function isolateChefs() {
+  var pairs = {};
+  global.cart.forEach(item => {
+    if (!(item.dish["Chef"]["name"] in pairs)) {
+      // pairs.push(item.dish["Chef"]["name"]);
+      let chefEntry = item.dish["Chef"]["name"];
+      pairs[chefEntry] = [];
+      let string = item.count + " " + item.dish["name"];
+      pairs[chefEntry].push(string);
+      // console.log("new chef: " + pairs[chefEntry]);
+      // pairs.chefEntry.dishes.push(item.dish["name"]);
+    } else {
+      let chefEntry2 = item.dish["Chef"]["name"];
+      let string = item.count + " " + item.dish["name"];
+      pairs[chefEntry2].push(string);
+      // console.log("existing chef: " + pairs[chefEntry2]);
+    }
+    // console.log(item.dish["Chef"]["name"]);
+    // console.log(Object.keys(pairs));
+  });
+  return pairs;
+}
+
 export function addToCart(item) {
   global.cart.push(item);
 }
@@ -22,21 +51,23 @@ export function addQuantity(index, count) {
 
 export function subTotal() {
   let tot = 0.0;
-  global.cart.forEach(item => (tot += (item.dish.price * item.count)))
+  global.cart.forEach(item => (tot += item.dish.price * item.count));
   return tot.toFixed(2);
 }
 
 export function getLongestTime() {
   let max = 0;
-  global.cart.forEach(item => ((item.dish.timeMin > max) ? (max = item.dish.timeMin) : (max = max)))
+  global.cart.forEach(item =>
+    item.dish.timeMin > max ? (max = item.dish.timeMin) : (max = max)
+  );
 
   if (max < 60) {
-    return max + " minutes"
+    return max + " minutes";
   } else {
     if (max % 60 === 0) {
-      return (max / 60) + " hours"
+      return max / 60 + " hours";
     } else {
-      return (max / 60) + " hours " + (max % 60) + " minutes"
+      return max / 60 + " hours " + (max % 60) + " minutes";
     }
   }
 }
@@ -136,7 +167,6 @@ export default function ShoppingCart(props) {
           ))
         )}
       </ScrollView>
-      
     </View>
   );
 }
@@ -156,7 +186,7 @@ CartCard.propTypes = {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    height: "100%",
+    height: "100%"
   },
   cartCardContainer: {
     width: "100%"
@@ -229,7 +259,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.secondary
   },
   scrollView: {
-    width: "100%",
+    width: "100%"
   },
   empty: {
     fontWeight: "bold",
@@ -250,10 +280,9 @@ const styles = StyleSheet.create({
   },
   checkoutButton: {
     borderRadius: 20,
-    backgroundColor: colors.secondary,
+    backgroundColor: colors.secondary
   },
   checkoutText: {
     fontWeight: "bold"
   }
-
 });
