@@ -44,7 +44,8 @@
     "react-native-snap-carousel": "^3.9.1",
     "react-native-table-component": "^1.2.1",
     "react-native-vector-icons": "^8.1.0",
-    "react-native-web": "~0.13.12"
+    "react-native-web": "~0.13.12",
+    "twilio": "^3.57.0"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
