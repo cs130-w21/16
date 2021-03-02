@@ -50,7 +50,7 @@ app.get("/AvailableDishes", function(req, res) {
       console.log(err);
     }
     // Executing the MySQL query (select all data from the 'users' table).
-    connection.query("SELECT * FROM Dish WHERE available", function(
+    connection.query("SELECT * FROM Dish WHERE available ORDER BY FLOOR(rating*2.0)/2.0 DESC, numReviews DESC", function(
       error,
       results,
       fields
