@@ -186,11 +186,6 @@ function FeaturedMenuScreen(props){
     return(
         <SafeAreaProvider style={styles.container}>
             <NavBarComponent navigation={props.navigation}/>
-            <TouchableHighlight onPress={changeVisible}>
-            <View style={styles.button}>
-                <Text style={styles.text}>Filter</Text>
-            </View>
-            </TouchableHighlight>
             <Modal animationType="slide" transparent={true} visible={modalVisible}>
                 <View style={styles.modalContainer}>
                 <FilterPage  categoriesSet={categoriesSet} setCategoriesSet={setCategoriesSet} categoriesArr={categoriesArr} setCategoriesArr={setCategoriesArr} ratingFilter = {ratingFilter} setRatingFilter = {setRatingFilter} timeFilter = {timeFilter} setTimeFilter = {setTimeFilter} priceFilter = {priceFilter} setPriceFilter = {setPriceFilter} update={onRefresh} closeModal= {setModalVisible} prices={priceRange} time={timeRange}  setPrices = {setPriceRange} setTime = {setTimeRange} />
@@ -198,6 +193,11 @@ function FeaturedMenuScreen(props){
             </Modal>
             
             <ScrollView style={styles.ScrollView} showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
+                <TouchableHighlight onPress={changeVisible}>
+                <View style={styles.button}>
+                    <Text style={styles.text}>Filter</Text>
+                </View>
+                </TouchableHighlight>
                 <ChefRecList data={chefs} navigation={props.navigation}/>
                 <Cards dishes={dishes} chefs={chefs} navigation={props.navigation}/>
             </ScrollView>
@@ -235,6 +235,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         fontSize: 15,
         color: 'grey',
+        fontWeight: 'bold',
         fontFamily:'Avenir'
     }
 });
