@@ -220,16 +220,21 @@ const styles = StyleSheet.create({
         marginLeft: '2.5%',
         marginRight: '2.5%',
         marginBottom: '4%',
+        shadowColor: 'black',
+        shadowOffset: {width: 5, height: 2},
+        shadowOpacity: 0.5,
+        shadowRadius: 10,
+        elevation: 5
     },
     button: {
         alignItems: "center",
-        backgroundColor: colors.secondary,
+        backgroundColor: '#dadada',
         padding: 10
       },
     text: {
         alignItems: "center",
         fontSize: 15,
-        color: "white",
+        color: 'grey',
         fontFamily:'Avenir'
     }
 });
