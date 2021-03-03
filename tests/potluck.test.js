@@ -98,8 +98,9 @@ it("Renders chef card", async () => {
     .toJSON();
   expect(result).toMatchSnapshot();
 });
+
 it("GET /test", async () => {
-  const { body } = await request.get("/test"); //use the request function that we can use the app// save the response to body variable
+  const { body } = await request.get("/test");
   expect(body).toEqual({
     dishid: 1,
     name: "Test Dish"
