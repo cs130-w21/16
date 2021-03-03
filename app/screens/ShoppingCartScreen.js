@@ -17,13 +17,17 @@ function ShoppingCartScreen(props) {
               titleStyle={styles.checkoutText}
               buttonStyle={styles.checkoutButton}
               onPress={() => {
-                if (global.cart.length > 0) {
-                  navigation.navigate("Checkout")
+                if (global.orderOpen){
+                  navigation.navigate("Tracking")
                 } else {
-                  Alert.alert(
-                    "Can't checkout", 
-                    "No items to check out!"
-                  );
+                  if (global.cart.length > 0) {
+                    navigation.navigate("Checkout")
+                  } else {
+                    Alert.alert(
+                      "Can't checkout", 
+                      "No items to check out!"
+                    );
+                  }
                 }
               }}
             />

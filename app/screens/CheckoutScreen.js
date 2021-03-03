@@ -3,31 +3,25 @@ import { Alert, View, SafeAreaView } from "react-native";
 import { StyleSheet } from "react-native";
 import { Card, Button, Input } from "react-native-elements";
 import CheckoutSubtotal from "../components/checkoutSubtotal";
-import { getDishes, isolateChefs } from "../components/ShoppingCart";
+import { dishesPerChef, getDishes, isolateChefs } from "../components/ShoppingCart";
 import colors from "../config/colors";
 import { sendTextMessage } from "../util/Queries";
+import Order from '../objects/Order';
 const secrets = require("../../backend/secrets");
 
 function CheckoutScreen(props) {
-  const [comment, setComment] = useState("");
+  const [comment, setComment] = useState({});
   const navigation = props.navigation;
+  function setCommentChef(thisComment, chef){
+    var comments = comment;
+    comments[chef] = thisComment;
+    setComment(comments);
+    console.log(comment);
+  }
+  console.log(comment);
   return (
     <SafeAreaView style={styles.container}>
-      <CheckoutSubtotal></CheckoutSubtotal>
-      <View>
-        <Input
-          placeholder="Special Instructions"
-          placeholderTextColor="grey"
-          multiline={true}
-          numberOfLines={5}
-          containerStyle={styles.commentContainer}
-          inputContainerStyle={styles.commentInputContainer}
-          inputStyle={styles.commentInput}
-          onChangeText={text => {
-            setComment(text);
-          }}
-        />
-      </View>
+      <CheckoutSubtotal setComment={setCommentChef}></CheckoutSubtotal>
       <View style={styles.paymentTab}>
         <Button
           type="solid"
@@ -36,15 +30,23 @@ function CheckoutScreen(props) {
           buttonStyle={styles.paymentButton}
           onPress={() => {
             // Do a thing
-            var pairs = isolateChefs();
-            Object.keys(pairs).forEach(chef =>
+            if(!global.orderOpen){
+              global.orderOpen = true;
+              global.progress = {};
+              global.orders = new Order(dishesPerChef);
+              var pairs = isolateChefs();
+              Object.keys(pairs).forEach(chef =>
               sendTextMessage(
                 getDishes(pairs[chef]),
-                comment != "" ? comment : "None",
+                comment[chef] != "" ? comment[chef] : "None",
                 secrets.phone(chef),
                 "Cash"
               ).then(navigation.navigate("Tracking"))
-            );
+              );
+            } else {
+              global.orderOpen = true;
+              navigation.navigate("Tracking")
+            }
           }}
         />
         <Button
@@ -54,15 +56,23 @@ function CheckoutScreen(props) {
           buttonStyle={styles.paymentButton}
           onPress={() => {
             // Do a thing
-            var pairs = isolateChefs();
-            Object.keys(pairs).forEach(chef =>
-              sendTextMessage(
-                getDishes(pairs[chef]),
-                comment != "" ? comment : "None",
-                secrets.phone(chef),
-                "Venmo"
-              ).then(navigation.navigate("Tracking"))
-            );
+            if(!global.orderOpen){
+              global.orderOpen = true;
+              global.progress = {};
+              global.orders = new Order(dishesPerChef());
+              var pairs = isolateChefs();
+              Object.keys(pairs).forEach(chef =>
+                sendTextMessage(
+                  getDishes(pairs[chef]),
+                  comment[chef] != "" ? comment[chef] : "None",
+                  secrets.phone(chef),
+                  "Venmo"
+                ).then(navigation.navigate("Tracking"))
+              );
+            } else {
+              global.orderOpen = true;
+              navigation.navigate("Tracking")
+            }
           }}
         />
       </View>
@@ -72,7 +82,7 @@ function CheckoutScreen(props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.background
+    backgroundColor: 'white'
   },
   paymentTab: {
     flex: 1,

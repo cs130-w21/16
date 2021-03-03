@@ -1,35 +1,52 @@
-import React, { Component, View } from "react";
+import React, { Component, useCallback, useEffect, useState, View } from "react";
 import { Header, Icon, Badge } from "react-native-elements";
 import { Text, StyleSheet, TouchableOpacity } from "react-native";
 import { cartSum } from "./ShoppingCart";
 import colors from "../config/colors";
 
-class RightElement extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { sum: cartSum() };
-  }
-  render() {
-    const { navigation } = this.props;
-    return (
-      <TouchableOpacity
-        onPress={() => {
+function RightElement(props) {
+  const [sum, setSum] = useState(cartSum());
+
+  const navigation = props.navigation;
+  return (
+    !global.orderOpen ? 
+    <TouchableOpacity
+      onPress={() => {
+        if(global.orderOpen){
+          navigation.navigate("Tracking");
+        } else {
           navigation.navigate("ShoppingCart");
-          this.setState({ sum: cartSum() });
-        }}
-      >
-        <Icon name="shopping-cart" color="white" />
-        {cartSum() > 0 ? (
-          <Badge
+        }
+        setSum(cartSum());      }}
+    >
+      <Icon name="shopping-cart" color="white" />
+      {cartSum() > 0 ? (
+        <Badge
+          containerStyle={{ position: "absolute", top: -4, right: -4 }}
+          badgeStyle={{ backgroundColor: colors.secondary }}
+        />
+      ) : (
+        <></>
+      )}
+    </TouchableOpacity>
+    :
+    <TouchableOpacity
+      onPress={() => {
+        if(global.orderOpen){
+          navigation.navigate("Tracking");
+        } else {
+          navigation.navigate("ShoppingCart");
+        }
+      }}
+    >
+      <Icon name='shopping-cart' color='white'/>
+      <Badge
             containerStyle={{ position: "absolute", top: -4, right: -4 }}
             badgeStyle={{ backgroundColor: colors.secondary }}
-          />
-        ) : (
-          <></>
-        )}
-      </TouchableOpacity>
-    );
-  }
+      />
+    </TouchableOpacity>
+  );
+
 }
 
 class LeftElement extends Component {
@@ -66,23 +83,31 @@ class CenterElement extends Component {
   }
 }
 
-class NavBarComponent extends Component {
-  render() {
-    return (
-      <Header
-        containerStyle={{ backgroundColor: colors.primary }}
-        leftComponent={
-          <LeftElement
-            navigation={this.props.navigation}
-            search={this.props.search}
-          />
-        }
-        centerComponent={<CenterElement />}
-        rightComponent={<RightElement navigation={this.props.navigation} />}
-        barStyle="light-content"
-      />
-    );
-  }
+function NavBarComponent(props){
+  const [refresh, setRefresh] = useState(false);
+
+  useEffect(() => {
+    setRefresh(!refresh);
+  }, [global.cart])
+
+  useEffect(() => {
+    setRefresh(!refresh);
+  }, [global.orderOpen])
+
+  return (
+    <Header
+      containerStyle={{ backgroundColor: colors.primary }}
+      leftComponent={
+        <LeftElement
+          navigation={props.navigation}
+          search={props.search}
+        />
+      }
+      centerComponent={<CenterElement />}
+      rightComponent={<RightElement navigation={props.navigation} />}
+      barStyle="light-content"
+    />
+  );
 }
 
 const styles = StyleSheet.create({
