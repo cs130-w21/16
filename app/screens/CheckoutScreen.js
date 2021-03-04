@@ -6,7 +6,7 @@ import CheckoutSubtotal from "../components/checkoutSubtotal";
 import { getDishes, isolateChefs } from "../components/ShoppingCart";
 import colors from "../config/colors";
 import { sendTextMessage } from "../util/Queries";
-const secrets = require("../../backend/secrets");
+//const secrets = require("../../backend/secrets");
 
 function CheckoutScreen(props) {
   const [comment, setComment] = useState("");

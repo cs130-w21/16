@@ -2,6 +2,7 @@ import "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
 import FeaturedMenuScreen from "./app/screens/FeaturedMenuScreen";
+import MapScreen from "./app/screens/MapScreen"
 import { NavigationContainer, StackActions } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import WelcomeScreen from "./app/screens/WelcomeScreen";
@@ -86,6 +87,10 @@ const App = () => {
         <Stack.Screen
           name="FeaturedMenuScreen"
           component={FeaturedMenuScreen}
+        />
+        <Stack.Screen
+          name="MapScreen"
+          component={MapScreen}
         />
         <Stack.Screen name="DishPage" component={DishPage} />
         <Stack.Screen name="Chef" component={ChefScreen} />

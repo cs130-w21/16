@@ -9,27 +9,48 @@ class RightElement extends Component {
     super(props);
     this.state = { sum: cartSum() };
   }
+
   render() {
-    const { navigation } = this.props;
-    return (
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate("ShoppingCart");
-          this.setState({ sum: cartSum() });
-        }}
-      >
-        <Icon name="shopping-cart" color="white" />
-        {cartSum() > 0 ? (
-          <Badge
-            containerStyle={{ position: "absolute", top: -4, right: -4 }}
-            badgeStyle={{ backgroundColor: colors.secondary }}
-          />
-        ) : (
-          <></>
-        )}
-      </TouchableOpacity>
-    );
-  }
+    const { navigation, search } = this.props;
+    if (search == null)
+    {
+      return (
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("ShoppingCart");
+            this.setState({ sum: cartSum() });
+          }}
+        >
+          <Icon name="shopping-cart" color="white" />
+          {cartSum() > 0 ? (
+            <Badge
+              containerStyle={{ position: "absolute", top: -4, right: -4 }}
+              badgeStyle={{ backgroundColor: colors.secondary }}
+            />
+          ) : (
+            <></>
+          )}
+        </TouchableOpacity>
+        
+      );
+    }
+    else
+    {
+      return (
+        <Icon
+          name="location-pin"
+          type="simple-line-icon"
+          color="white"
+          onPress={() => {
+            navigation.navigate("MapScreen");
+          }}
+        />
+      );
+
+    }
+
+    }
+    
 }
 
 class LeftElement extends Component {
@@ -78,7 +99,12 @@ class NavBarComponent extends Component {
           />
         }
         centerComponent={<CenterElement />}
-        rightComponent={<RightElement navigation={this.props.navigation} />}
+        rightComponent={
+          <RightElement 
+            navigation={this.props.navigation}
+            search={this.props.search} 
+          />
+        }
         barStyle="light-content"
       />
     );
