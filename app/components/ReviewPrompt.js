@@ -67,7 +67,7 @@ export default function ReviewPrompt(props){
                     <View style={styles.modalView}>
                         <Header
                             containerStyle={styles.headerContainer}
-                            centerComponent={<View style={{flexDirection: 'column'}}><Text style={styles.header}>Review Your Dishes</Text></View>}
+                            centerComponent={<View style={{flexDirection: 'column'}}><Text style={styles.header}>Thank You!</Text><Text style={styles.header2}>Did You Enjoy Your Dishes?</Text></View>}
                             rightComponent={<Button onPress={close} containerStyle={styles.buttonContainer} buttonStyle={styles.closeButtonStyle} icon={<Icon name='close' size={25} color='black' style={{backgroundColor: 'white', borderRadius:15, outline:"black solid 2px"}}/>} />}
                         />
                         <ScrollView style={styles.dishesContainer}>
@@ -132,9 +132,7 @@ const styles = StyleSheet.create({
     dishesContainer: {
         alignContent: 'center',
         flexDirection: 'column',
-        //justifyContent: 'center',
         width: '100%',
-        //alignItems: 'center',
     },
     closeButton:{
         alignSelf:'center'
@@ -162,6 +160,16 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         marginTop: 5,
         fontFamily: 'Avenir',
+        textAlign: 'center'
+    },
+    header2:{
+        color: 'white',
+        fontWeight: 'bold',
+        fontSize: 18,
+        alignSelf: 'center',
+        marginTop: 5,
+        fontFamily: 'Avenir',
+        textAlign: 'center'
     },
     dishContainer:{
         width: '90%',
