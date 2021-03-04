@@ -1,6 +1,7 @@
 import "react-native-gesture-handler";
 import { StatusBar } from "expo-status-bar";
 import React from "react";
+import { Icon } from "react-native-elements";
 import FeaturedMenuScreen from "./app/screens/FeaturedMenuScreen";
 import MapScreen from "./app/screens/MapScreen"
 import { NavigationContainer, StackActions } from "@react-navigation/native";
@@ -68,7 +69,7 @@ const App = () => {
           name="Tracking"
           component={Tracking}
           options={{
-            title: "ORDER TRACKING",
+            headerTitle: "ORDER TRACKING",
             headerShown: true,
             headerStyle: {
               backgroundColor: colors.primary
@@ -81,7 +82,7 @@ const App = () => {
               fontSize: 20
             },
             headerTruncatedBackTitle: "",
-            headerBackTitle: ""
+            headerBackTitle: "",
           }}
         />
         <Stack.Screen
