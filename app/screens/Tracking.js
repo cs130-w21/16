@@ -8,6 +8,7 @@ import colors from "../config/colors";
 import * as Progress from 'react-native-progress';
 import { Icon } from 'react-native-elements';
 import { dishesPerChef, getLongestTimeForChef } from "../components/ShoppingCart";
+import ReviewPrompt from "../components/ReviewPrompt";
 
 const ICON_SIZE = 200;
 const SLIDER_WIDTH = Dimensions.get('window').width
@@ -62,6 +63,55 @@ function icon(progress){
     }
 }
 
+function TrackingElement(props){
+    const chef=props.item;
+    const [reviewVisible, setReviewVisible] = useState(false);
+
+    function hideModal(){
+        setReviewVisible(false);
+    }
+
+    function finishOrder(){
+        setReviewVisible(true);
+    }
+
+    return(
+        (global.cart != null || global.cart != undefined) && global.cart.length > 0 ? 
+        <View style={styles.trackingContainer}>
+            <Text style={styles.orderFromText}>Order From: {chef}</Text>
+            {icon(global.progress[chef])}
+            <Progress.Bar progress={global.progress[chef]} color={colors.secondary} width={300} style={styles.progress} />
+            <View style={styles.chefOrderSummaryContainer}>
+                <Text style={styles.chefText}>Chef: {chef}</Text>
+                {dishesPerChef()[chef].map((orderitem) => 
+                    orderitem["count"] > 0 ? (
+                <View style={styles.itemContainer}>
+                    <Text style={styles.textStyle}>
+                    {orderitem["count"] +
+                    " x " +
+                    orderitem["dish"]["name"] +
+                    " by " +
+                    orderitem["dish"]["Chef"]["name"]}
+                    </Text>
+                    <Text style={styles.textStyle}>
+                    {"$" + (orderitem["count"] * orderitem["dish"]["price"]).toFixed(2)}
+                    </Text>
+                </View>
+                ) : null)}
+                <Text style={styles.deliveryHeader}>Estimated Time To Pickup: {getLongestTimeForChef(chef)}</Text>
+                {global.progress[chef]==1 &&<Button title="Close Order" type='solid' containerStyle={styles.submitButtonContainer} titleStyle={styles.submitButtonTitle} buttonStyle={styles.submitButton} onPress={finishOrder}/>}
+                {reviewVisible && <ReviewPrompt
+                                    order={dishesPerChef()[chef]}
+                                    hideModal={hideModal}    
+                                    refresh={hideModal}
+                                    chef={chef}
+                                    closeOpenOrder={props.closeOpenOrder}
+                />}
+            </View>
+        </View>    : <View/>
+    )
+}
+
 function Tracking(props) {
     const navigation = props.navigation;
     const [progress, setProgress] = React.useState(0);
@@ -83,38 +133,24 @@ function Tracking(props) {
         }
     }
 
+    function closeOpenOrder(){
+        navigation.navigate("FeaturedMenuScreen");
+        global.cart = [];
+        global.orderOpen = false;
+        global.progress = {};
+    }
+
     const carouselOrderItem = ({item, index}) => {
+
         return (
             <View style={styles.trackingContainer}>
-                <Text style={styles.orderFromText}>Order From: {item}</Text>
-                {icon(global.progress[item])}
-                <Progress.Bar progress={global.progress[item]} color={colors.secondary} width={300} style={styles.progress} />
-                <View style={styles.chefOrderSummaryContainer}>
-                    <Text style={styles.chefText}>Chef: {item}</Text>
-                    {dishesPerChef()[item].map((item) => 
-                        item["count"] > 0 ? (
-                    <View style={styles.itemContainer}>
-                        <Text style={styles.textStyle}>
-                        {item["count"] +
-                        " x " +
-                        item["dish"]["name"] +
-                        " by " +
-                        item["dish"]["Chef"]["name"]}
-                        </Text>
-                        <Text style={styles.textStyle}>
-                        {"$" + (item["count"] * item["dish"]["price"]).toFixed(2)}
-                        </Text>
-                    </View>
-                    ) : null)}
-                    <Text style={styles.deliveryHeader}>Estimated Time To Pickup: {getLongestTimeForChef(item)}</Text>
-                </View>
+                {global.orders.chefs.length > 0 && <TrackingElement item={item} closeOpenOrder={closeOpenOrder}/>}
             </View>
         )
     }
 
     return (
-        <View style={{height: '100%'}}>
-        <View>
+        <View style={{height: '100%', flexDirection: 'column', alignContent: 'flex-start'}}>
             <Carousel
                 layout='default'
                 data={global.orders.chefs}
@@ -126,35 +162,32 @@ function Tracking(props) {
                 useScrollView={true}
                 ref={isCarousel}
             />
-            <View style={{minHeight: 50}}>
-                <Pagination
-                    dotsLength={global.orders.chefs.length}
-                    activeDotIndex={index}
-                    carouselRef={isCarousel}
-                    dotStyle={styles.dotStyle}
-                    inactiveDotOpacity={0.4}
-                    inactiveDotScale={0.6}
-                    tappableDots={true}
-                    containerStyle={styles.dots}
+
+            <SafeAreaView style={styles.paymentTab}>
+                <View style={styles.dotContainer}>
+                    <Pagination
+                        dotsLength={global.orders.chefs.length}
+                        activeDotIndex={index}
+                        carouselRef={isCarousel}
+                        dotStyle={styles.dotStyle}
+                        inactiveDotOpacity={0.4}
+                        inactiveDotScale={0.6}
+                        tappableDots={true}
+                        containerStyle={styles.dots}
+                    />
+                </View>
+                <Button
+                type="solid"
+                title="Home"
+                titleStyle={styles.doneText}
+                buttonStyle={styles.doneButton}
+                containerStyle={styles.doneButtonContainer}
+                onPress={() => {
+                    // Do a thing
+                    navigation.navigate("FeaturedMenuScreen");
+                }}
                 />
-            </View>
-        </View>
-        <SafeAreaView style={styles.paymentTab}>
-            <Button
-              type="solid"
-              title="Done"
-              titleStyle={styles.doneText}
-              buttonStyle={styles.doneButton}
-              onPress={() => {
-                // Do a thing
-                navigation.navigate("FeaturedMenuScreen");
-                global.cart = [];
-                global.orderOpen = false;
-                global.progress = {};
-                
-              }}
-            />
-      </SafeAreaView>
+        </SafeAreaView>
       </View>
     
     )
@@ -162,22 +195,21 @@ function Tracking(props) {
 
 const styles = StyleSheet.create({
     container: {
-      backgroundColor: colors.background
+      backgroundColor: 'white'
     },
     trackingContainer: {
         width: '100%',
-        height: '80%'
     },
     paymentTab: {
         flex: 1,
-        backgroundColor: colors.primary,
         justifyContent: "space-evenly",
         alignContent: "center",
         alignItems: "center",
-        alignSelf: 'flex-end',
-        flexDirection: "row",
+        flexDirection: "column",
         width: "100%",
-        height: "10%",
+        height: "12%",
+        position: "absolute",
+        bottom: 0
     }, 
     doneText: {
       fontWeight: "bold",
@@ -196,12 +228,27 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         backgroundColor: colors.secondary,
     },
+    doneButtonContainer: {
+        width: '50%',
+        marginBottom: 20
+    },
     progress: {
         alignSelf: 'center'
     },
     dots: {
         alignSelf: 'center',
+        alignContent: 'center',
+        justifyContent: 'center',
+        flexDirection: 'row',
         margin: '-3%',
+    },
+    dotContainer: {
+        minHeight: 50, 
+        position: 'absolute', 
+        top: -50, 
+        justifyContent: 'center', 
+        alignContent: 'center', 
+        alignSelf: 'center', 
     },
     dotStyle: {
         width: 10,
@@ -209,6 +256,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         margin: 0,
         backgroundColor: colors.black,
+        alignSelf: 'flex-end'
     },
     itemContainer: {
         paddingVertical: 10,
@@ -251,7 +299,21 @@ const styles = StyleSheet.create({
         marginTop: 10,
         alignSelf: 'center',
         textAlign: "center"
-    }
+    },
+    submitButtonContainer: {
+        marginTop: 20,
+        width: '100%',
+    },
+    submitButton: {
+        color: 'white',
+        borderColor: 'white',
+        backgroundColor: colors.primary
+    },
+    submitButtonTitle: {
+        color: 'white',
+        fontFamily: 'Avenir',
+        borderColor: 'white',
+    },
 });
 
 export default Tracking;

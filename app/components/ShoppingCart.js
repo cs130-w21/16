@@ -53,6 +53,10 @@ export function dishesPerChef() {
   return pairs;
 }
 
+export function removeChef(chef){
+  global.orders.removeChef(chef);
+}
+
 export function addToCart(item) {
   global.cart.push(item);
 }
@@ -260,15 +264,15 @@ CartCard.propTypes = {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    height: "100%"
+    height: "100%",
   },
   cartCardContainer: {
-    width: "100%"
+    width: "100%",
   },
   cardContainer: {
     alignItems: "flex-end",
     alignContent: "stretch",
-    height: 125
+    height: 125,
   },
   title: {
     fontWeight: "bold",
@@ -325,7 +329,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "flex-start",
-    flexDirection: "row"
+    flexDirection: "row",
   },
   minusButton: {
     borderBottomLeftRadius: 20,
@@ -333,7 +337,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.secondary
   },
   scrollView: {
-    width: "100%"
+    width: "100%",
   },
   empty: {
     fontWeight: "bold",

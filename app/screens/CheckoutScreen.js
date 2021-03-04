@@ -16,18 +16,18 @@ function CheckoutScreen(props) {
     var comments = comment;
     comments[chef] = thisComment;
     setComment(comments);
-    console.log(comment);
   }
-  console.log(comment);
+
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <CheckoutSubtotal setComment={setCommentChef}></CheckoutSubtotal>
-      <View style={styles.paymentTab}>
+      <SafeAreaView style={styles.paymentTab}>
         <Button
           type="solid"
           title="Pay with Cash"
           titleStyle={styles.paymentText}
           buttonStyle={styles.paymentButton}
+          containerStyle={styles.paymentButtonContainer}
           onPress={() => {
             // Do a thing
             if(!global.orderOpen){
@@ -54,6 +54,7 @@ function CheckoutScreen(props) {
           title="Pay with Venmo"
           titleStyle={styles.paymentText}
           buttonStyle={styles.paymentButton}
+          containerStyle={styles.paymentButtonContainer}
           onPress={() => {
             // Do a thing
             if(!global.orderOpen){
@@ -75,18 +76,18 @@ function CheckoutScreen(props) {
             }
           }}
         />
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    height: '100%'
   },
   paymentTab: {
     flex: 1,
-    backgroundColor: colors.primary,
     justifyContent: "space-evenly",
     alignContent: "center",
     alignItems: "center",
@@ -103,6 +104,10 @@ const styles = StyleSheet.create({
   paymentButton: {
     borderRadius: 20,
     backgroundColor: colors.secondary
+  },
+  paymentButtonContainer: {
+    width: '40%',
+    marginBottom: 20
   },
   commentInputContainer: {
     // height: "100%"

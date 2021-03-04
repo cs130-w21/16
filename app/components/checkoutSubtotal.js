@@ -59,11 +59,10 @@ function CheckoutSubtotal(props) {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    height: "100%",
+    height: '80%'
   },
   scrollView: {
     width: "100%",
-    height: "100%",
     marginHorizontal: 10
   },
   itemContainer: {
