@@ -359,7 +359,7 @@ function FilterPage(props) {
 
                     <Button
                         title = "Apply"
-                        buttonStyle = {{justifyContent:'center', backgroundColor: 'transparent', paddingBottom: '2%'}}
+                        buttonStyle = {{justifyContent:'center', backgroundColor: 'transparent', paddingBottom: '5%'}}
                         titleStyle = {{fontFamily: 'Avenir', color: "black", fontSize:20}}
                         onPress = {closeApply}
                     />

@@ -51,7 +51,7 @@ export default function LeaveReview(props){
     }
 
     function submit(){
-        if(dish!=null && reviewer!=null && reviewer.length>0){
+        if(dish!=null && reviewer!=null && reviewer.length>0 && (rating>=1 && rating<=5)){
             pushNewReview(dish.dishid,dish.chefid,reviewer,rating,comment, Date.now()).then(function(results) {
                 Alert.alert(
                     "Review Submitted",
@@ -66,6 +66,17 @@ export default function LeaveReview(props){
                 );
             }, ()=>{console.log("Error in submit pushnewReview")})
             .catch((err) => {console.log("Err Push New Review: ", err)});
+        } else if (rating < 1 || rating > 5) {
+            Alert.alert(
+                "Unable to Submit Review",
+                "You must leave a star rating.",
+                [
+                    {
+                        text: "Dismiss",
+                        style: 'dismiss'
+                    }
+                ]
+            );
         } else {
             Alert.alert(
                 "Unable to Submit Review",

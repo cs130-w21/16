@@ -122,6 +122,7 @@ function NavBarComponent(props){
       }
       centerComponent={<CenterElement />}
       rightComponent={<RightElement navigation={props.navigation} search={props.search} />}
+
       barStyle="light-content"
     />
   );
