@@ -93,7 +93,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     width: "100%",
-    height: "12%",
     position: "absolute",
     bottom: 0
   },

@@ -1,5 +1,5 @@
 import React, { Component, useCallback, useEffect, useState } from "react";
-import { Dimensions, View, Text, SafeAreaView } from "react-native";
+import { Dimensions, View, Text, SafeAreaView, ScrollView } from "react-native";
 import { StyleSheet } from "react-native";
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import { Card, Button } from "react-native-elements";
@@ -10,10 +10,10 @@ import { Icon } from 'react-native-elements';
 import { dishesPerChef, getLongestTimeForChef } from "../components/ShoppingCart";
 import ReviewPrompt from "../components/ReviewPrompt";
 
-const ICON_SIZE = 200;
+
 const SLIDER_WIDTH = Dimensions.get('window').width
 const SLIDER_HEIGHT = Dimensions.get('window').height
-
+const ICON_SIZE = SLIDER_HEIGHT*0.2;
 
 const sleep = (milliseconds) => {
     return new Promise(resolve => setTimeout(resolve, milliseconds))
@@ -74,14 +74,13 @@ function TrackingElement(props){
     function finishOrder(){
         setReviewVisible(true);
     }
-
     return(
         (global.cart != null || global.cart != undefined) && global.cart.length > 0 ? 
-        <View style={styles.trackingContainer}>
+        <SafeAreaView style={styles.trackingContainer}>
             <Text style={styles.orderFromText}>Order From: {chef}</Text>
             {icon(global.progress[chef])}
             <Progress.Bar progress={global.progress[chef]} color={colors.secondary} width={300} style={styles.progress} />
-            <View style={styles.chefOrderSummaryContainer}>
+            <ScrollView style={styles.chefOrderSummaryContainer}>
                 <Text style={styles.chefText}>Chef: {chef}</Text>
                 {dishesPerChef()[chef].map((orderitem) => 
                     orderitem["count"] > 0 ? (
@@ -99,7 +98,7 @@ function TrackingElement(props){
                 </View>
                 ) : null)}
                 <Text style={styles.deliveryHeader}>Estimated Time To Pickup: {getLongestTimeForChef(chef)}</Text>
-                {global.progress[chef]==1 &&<Button title="Close Order" type='solid' containerStyle={styles.submitButtonContainer} titleStyle={styles.submitButtonTitle} buttonStyle={styles.submitButton} onPress={finishOrder}/>}
+                {global.progress[chef]==1 ? <Button title="Close Order" type='solid' containerStyle={styles.submitButtonContainer} titleStyle={styles.submitButtonTitle} buttonStyle={styles.submitButton} onPress={finishOrder}/>: <View style={{height: 100}}/>}
                 {reviewVisible && <ReviewPrompt
                                     order={dishesPerChef()[chef]}
                                     hideModal={hideModal}    
@@ -107,8 +106,9 @@ function TrackingElement(props){
                                     chef={chef}
                                     closeOpenOrder={props.closeOpenOrder}
                 />}
-            </View>
-        </View>    : <View/>
+            </ScrollView>
+            
+        </SafeAreaView>    : <View/>
     )
 }
 
@@ -150,19 +150,20 @@ function Tracking(props) {
     }
 
     return (
-        <View style={{height: '100%', flexDirection: 'column', alignContent: 'flex-start'}}>
-            <Carousel
-                layout='default'
-                data={global.orders.chefs}
-                useScrollView={true}
-                renderItem={carouselOrderItem}
-                sliderWidth={SLIDER_WIDTH}
-                itemWidth={SLIDER_WIDTH}
-                onSnapToItem={(i) => setIndex(i)}
-                useScrollView={true}
-                ref={isCarousel}
-            />
-
+        <View style={{height: '100%', flexDirection: 'column', alignContent: 'flex-stretch' , justifyContent: 'flex-end'}}>
+            <SafeAreaView style={{width: '100%', height: '85%', position: 'absolute', top: 0}}>
+                <Carousel
+                    layout='default'
+                    data={global.orders.chefs}
+                    useScrollView={true}
+                    renderItem={carouselOrderItem}
+                    sliderWidth={SLIDER_WIDTH}
+                    itemWidth={SLIDER_WIDTH}
+                    onSnapToItem={(i) => setIndex(i)}
+                    useScrollView={true}
+                    ref={isCarousel}
+                />
+            </SafeAreaView>
             <SafeAreaView style={styles.paymentTab}>
                 <View style={styles.dotContainer}>
                     <Pagination
@@ -187,7 +188,7 @@ function Tracking(props) {
                     navigation.navigate("FeaturedMenuScreen");
                 }}
                 />
-        </SafeAreaView>
+            </SafeAreaView>
       </View>
     
     )
@@ -201,15 +202,15 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     paymentTab: {
-        flex: 1,
-        justifyContent: "space-evenly",
-        alignContent: "center",
+        flex: 0,
+        alignContent: "flex-end",
         alignItems: "center",
         flexDirection: "column",
+        justifyContent: 'flex-end',
         width: "100%",
-        height: "12%",
-        position: "absolute",
-        bottom: 0
+        height: '15%',
+        position: 'absolute',
+        bottom: 0,
     }, 
     doneText: {
       fontWeight: "bold",
@@ -230,6 +231,7 @@ const styles = StyleSheet.create({
     },
     doneButtonContainer: {
         width: '50%',
+        height: '50%',
         marginBottom: 20
     },
     progress: {
@@ -237,19 +239,18 @@ const styles = StyleSheet.create({
     },
     dots: {
         alignSelf: 'center',
-        alignContent: 'center',
-        justifyContent: 'center',
+        alignContent: 'flex-start',
+        justifyContent: 'flex-start',
         flexDirection: 'row',
         margin: '-3%',
-        width: '50%'
+        width: '50%',
     },
     dotContainer: {
         minHeight: 50, 
-        position: 'absolute', 
-        top: -50, 
+        height: '25%',
         justifyContent: 'center', 
         alignContent: 'center', 
-        alignSelf: 'center', 
+        alignSelf: 'center',
     },
     dotStyle: {
         width: 10,
@@ -257,7 +258,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         margin: 0,
         backgroundColor: colors.black,
-        alignSelf: 'flex-end'
+        alignSelf: 'center'
     },
     itemContainer: {
         paddingVertical: 10,
@@ -304,6 +305,7 @@ const styles = StyleSheet.create({
     submitButtonContainer: {
         marginTop: 20,
         width: '100%',
+        alignSelf: 'center',
     },
     submitButton: {
         color: 'white',
