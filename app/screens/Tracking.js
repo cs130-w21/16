@@ -241,6 +241,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         flexDirection: 'row',
         margin: '-3%',
+        width: '50%'
     },
     dotContainer: {
         minHeight: 50, 

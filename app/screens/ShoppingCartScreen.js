@@ -39,7 +39,8 @@ function ShoppingCartScreen(props) {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.background
+    backgroundColor: colors.background,
+    height: '100%'
   },
   checkoutTab: {
     flex: 1,

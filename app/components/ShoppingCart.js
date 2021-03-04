@@ -244,6 +244,7 @@ export default function ShoppingCart(props) {
             />
           ))
         )}
+        <View style={{height: 150}}/>
       </ScrollView>
     </View>
   );
@@ -264,7 +265,6 @@ CartCard.propTypes = {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    height: "100%",
   },
   cartCardContainer: {
     width: "100%",

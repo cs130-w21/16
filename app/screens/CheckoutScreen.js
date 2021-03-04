@@ -33,7 +33,7 @@ function CheckoutScreen(props) {
             if(!global.orderOpen){
               global.orderOpen = true;
               global.progress = {};
-              global.orders = new Order(dishesPerChef);
+              global.orders = new Order(dishesPerChef());
               var pairs = isolateChefs();
               Object.keys(pairs).forEach(chef =>
               sendTextMessage(
