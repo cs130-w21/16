@@ -90,7 +90,7 @@ function Search(props){
 
     return(
         <SafeAreaProvider style={styles.container}>
-            <NavBarComponent search={true} navigation={props.navigation}/>
+            <NavBarComponent search="true" navigation={props.navigation}/>
             <SearchBar lightTheme={true} round={true} value={search} onChangeText={(val) => filter(val, setSearch, dishes, setShownDishes)} ></SearchBar>
             <ScrollView style={styles.ScrollView} showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
                 <Cards dishes={showDishes} navigation={props.navigation}/>

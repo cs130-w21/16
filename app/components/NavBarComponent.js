@@ -7,45 +7,62 @@ import colors from "../config/colors";
 function RightElement(props) {
   const [sum, setSum] = useState(cartSum());
 
-  const navigation = props.navigation;
-  return (
-    !global.orderOpen ? 
-    <TouchableOpacity
-      onPress={() => {
-        if(global.orderOpen){
-          navigation.navigate("Tracking");
-        } else {
-          navigation.navigate("ShoppingCart");
-        }
-        setSum(cartSum());      }}
-    >
-      <Icon name="shopping-cart" color="white" />
-      {cartSum() > 0 ? (
-        <Badge
-          containerStyle={{ position: "absolute", top: -4, right: -4 }}
-          badgeStyle={{ backgroundColor: colors.secondary }}
-        />
-      ) : (
-        <></>
-      )}
-    </TouchableOpacity>
-    :
-    <TouchableOpacity
-      onPress={() => {
-        if(global.orderOpen){
-          navigation.navigate("Tracking");
-        } else {
-          navigation.navigate("ShoppingCart");
-        }
-      }}
-    >
-      <Icon name='shopping-cart' color='white'/>
-      <Badge
+  const {navigation, search} = props;
+  if (search)  //if its on the search screen the right element has to be the map icon
+  {
+    return (
+      <Icon
+        name="location-pin"
+        type="simple-line-icon"
+        color="white"
+        onPress={() => {
+          navigation.navigate("MapScreen");
+        }}
+      />
+    )
+  }
+  else
+  {
+
+    return (
+      !global.orderOpen ? 
+      <TouchableOpacity
+        onPress={() => {
+          if(global.orderOpen){
+            navigation.navigate("Tracking");
+          } else {
+            navigation.navigate("ShoppingCart");
+          }
+          setSum(cartSum());      }}
+      >
+        <Icon name="shopping-cart" color="white" />
+        {cartSum() > 0 ? (
+          <Badge
             containerStyle={{ position: "absolute", top: -4, right: -4 }}
             badgeStyle={{ backgroundColor: colors.secondary }}
-      />
-    </TouchableOpacity>
-  );
+          />
+        ) : (
+          <></>
+        )}
+      </TouchableOpacity>
+      :
+      <TouchableOpacity
+        onPress={() => {
+          if(global.orderOpen){
+            navigation.navigate("Tracking");
+          } else {
+            navigation.navigate("ShoppingCart");
+          }
+        }}
+      >
+        <Icon name='shopping-cart' color='white'/>
+        <Badge
+              containerStyle={{ position: "absolute", top: -4, right: -4 }}
+              badgeStyle={{ backgroundColor: colors.secondary }}
+        />
+      </TouchableOpacity>
+    );
+  }
 
 }
 
@@ -104,7 +121,8 @@ function NavBarComponent(props){
         />
       }
       centerComponent={<CenterElement />}
-      rightComponent={<RightElement navigation={props.navigation} />}
+      rightComponent={<RightElement navigation={props.navigation} search={props.search} />}
+
       barStyle="light-content"
     />
   );
