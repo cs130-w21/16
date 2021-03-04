@@ -8,37 +8,42 @@ import ShoppingCart from "../components/ShoppingCart";
 function ShoppingCartScreen(props) {
   const navigation = props.navigation;
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <ShoppingCart cart={global.cart}></ShoppingCart>
-      <View style={styles.checkoutTab}>
+      <SafeAreaView style={styles.checkoutTab}>
             <Button
               type="solid"
               title="Checkout"
               titleStyle={styles.checkoutText}
               buttonStyle={styles.checkoutButton}
+              containerStyle={styles.checkoutButtonContainer}
               onPress={() => {
-                if (global.cart.length > 0) {
-                  navigation.navigate("Checkout")
+                if (global.orderOpen){
+                  navigation.navigate("Tracking")
                 } else {
-                  Alert.alert(
-                    "Can't checkout", 
-                    "No items to check out!"
-                  );
+                  if (global.cart.length > 0) {
+                    navigation.navigate("Checkout")
+                  } else {
+                    Alert.alert(
+                      "Can't checkout", 
+                      "No items to check out!"
+                    );
+                  }
                 }
               }}
             />
-      </View>
-    </SafeAreaView>
+      </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.background
+    backgroundColor: colors.background,
+    height: '100%'
   },
   checkoutTab: {
     flex: 1,
-    backgroundColor: colors.primary,
     justifyContent: "space-evenly",
     alignContent: "center",
     alignItems: "center",
@@ -51,6 +56,10 @@ const styles = StyleSheet.create({
   checkoutButton: {
     borderRadius: 20,
     backgroundColor: colors.secondary,
+  },
+  checkoutButtonContainer: {
+    width: '50%',
+    marginBottom: 20
   },
   checkoutText: {
     fontWeight: "bold",
