@@ -9,6 +9,7 @@ import MenuCard from '../components/dish';
 import {getAvailableDishes, getChefs} from '../util/Queries';
 import Dish from '../objects/Dish';
 import { SearchBar } from 'react-native-elements';
+import Fuse from 'fuse.js'
 
 function dishCard(content, navigation){
     return <MenuCard
@@ -40,16 +41,16 @@ function filter(search, searchChange, dishes, setDishes) {
         setDishes(null);
         return;
     }
-    var validDishes = [];
-    for(var dish in dishes){
-        const dishName = dishes[dish]['name'];
-        const description = dishes[dish]['description'];
-        const ingredients = dishes[dish]['ingredients'];
-        if(dishName.toLowerCase().includes(search.toLowerCase()) || description.toLowerCase().includes(search.toLowerCase()) || ingredients.toLowerCase().includes(search.toLowerCase())){
-            validDishes.push(dishes[dish]);
-        }
+
+    const options = {
+        keys: ["name", "ingredients", "description"]
     }
-    setDishes(validDishes);
+
+    const fuse = new Fuse(dishes, options)
+    var fuseOut = fuse.search(search)
+    var output = [] 
+    fuseOut.forEach((item) => (output.push(item["item"])))
+    setDishes(output);
 }
 function Search(props){
     const [dishes, setDishes] = useState(null);
@@ -89,7 +90,7 @@ function Search(props){
 
     return(
         <SafeAreaProvider style={styles.container}>
-            <NavBarComponent search={true} navigation={props.navigation}/>
+            <NavBarComponent search="true" navigation={props.navigation}/>
             <SearchBar lightTheme={true} round={true} value={search} onChangeText={(val) => filter(val, setSearch, dishes, setShownDishes)} ></SearchBar>
             <ScrollView style={styles.ScrollView} showsVerticalScrollIndicator={false} refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
                 <Cards dishes={showDishes} navigation={props.navigation}/>

@@ -26,7 +26,7 @@ function Review(props){
                 {(props.name != null) && <TouchableOpacity onPress={onPressDish}>
                     <Text style={styles.dishText}>{props.name}</Text>
                 </TouchableOpacity>}
-                {dishPageVisible && props.dishid != null && <DishPage dishid={props.dishid} visible={dishPageVisible} hideModal={hideModal}/>}
+                {dishPageVisible && props.dishid != null && <DishPage dishid={props.dishid} visible={dishPageVisible} hideModal={hideModal} navigation={props.navigation}/>}
                 <View style={styles.starContainer}>
                     <Rating
                         style={styles.stars}

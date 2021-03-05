@@ -1,22 +1,39 @@
-import React, { Component, View } from "react";
+import React, { Component, useCallback, useEffect, useState, View } from "react";
 import { Header, Icon, Badge } from "react-native-elements";
 import { Text, StyleSheet, TouchableOpacity } from "react-native";
 import { cartSum } from "./ShoppingCart";
 import colors from "../config/colors";
 
-class RightElement extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { sum: cartSum() };
-  }
-  render() {
-    const { navigation } = this.props;
+function RightElement(props) {
+  const [sum, setSum] = useState(cartSum());
+
+  const {navigation, search} = props;
+  if (search)  //if its on the search screen the right element has to be the map icon
+  {
     return (
+      <Icon
+        name="location-pin"
+        type="simple-line-icon"
+        color="white"
+        onPress={() => {
+          navigation.navigate("MapScreen");
+        }}
+      />
+    )
+  }
+  else
+  {
+
+    return (
+      !global.orderOpen ? 
       <TouchableOpacity
         onPress={() => {
-          navigation.navigate("ShoppingCart");
-          this.setState({ sum: cartSum() });
-        }}
+          if(global.orderOpen){
+            navigation.navigate("Tracking");
+          } else {
+            navigation.navigate("ShoppingCart");
+          }
+          setSum(cartSum());      }}
       >
         <Icon name="shopping-cart" color="white" />
         {cartSum() > 0 ? (
@@ -28,8 +45,25 @@ class RightElement extends Component {
           <></>
         )}
       </TouchableOpacity>
+      :
+      <TouchableOpacity
+        onPress={() => {
+          if(global.orderOpen){
+            navigation.navigate("Tracking");
+          } else {
+            navigation.navigate("ShoppingCart");
+          }
+        }}
+      >
+        <Icon name='shopping-cart' color='white'/>
+        <Badge
+              containerStyle={{ position: "absolute", top: -4, right: -4 }}
+              badgeStyle={{ backgroundColor: colors.secondary }}
+        />
+      </TouchableOpacity>
     );
   }
+
 }
 
 class LeftElement extends Component {
@@ -66,23 +100,32 @@ class CenterElement extends Component {
   }
 }
 
-class NavBarComponent extends Component {
-  render() {
-    return (
-      <Header
-        containerStyle={{ backgroundColor: colors.primary }}
-        leftComponent={
-          <LeftElement
-            navigation={this.props.navigation}
-            search={this.props.search}
-          />
-        }
-        centerComponent={<CenterElement />}
-        rightComponent={<RightElement navigation={this.props.navigation} />}
-        barStyle="light-content"
-      />
-    );
-  }
+function NavBarComponent(props){
+  const [refresh, setRefresh] = useState(false);
+
+  useEffect(() => {
+    setRefresh(!refresh);
+  }, [global.cart])
+
+  useEffect(() => {
+    setRefresh(!refresh);
+  }, [global.orderOpen])
+
+  return (
+    <Header
+      containerStyle={{ backgroundColor: colors.primary }}
+      leftComponent={
+        <LeftElement
+          navigation={props.navigation}
+          search={props.search}
+        />
+      }
+      centerComponent={<CenterElement />}
+      rightComponent={<RightElement navigation={props.navigation} search={props.search} />}
+
+      barStyle="light-content"
+    />
+  );
 }
 
 const styles = StyleSheet.create({

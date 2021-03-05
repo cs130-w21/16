@@ -5,11 +5,56 @@ import colors from "../config/colors";
 import PropTypes, { any } from "prop-types";
 
 global.cart = [];
+global.orderOpen = false;
+global.orders = null;
+global.progress = {};
 
 export function cartSum() {
   let sum = 0;
   global.cart.forEach(item => (sum += item.count));
   return sum;
+}
+
+export function getDishes(dishes) {
+  var dishString = "";
+  dishes.forEach(item => (dishString += item + " | "));
+  return dishString;
+}
+
+export function isolateChefs() {
+  var pairs = {};
+  global.cart.forEach(item => {
+    if (!(item.dish["Chef"]["name"] in pairs)) {
+      let chefEntry = item.dish["Chef"]["name"];
+      pairs[chefEntry] = [];
+      let string = item.count + " " + item.dish["name"];
+      pairs[chefEntry].push(string);
+    } else {
+      let chefEntry2 = item.dish["Chef"]["name"];
+      let string = item.count + " " + item.dish["name"];
+      pairs[chefEntry2].push(string);
+    }
+  });
+  return pairs;
+}
+
+export function dishesPerChef() {
+  var pairs = {};
+  global.cart.forEach(item => {
+    if (!(item.dish["Chef"]["name"] in pairs)) {
+      let chefEntry = item.dish["Chef"]["name"];
+      pairs[chefEntry] = [];
+      pairs[chefEntry].push(item);
+    } else {
+      let chefEntry2 = item.dish["Chef"]["name"];
+      pairs[chefEntry2].push(item);
+    }
+  });
+  return pairs;
+}
+
+export function removeChef(chef){
+  global.orders.removeChef(chef);
 }
 
 export function addToCart(item) {
@@ -36,9 +81,50 @@ export function getLongestTime() {
     return max + " minutes";
   } else {
     if (max % 60 === 0) {
-      return max / 60 + " hours";
+      return (
+        Math.floor(max / 60) + " hour" + (Math.floor(max / 60) == 1 ? "" : "s")
+      );
     } else {
-      return max / 60 + " hours " + (max % 60) + " minutes";
+      return (
+        Math.floor(max / 60) +
+        " hour" +
+        (Math.floor(max / 60) == 1 ? " " : "s ") +
+        (max % 60) +
+        " minutes"
+      );
+    }
+  }
+}
+
+export function getLongestTimeForChefinMin(chef) {
+  let max = 0;
+  global.cart.forEach(item =>
+    item.dish.Chef.name == chef && item.dish.timeMin > max ? (max = item.dish.timeMin) : (max = max)
+  );
+  return max;
+}
+
+export function getLongestTimeForChef(chef) {
+  let max = 0;
+  global.cart.forEach(item =>
+    item.dish.Chef.name == chef && item.dish.timeMin > max ? (max = item.dish.timeMin) : (max = max)
+  );
+
+  if (max < 60) {
+    return max + " minutes";
+  } else {
+    if (max % 60 === 0) {
+      return (
+        Math.floor(max / 60) + " hour" + (Math.floor(max / 60) == 1 ? "" : "s")
+      );
+    } else {
+      return (
+        Math.floor(max / 60) +
+        " hour" +
+        (Math.floor(max / 60) == 1 ? " " : "s ") +
+        (max % 60) +
+        " minutes"
+      );
     }
   }
 }
@@ -158,6 +244,7 @@ export default function ShoppingCart(props) {
             />
           ))
         )}
+        <View style={{height: 150}}/>
       </ScrollView>
     </View>
   );
@@ -178,15 +265,14 @@ CartCard.propTypes = {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    height: "100%"
   },
   cartCardContainer: {
-    width: "100%"
+    width: "100%",
   },
   cardContainer: {
     alignItems: "flex-end",
     alignContent: "stretch",
-    height: 125
+    height: 125,
   },
   title: {
     fontWeight: "bold",
@@ -243,7 +329,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "flex-start",
-    flexDirection: "row"
+    flexDirection: "row",
   },
   minusButton: {
     borderBottomLeftRadius: 20,
@@ -251,7 +337,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.secondary
   },
   scrollView: {
-    width: "100%"
+    width: "100%",
   },
   empty: {
     fontWeight: "bold",

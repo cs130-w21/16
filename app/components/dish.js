@@ -79,7 +79,7 @@ export default function MenuCard(props) {
         </TouchableOpacity>
       </Card>
       <View style={styles.centeredContent}>
-        {props.Dish!=null && dishPageVisible && <DishPage Dish={props.Dish} visible={dishPageVisible} hideModal={hideModal}/>}
+        {props.Dish!=null && dishPageVisible && <DishPage Dish={props.Dish} visible={dishPageVisible} hideModal={hideModal} navigation={props.navigation}/>}
       </View>
       
     </View>
