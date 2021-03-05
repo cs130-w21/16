@@ -15,9 +15,12 @@ import colors from "./app/config/colors";
 import Search from "./app/screens/Search";
 import CheckoutScreen from "./app/screens/CheckoutScreen"
 
+import { LogBox } from 'react-native';
+
 const Stack = createStackNavigator();
 
 const App = () => {
+  LogBox.ignoreAllLogs();
   return (
     <NavigationContainer>
       <Stack.Navigator

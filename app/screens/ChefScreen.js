@@ -256,7 +256,6 @@ const styles = StyleSheet.create({
     chefPic: {
         width: 150,
         height: 150,
-
         borderRadius: 75
     },
     chefPicHolder: {
