@@ -6,7 +6,8 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "test": "jest"
+    "test": "jest",
+    "docs": "jsdoc -c jsdoc.conf.json"
   },
   "dependencies": {
     "@expo/metro-config": "^0.1.54",
@@ -16,6 +17,7 @@
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/native": "^5.9.1",
     "@react-navigation/stack": "^5.14.0",
+    "better-docs": "^2.3.2",
     "body-parser": "^1.19.0",
     "expo": "~40.0.0",
     "expo-asset": "~8.2.1",
@@ -25,6 +27,7 @@
     "expo-status-bar": "~1.0.3",
     "express": "^4.17.1",
     "fuse.js": "^6.4.6",
+    "jsdoc": "^3.6.6",
     "moment": "^2.29.1",
     "mysql": "^2.18.1",
     "node-fetch": "^2.6.1",
