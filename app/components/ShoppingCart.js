@@ -9,18 +9,31 @@ global.orderOpen = false;
 global.orders = null;
 global.progress = {};
 
+/**
+ * Calculate sum of items in shopping cart
+ * @returns number
+ */
 export function cartSum() {
   let sum = 0;
   global.cart.forEach(item => (sum += item.count));
   return sum;
 }
 
+/**
+ * Convert array of dishes into string
+ * @param {Array} dishes 
+ * @returns string
+ */
 export function getDishes(dishes) {
   var dishString = "";
   dishes.forEach(item => (dishString += item + " | "));
   return dishString;
 }
 
+/**
+ * Get all chefs of items in shopping cart
+ * @returns {Object} pairs {chef, [dish strings]}
+ */
 export function isolateChefs() {
   var pairs = {};
   global.cart.forEach(item => {
@@ -38,6 +51,10 @@ export function isolateChefs() {
   return pairs;
 }
 
+/**
+ * Get dishes for each chef
+ * @returns {Object} pairs - {chef, [dishes]}
+ */
 export function dishesPerChef() {
   var pairs = {};
   global.cart.forEach(item => {
@@ -53,24 +70,45 @@ export function dishesPerChef() {
   return pairs;
 }
 
+/**
+ * Remove chef from orders
+ * @param {Chef} chef 
+ */
 export function removeChef(chef){
   global.orders.removeChef(chef);
 }
 
+/**
+ * Add item to cart
+ * @param {Dish} item 
+ */
 export function addToCart(item) {
   global.cart.push(item);
 }
 
+/**
+ * Add quantity to cart (can be positive or negative)
+ * @param {number} index 
+ * @param {number} count 
+ */
 export function addQuantity(index, count) {
   global.cart[index].count += count;
 }
 
+/**
+ * Calculate subtotal for shopping cart
+ * @returns number
+ */
 export function subTotal() {
   let tot = 0.0;
   global.cart.forEach(item => (tot += item.dish.price * item.count));
   return tot.toFixed(2);
 }
 
+/**
+ * Get longest preparation time of items in cart
+ * @returns number
+ */
 export function getLongestTime() {
   let max = 0;
   global.cart.forEach(item =>
@@ -96,6 +134,10 @@ export function getLongestTime() {
   }
 }
 
+/**
+ * Get longest preparation time for each chef in minutes
+ * @param {Chef} chef 
+ */
 export function getLongestTimeForChefinMin(chef) {
   let max = 0;
   global.cart.forEach(item =>
@@ -104,6 +146,10 @@ export function getLongestTimeForChefinMin(chef) {
   return max;
 }
 
+/**
+ * Get longest time for each chef
+ * @param {Chef} chef 
+ */
 export function getLongestTimeForChef(chef) {
   let max = 0;
   global.cart.forEach(item =>
@@ -129,6 +175,19 @@ export function getLongestTimeForChef(chef) {
   }
 }
 
+/**
+ * 
+ * @typedef CartCardProps
+ * @property {price} price of dish
+ * @property {quantity} amount of dish
+ * @property {dishid} ID of dish 
+ * @property {title} title of dish
+ * @property {cart} shopping cart copy
+ */
+/**
+ * Shopping cart card for dish
+ * @param {CartCardProps} props 
+ */
 function CartCard(props) {
   const [total, setTotal] = useState(props.price);
   const [count, setCount] = useState(props.quantity);
@@ -221,8 +280,17 @@ function CartCard(props) {
   );
 }
 
+/**
+ * 
+ * @typedef ShoppingCartProps
+ * @property {cart} shopping cart copy
+ */
+/**
+ * Shopping Cart object
+ * @param {ShoppingCartProps} props 
+ */
 export default function ShoppingCart(props) {
-  const [cart, setCart] = useState(global.cart); //constantly updated
+  const [cart, setCart] = useState(global.cart);
 
   useEffect(() => {
     setCart(global.cart);
