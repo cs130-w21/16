@@ -8,10 +8,12 @@ import ShoppingCart from "../components/ShoppingCart";
 /**
  * 
  * @typedef ShoppingCartScreenProps
+ * @memberof ShoppingCartScreen
  * @property {Object} navigation - Stack Navigation object 
  */
 /**
- * 
+ * Page component for showing shopping cart details.
+ * @class ShoppingCartScreen
  * @param {ShoppingCartScreenProps} props 
  */
 function ShoppingCartScreen(props) {

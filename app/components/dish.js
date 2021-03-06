@@ -10,8 +10,8 @@ import Dish from "../objects/Dish";
 import DishPage from "../screens/DishPage";
 
 /**
- * 
  * @typedef MenuCardProps
+ * @memberof MenuCard
  * @property {Dish} Dish - dish object
  * @property {Object} navigation - stack navigation object
  * @property {any} inChefMenu - if in chef's menu
@@ -19,11 +19,10 @@ import DishPage from "../screens/DishPage";
 
 /**
  * MenuCard component to show dishes in a compact way
- * @name MenuCard
- * @param {MenuCardProps} props
- * @exports MenuCard 
+ * @class MenuCard
+ * @param {MenuCardProps} props - Props of Menu Card
  */
-export default function MenuCard(props) {
+function MenuCard(props) {
   const [ChefObject, setChefObject] = useState(null);
   const [dishPageVisible, setDishPageVisible] = useState(false);
   
@@ -172,3 +171,4 @@ const styles = StyleSheet.create({
     position: 'absolute'
   }
 });
+export default MenuCard;

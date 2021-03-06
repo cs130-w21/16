@@ -1,4 +1,8 @@
 /**
+ * @module Utilities
+ */
+
+/**
  * Function to calculate the distance in miles between two coordinate locations.
  * @param {number} lat1 - Latitude of first location
  * @param {number} lon1 - Longitude of first location

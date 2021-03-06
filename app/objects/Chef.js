@@ -1,5 +1,8 @@
 /**
- * 
+ * @module Objects
+ */
+
+/**
  * @typedef ChefObj
  * @property {number} chefid
  * @property {string} name
@@ -14,7 +17,6 @@
 
 /**
  * Chef Object
- * 
  * @param {ChefObj} chefJSON
  */
 function Chef(chefJSON){
