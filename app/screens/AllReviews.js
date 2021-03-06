@@ -7,6 +7,7 @@ import { getDishReviews, getChefReviews } from '../util/Queries';
 
 /**
  * @typedef AllReviewsProps
+ * @memberof AllReviews
  * @property {boolean} visible - boolean value indicating whether this modal is currently visible or not
  * @property {function} hideModal - function passed in from parent to close this modal
  * @property {int} dishid - dishid if component is all reviews for a dish (null if chefid is not null)
@@ -16,10 +17,10 @@ import { getDishReviews, getChefReviews } from '../util/Queries';
 
 /**
  * A modal screen that lists all reviews for either a given dish or a given chef.
- * 
+ * @class AllReviews
  * @param {AllReviewsProps} props
  */
-export default function AllReviews(props){
+function AllReviews(props){
     const [modalVisible, setVisible] = useState(false);
     const [reviews, setReviews] = useState(null);
 
@@ -149,3 +150,5 @@ const styles = StyleSheet.create({
         fontFamily: 'Avenir',
     }
 });
+
+export default AllReviews;

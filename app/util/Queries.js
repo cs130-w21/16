@@ -7,6 +7,9 @@ const ip = "http://3.141.20.190";
 ////////////
 // DISHES //
 ///////////
+/**
+ * @module queries
+ */
 
 /**
  * return all Dish entries in the Dish Table

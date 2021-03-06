@@ -10,6 +10,7 @@ import { Alert } from 'react-native';
 
 /**
  * @typedef LeaveReviewProps
+ * @memberof LeaveReview
  * @property {boolean} visible - boolean value indicating whether this modal is currently visible or not
  * @property {function} hideModal - function passed in from parent to close this modal
  * @property {function} refresh - function passed in from parent to force refresh of parent on close
@@ -20,7 +21,7 @@ import { Alert } from 'react-native';
 
 /**
  * A modal screen for users to leave a review for a certain dish
- * 
+ * @class LeaveReview
  * @param {LeaveReviewProps} props
  */
 export default function LeaveReview(props){

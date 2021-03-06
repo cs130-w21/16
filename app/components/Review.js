@@ -8,6 +8,7 @@ import DishPage from '../screens/DishPage';
 /**
  * 
  * @typedef ReviewProps
+ * @memberof Review
  * @property {int} index - index of review within the larger list of reviews
  * @property {String} reviewer - name of the person who left the review
  * @property {String} name - dish name
@@ -20,7 +21,7 @@ import DishPage from '../screens/DishPage';
 
 /**
  * A component for a single review with name, timestamp, rating, comment
- * 
+ * @class Review
  * @param {ReviewProps} props
  */
 function Review(props){

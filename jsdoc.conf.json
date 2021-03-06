@@ -9,12 +9,8 @@
     "excludePattern": "(^|\\/|\\\\)_"
   },
   "plugins": ["plugins/markdown"],
-  "templates": {
-    "better-docs": {
-      "name": "My React components"
-    }
-  },
   "opts": {
+    "template": "jsdoc-template",
     "destination": "docs",
     "recurse": true,
     "readme": "README.md"

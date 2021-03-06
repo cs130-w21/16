@@ -9,6 +9,7 @@ import { removeChef } from './ShoppingCart';
 /**
  * 
  * @typedef ReviewPromptProps
+ * @memberof ReviewPrompt
  * @property {Order} order - Order object that corresponds to the current open orders
  * @property {boolean} visible - boolean value indicating whether this modal is currently visible or not
  * @property {String} chef - chef name of the review prompt
@@ -19,7 +20,7 @@ import { removeChef } from './ShoppingCart';
 
 /**
  * A modal screen that prompts the user for reviews for all dishes for a certain chef within an order after completion
- * 
+ * @class ReviewPrompt
  * @param {ReviewPromptProps} props
  */
 export default function ReviewPrompt(props){

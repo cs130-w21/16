@@ -1,5 +1,5 @@
 /**
- * @module Objects
+ * @module objects
  */
 
 /**

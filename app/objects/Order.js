@@ -1,4 +1,8 @@
 /**
+ * @module objects
+ */
+
+ /**
  * Order Object
  * 
  * @param {Object} dishesByChef

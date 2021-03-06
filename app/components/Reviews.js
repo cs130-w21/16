@@ -10,6 +10,7 @@ import LeaveReview from '../screens/LeaveReview';
 
 /**
  * @typedef ReviewJSON
+ * @memberof Reviews
  * @property {String} reviewer - name of the person who left the review
  * @property {int} rating - star rating of review from 1 to 5
  * @property {BigInt} timestamp - timestamp of review in milliseconds 
@@ -20,6 +21,7 @@ import LeaveReview from '../screens/LeaveReview';
 /**
  * 
  * @typedef ReviewsProps
+ * @memberof Reviews
  * @property {float} rating - average rating of dish/chef
  * @property {int} numReviews - total number of ratings left for dish/chef
  * @property {int} dishid - dishid if component is reviews for a dish (null if chefid is not null)
@@ -31,7 +33,7 @@ import LeaveReview from '../screens/LeaveReview';
 
 /**
  * A component that lists the first few reviews for either a dish or a chef, a button to open all reviews. If reviews are for a dish, a leave review option is available. 
- * 
+ * @class Reviews
  * @param {ReviewsProps} props
  */
 function Reviews(props){

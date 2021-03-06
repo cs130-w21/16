@@ -1,4 +1,7 @@
 import { minRemainingToString } from "../util/TimeConversion";
+/**
+ * @module objects
+ */
 
 /**
  * 
