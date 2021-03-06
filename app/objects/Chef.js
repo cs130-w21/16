@@ -1,3 +1,22 @@
+/**
+ * 
+ * @typedef ChefObj
+ * @property {number} chefid
+ * @property {string} name
+ * @property {string} bio
+ * @property {string} shortDesc
+ * @property {string} location
+ * @property {string} profilePicURL
+ * @property {number} rating
+ * @property {number} numReviews
+ * @property {Object[]} dishes
+ */
+
+/**
+ * Chef Object
+ * 
+ * @param {ChefObj} chefJSON
+ */
 function Chef(chefJSON){
     this.chefid =  chefJSON.chefid;
     this.name = chefJSON.name;
