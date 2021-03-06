@@ -13,7 +13,7 @@ Welcome to Potluck, a platform to connect home chefs with customers.
 - Xcode (on Mac) for testing on simulator
 - Expo Client on iOS or Android for testing on device
 
-## To Build the App
+### To Build the App
 
 - Run `npm start` from the home directory of the App repo to trigger Expo's build process
 - Expo will open a Metro Bundler interface on your command line AND in a browser at http://localhost:19002/ with instructions on how to run the app on various platforms.
