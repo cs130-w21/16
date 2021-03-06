@@ -1,4 +1,32 @@
-import React, {useState, useEffect} from 'react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: ChefScreen.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: ChefScreen.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, {useState, useEffect} from 'react';
 import {Dimensions, Image, ScrollView, StyleSheet, Text, View, SafeAreaView} from 'react-native';
 import {Button, Icon, Divider, Rating} from 'react-native-elements'
 import Carousel, {Pagination} from 'react-native-snap-carousel';
@@ -18,7 +46,7 @@ const ITEM_WIDTH = Math.round(SLIDER_WIDTH)
 
 const CarouselCardItem = ({ item, index }) => {
     return (
-        <Image
+        &lt;Image
           source={item.image}
           style={styles.carouselItem}
         />
@@ -108,7 +136,7 @@ function ChefScreen(props) {
 
     const CarouselDishItem = ({ item, index }) => {
         return (
-            <MenuCard
+            &lt;MenuCard
               key={item.dishid}
               Dish={item}
               navigation={props.navigation}
@@ -117,11 +145,11 @@ function ChefScreen(props) {
     }
 
     return(
-        <View style={styles.container}>
-            <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false} alwaysBounceHorizontal={false} alwaysBounceVertical={false}>
-                <View style={styles.contentView}>
-                    <View style={styles.carouselContainer}>
-                        <Carousel
+        &lt;View style={styles.container}>
+            &lt;ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false} alwaysBounceHorizontal={false} alwaysBounceVertical={false}>
+                &lt;View style={styles.contentView}>
+                    &lt;View style={styles.carouselContainer}>
+                        &lt;Carousel
                             layout='default'
                             data={carouselData}
                             useScrollView={true}
@@ -134,29 +162,29 @@ function ChefScreen(props) {
                             useScrollView={true}
                             ref={isCarousel}
                         />
-                        <View style={styles.chefPicHolder}>
-                            <Image style={styles.chefPic} source={{uri: profilePic}}/>
-                        </View>
-                        <View style={styles.titleTextContainer}>
-                            <Text style={styles.titleText}>{name}</Text>
-                            <Text style={styles.subtitleText}>{shortDesc}</Text>
-                        </View>
-                    </View>
-                    <Divider style={styles.divider}/>
-                    <Text style={styles.descriptionText}>{description}</Text>
-                    <View style={styles.ratingsContainer}>
-                        <Rating
+                        &lt;View style={styles.chefPicHolder}>
+                            &lt;Image style={styles.chefPic} source={{uri: profilePic}}/>
+                        &lt;/View>
+                        &lt;View style={styles.titleTextContainer}>
+                            &lt;Text style={styles.titleText}>{name}&lt;/Text>
+                            &lt;Text style={styles.subtitleText}>{shortDesc}&lt;/Text>
+                        &lt;/View>
+                    &lt;/View>
+                    &lt;Divider style={styles.divider}/>
+                    &lt;Text style={styles.descriptionText}>{description}&lt;/Text>
+                    &lt;View style={styles.ratingsContainer}>
+                        &lt;Rating
                             style={styles.rating}
                             readonly={true}
                             imageSize={30}
                             fractions={1}
                             startingValue={rating ? rating : 0.0}
                         />
-                        <Text style={styles.numReviews}>({numReviews} Reviews)</Text>
-                    </View>
-                    <View style={styles.spacer}/>
-                    <Text style={styles.dishesTitle}>Chef's Menu:</Text>
-                    <Carousel
+                        &lt;Text style={styles.numReviews}>({numReviews} Reviews)&lt;/Text>
+                    &lt;/View>
+                    &lt;View style={styles.spacer}/>
+                    &lt;Text style={styles.dishesTitle}>Chef's Menu:&lt;/Text>
+                    &lt;Carousel
                         layout='default'
                         data={chefDishes}
                         useScrollView={true}
@@ -170,7 +198,7 @@ function ChefScreen(props) {
                         ref={isCarousel}
                         style={{paddingBottom: '5%'}}
                     />
-                    <Pagination
+                    &lt;Pagination
                         dotsLength={chefDishes.length}
                         activeDotIndex={dishIndex}
                         carouselRef={isCarousel}
@@ -180,15 +208,15 @@ function ChefScreen(props) {
                         tappableDots={true}
                         containerStyle={styles.dots}
                     />
-                    <View style={styles.spacer}/>
-                    <MapView style={styles.map}
+                    &lt;View style={styles.spacer}/>
+                    &lt;MapView style={styles.map}
                         region={region}
                         showsUserLocation={true}
                         showsMyLocationButton={true}
                         showsTraffic={true}
                         pitchEnabled={false}
                     >
-                        {userLocation && <Polyline
+                        {userLocation &amp;&amp; &lt;Polyline
                             coordinates={[
                                 {latitude: location.latitude, longitude: location.longitude},
                                 {latitude: userLocation.coords.latitude, longitude: userLocation.coords.longitude}
@@ -196,24 +224,24 @@ function ChefScreen(props) {
                             strokeColor={colors.primary}
                             strokeWidth={6}
                         />}
-                        <Marker
+                        &lt;Marker
                             coordinate={{latitude: location.latitude, longitude: location.longitude}}
                         />
-                    </MapView>
-                    {userLocation && <Text style={styles.distanceText}>
+                    &lt;/MapView>
+                    {userLocation &amp;&amp; &lt;Text style={styles.distanceText}>
                             {coordDist(location.latitude, location.longitude, userLocation.coords.latitude, userLocation.coords.longitude).toFixed(2)} miles away
-                    </Text>}
-                    <View style={styles.spacer}/>
-                    {numReviews!=null && <Reviews rating={rating} numReviews={numReviews} chefid={id} reviews={first5Reviews} navigation={props.navigation}/>}
-                    <View style={styles.spacer}/>
-                    <View style={styles.spacer}/>
-                </View>
-            </ScrollView>
-            <View style={styles.closeButton} >
-                    <Button onPress={() => props.navigation.goBack()} buttonStyle={styles.closeButtonStyle} icon={<Icon name='close' size={25} color='white' style={{backgroundColor: 'black', borderRadius:15, outline:"white solid 1px"}}/>} />
-            </View>
-            {dishPageFocus!=null && dishPageVisible && <DishPage Dish={dishPageFocus} visible={dishPageVisible} hideModal={hideModal}/>}
-        </View>
+                    &lt;/Text>}
+                    &lt;View style={styles.spacer}/>
+                    {numReviews!=null &amp;&amp; &lt;Reviews rating={rating} numReviews={numReviews} chefid={id} reviews={first5Reviews} navigation={props.navigation}/>}
+                    &lt;View style={styles.spacer}/>
+                    &lt;View style={styles.spacer}/>
+                &lt;/View>
+            &lt;/ScrollView>
+            &lt;View style={styles.closeButton} >
+                    &lt;Button onPress={() => props.navigation.goBack()} buttonStyle={styles.closeButtonStyle} icon={&lt;Icon name='close' size={25} color='white' style={{backgroundColor: 'black', borderRadius:15, outline:"white solid 1px"}}/>} />
+            &lt;/View>
+            {dishPageFocus!=null &amp;&amp; dishPageVisible &amp;&amp; &lt;DishPage Dish={dishPageFocus} visible={dishPageVisible} hideModal={hideModal}/>}
+        &lt;/View>
     );
 }
 
@@ -375,4 +403,26 @@ const styles = StyleSheet.create({
     }
 });
 
-export default ChefScreen;
+export default ChefScreen;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#ChefScreen">ChefScreen</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Fri Mar 05 2021 17:08:38 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
