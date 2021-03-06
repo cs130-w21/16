@@ -1,15 +1,52 @@
+/**
+ * Express server application providing routes/access to the mysql database
+ * @module routes
+ * @requires express
+ * @requires bodyParser
+ * @requires mysql
+ * @requires twilio
+ * @requires secrets
+ */
+
+/**
+ * secrets module containing database passwords, authTokens, ids and other secrets
+ * @const
+ */
 const secrets = require("./secrets");
 
+/**
+ * express module
+ * @const
+ */
 const express = require("express");
+
+/**
+ * body-parser module
+ * @const
+ */
 const bodyParser = require("body-parser");
+
+/**
+ * mysql module
+ * @const
+ */
 const mysql = require("mysql");
 
+/**
+ * mysql connection to our database
+ * @const
+ */
 const connection = mysql.createPool({
   host: "potluck.c6o4e5jzyjzo.us-east-2.rds.amazonaws.com",
   database: "Potluck",
   user: "admin",
   password: secrets.dbpw()
 });
+
+/**
+ * twilio instance
+ * @const
+ */
 const client = require("twilio")(secrets.accountSid(), secrets.authToken());
 
 // Starting our app.
@@ -21,7 +58,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // DISHES //
 ///////////
 
-// ALL Dish entries in the Dish table
+/**
+ * Route to return all dish entries in the dish table
+ * @name get/AllDishes
+ * @function
+ * @memberof module:routes
+ * @inner
+ */
 app.get("/AllDishes", function(req, res) {
   // Connecting to the database.
   connection.getConnection(function(err, connection) {
@@ -42,7 +85,13 @@ app.get("/AllDishes", function(req, res) {
   });
 });
 
-// All Dish entries of currently available dishes
+/**
+ * Route to return all currently available dish entries in the dish table
+ * @name get/AvailableDishes
+ * @function
+ * @memberof module:routes
+ * @inner
+ */
 app.get("/AvailableDishes", function(req, res) {
   // Connecting to the database.
   connection.getConnection(function(err, connection) {
@@ -67,7 +116,13 @@ app.get("/AvailableDishes", function(req, res) {
   });
 });
 
-// Dish information for specific dish
+/**
+ * Route to return dih information for a specific dish
+ * @name get/DishInfo
+ * @function
+ * @memberof module:routes
+ * @inner
+ */
 app.get("/DishInfo", function(req, res) {
   // Connecting to the database.
   connection.getConnection(function(err, connection) {
@@ -93,7 +148,13 @@ app.get("/DishInfo", function(req, res) {
   });
 });
 
-// All Dish Primary Images for a specified chef ordered by dish rating
+/**
+ * Route to return all dish primary images for a specified chef ordered by dish rating
+ * @name get/CoverPhotos
+ * @function
+ * @memberof module:routes
+ * @inner
+ */
 app.get("/CoverPhotos", function(req, res) {
   // Connecting to the database.
   connection.getConnection(function(err, connection) {
@@ -120,7 +181,13 @@ app.get("/CoverPhotos", function(req, res) {
   });
 });
 
-// All Dish entries for a given chef
+/**
+ * Route to return all dish entries for a given chef
+ * @name get/ChefsDishes
+ * @function
+ * @memberof module:routes
+ * @inner
+ */
 app.get("/ChefsDishes", function(req, res) {
   // Connecting to the database.
   connection.getConnection(function(err, connection) {
@@ -151,7 +218,13 @@ app.get("/ChefsDishes", function(req, res) {
 // CHEFS //
 //////////
 
-// All Chef entries in Chef table
+/**
+ * Route to return all chef entries in the chef table
+ * @name get/Chefs
+ * @function
+ * @memberof module:routes
+ * @inner
+ */
 app.get("/Chefs", function(req, res) {
   // Connecting to the database.
   connection.getConnection(function(err, connection) {
@@ -172,7 +245,13 @@ app.get("/Chefs", function(req, res) {
   });
 });
 
-// Table Entry for a specified chef
+/**
+ * Route to return the table entry for a specified chef
+ * @name get/ChefInfo
+ * @function
+ * @memberof module:routes
+ * @inner
+ */
 app.get("/ChefInfo", function(req, res) {
   // Connecting to the database.
   connection.getConnection(function(err, connection) {
@@ -202,7 +281,13 @@ app.get("/ChefInfo", function(req, res) {
 // Reviews //
 /////////////
 
-// Add a new review
+/**
+ * Route to run insert query to add a new review to Review table
+ * @name get/newReview
+ * @function
+ * @memberof module:routes
+ * @inner
+ */
 app.get("/newReview", function(req, res) {
   // Connecting to the database.
   connection.getConnection(function(err, connection) {
@@ -245,7 +330,13 @@ app.get("/newReview", function(req, res) {
   });
 });
 
-// Update Ratings on Specific Dish
+/**
+ * Route to update query to update rating and numReviews for specific dish in Dish table
+ * @name get/updateDishWithNewReview
+ * @function
+ * @memberof module:routes
+ * @inner
+ */
 app.get("/updateDishWithNewReview", function(req, res) {
   // Connecting to the database.
   connection.getConnection(function(err, connection) {
@@ -274,7 +365,13 @@ app.get("/updateDishWithNewReview", function(req, res) {
   });
 });
 
-// Update Ratings on Specific Chef
+/**
+ * Route to update query to update rating and numReviews for specific chef in Chef table
+ * @name get/updateChefWithNewReview
+ * @function
+ * @memberof module:routes
+ * @inner
+ */
 app.get("/updateChefWithNewReview", function(req, res) {
   // Connecting to the database.
   connection.getConnection(function(err, connection) {
@@ -303,7 +400,13 @@ app.get("/updateChefWithNewReview", function(req, res) {
   });
 });
 
-// Return ALL Reviews (for testing)
+/**
+ * Route to return all reviews in Review table
+ * @name get/AllReviews
+ * @function
+ * @memberof module:routes
+ * @inner
+ */
 app.get("/AllReviews", function(req, res) {
   // Connecting to the database.
   connection.getConnection(function(err, connection) {
@@ -324,7 +427,13 @@ app.get("/AllReviews", function(req, res) {
   });
 });
 
-// Return Reviews for given dish
+/**
+ * Route to return all reviews for a given dish
+ * @name get/getDishReviews
+ * @function
+ * @memberof module:routes
+ * @inner
+ */
 app.get("/getDishReviews", function(req, res) {
   // Connecting to the database.
   connection.getConnection(function(err, connection) {
@@ -351,7 +460,13 @@ app.get("/getDishReviews", function(req, res) {
   });
 });
 
-// Return Reviews for given chef
+/**
+ * Route to return all reviews for a given chef
+ * @name get/getChefReviews
+ * @function
+ * @memberof module:routes
+ * @inner
+ */
 app.get("/getChefReviews", function(req, res) {
   // Connecting to the database.
   connection.getConnection(function(err, connection) {
@@ -378,7 +493,13 @@ app.get("/getChefReviews", function(req, res) {
   });
 });
 
-// Return Reviews for given dish
+/**
+ * Route to return the most recent N reviews for a given dish
+ * @name get/getNDishReviews
+ * @function
+ * @memberof module:routes
+ * @inner
+ */
 app.get("/getNDishReviews", function(req, res) {
   // Connecting to the database.
   connection.getConnection(function(err, connection) {
@@ -407,7 +528,13 @@ app.get("/getNDishReviews", function(req, res) {
   });
 });
 
-// Return Reviews for given chef
+/**
+ * Route to return the most recent N reviews for a given chef
+ * @name get/getNChefReviews
+ * @function
+ * @memberof module:routes
+ * @inner
+ */
 app.get("/getNChefReviews", function(req, res) {
   // Connecting to the database.
   connection.getConnection(function(err, connection) {
@@ -440,6 +567,13 @@ app.get("/getNChefReviews", function(req, res) {
 // DB Operations //
 //////////////////
 
+/**
+ * Route to run create database query to initialize Potluck database
+ * @name get/CreateDB
+ * @function
+ * @memberof module:routes
+ * @inner
+ */
 app.get("/CreateDB", function(req, res) {
   // Connecting to the database.
   connection.getConnection(function(err, connection) {
@@ -465,6 +599,13 @@ app.get("/CreateDB", function(req, res) {
   });
 });
 
+/**
+ * Route to run create table queries from create_tables.sql to create all relevant tables
+ * @name get/CreateTables
+ * @function
+ * @memberof module:routes
+ * @inner
+ */
 app.get("/CreateTables", function(req, res) {
   var fs = require("fs");
   var queries = fs.readFileSync("./create_tables.sql", "utf8").split("\n");
@@ -491,6 +632,13 @@ app.get("/CreateTables", function(req, res) {
   });
 });
 
+/**
+ * Route to run show tables query
+ * @name get/ShowTables
+ * @function
+ * @memberof module:routes
+ * @inner
+ */
 app.get("/ShowTables", function(req, res) {
   // Connecting to the database.
   connection.getConnection(function(err, connection) {
@@ -532,6 +680,13 @@ app.get("/query", function(req, res) {
   });
 });
 
+/**
+ * Route to run insert values query to insert dummy chef data from local csv's
+ * @name get/insertChefs
+ * @function
+ * @memberof module:routes
+ * @inner
+ */
 app.get("/insertChefs", function(req, res) {
   // Connecting to the database.
   connection.getConnection(function(err, connection) {
@@ -568,6 +723,13 @@ app.get("/insertChefs", function(req, res) {
   });
 });
 
+/**
+ * Route to run insert values query to insert dummy dish data from local csv's
+ * @name get/insertDishes
+ * @function
+ * @memberof module:routes
+ * @inner
+ */
 app.get("/insertDishes", function(req, res) {
   // Connecting to the database.
   connection.getConnection(function(err, connection) {
@@ -605,6 +767,14 @@ app.get("/insertDishes", function(req, res) {
 ///////////////////////
 // Send Text Message //
 ///////////////////////
+
+/**
+ * Route to run post request to send texts to chefs
+ * @name post/textChef
+ * @function
+ * @memberof module:routes
+ * @inner
+ */
 app.post("/textChef", function(req, res) {
   client.messages
     .create({
