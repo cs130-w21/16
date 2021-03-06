@@ -1,15 +1,52 @@
+/**
+ * Express server application providing routes/access to the mysql database
+ * @module routes
+ * @requires express
+ * @requires bodyParser
+ * @requires mysql
+ * @requires twilio
+ * @requires secrets
+ */
+
+/**
+ * secrets module containing database passwords, authTokens, ids and other secrets
+ * @const
+ */
 const secrets = require("./secrets");
 
+/**
+ * express module
+ * @const
+ */
 const express = require("express");
+
+/**
+ * body-parser module
+ * @const
+ */
 const bodyParser = require("body-parser");
+
+/**
+ * mysql module
+ * @const
+ */
 const mysql = require("mysql");
 
+/**
+ * mysql connection to our database
+ * @const
+ */
 const connection = mysql.createPool({
   host: "potluck.c6o4e5jzyjzo.us-east-2.rds.amazonaws.com",
   database: "Potluck",
   user: "admin",
   password: secrets.dbpw()
 });
+
+/**
+ * twilio instance
+ * @const
+ */
 const client = require("twilio")(secrets.accountSid(), secrets.authToken());
 
 // Starting our app.
@@ -22,6 +59,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 ///////////
 
 // ALL Dish entries in the Dish table
+/**
+ * Route to return all dish entries in the dish table
+ * @name get/AllDishes
+ * @function
+ * @memberof module:routes
+ * @inner
+ */
 app.get("/AllDishes", function(req, res) {
   // Connecting to the database.
   connection.getConnection(function(err, connection) {
