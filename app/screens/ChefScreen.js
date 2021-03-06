@@ -25,18 +25,16 @@ const CarouselCardItem = ({ item, index }) => {
     )
 }
 
-
-/**
+ /**
  * 
  * @typedef ChefScreenProps
- * @property {Object} navigation - React Stack Navigation object
- * @property {Chef} route.params.Chef
- * 
+ * @property {Object} navigation - Stack Navigation object
+ * @property {ChefObj} route.params.Chef - Chef Object
  */
 
 /**
  * Page component for showing details of the chef.
- * 
+ * @class
  * @param {ChefScreenProps} props
  */
 function ChefScreen(props) {
