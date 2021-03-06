@@ -25,16 +25,19 @@ const CarouselCardItem = ({ item, index }) => {
     )
 }
 
+
 /**
  * 
- * @typedef PropType
- * @property {string} name 
+ * @typedef ChefScreenProps
+ * @property {Object} navigation - React Stack Navigation object
+ * @property {Chef} route.params.Chef
+ * 
  */
 
 /**
  * Page component for showing details of the chef.
  * 
- * @param {PropType} props
+ * @param {ChefScreenProps} props
  */
 function ChefScreen(props) {
     LogBox.ignoreLogs(['Non-serializable values were found in the navigation state']);
