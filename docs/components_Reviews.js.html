@@ -1,4 +1,32 @@
-import React, {useState} from 'react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/Reviews.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/Reviews.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, {useState} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
 import { Button} from "react-native-elements";
 import PropTypes from 'prop-types';
@@ -9,7 +37,7 @@ import {AirbnbRating} from 'react-native-ratings';
 import LeaveReview from '../screens/LeaveReview';
 
 /**
- * @typedef ReviewJSON
+ * @typedef ReviewObject
  * @property {String} reviewer - name of the person who left the review
  * @property {int} rating - star rating of review from 1 to 5
  * @property {BigInt} timestamp - timestamp of review in milliseconds 
@@ -25,8 +53,8 @@ import LeaveReview from '../screens/LeaveReview';
  * @property {int} dishid - dishid if component is reviews for a dish (null if chefid is not null)
  * @property {int} chefid - chefid if component is reviews for a chef (null if dishid is not null)
  * @property {function} refresh - function passed in from parent to force refresh of parent on close
- * @property {ReviewJSON[]} reviews - array of JSON objects containing informations for the first 5 reviews
- * @property {Object} navigation - Stack Navigation object
+ * @property {ReviewObject[]} reviews - array of JSON objects containing informations for the first 5 reviews
+ * @property {Object} navigation - function passed in from parent to close this modal
  */
 
 /**
@@ -54,13 +82,13 @@ function Reviews(props){
     }
     
     return(
-        <View style={styles.container}>
-            <Text style={styles.title}>Recent Reviews:</Text>
-            <Text style={styles.rating}>{Math.round(props.rating*100)/100} out of 5 ({props.numReviews} Reviews)</Text>
-            {props.dishid!=null && 
-            <View style={styles.leaveReviewContainer}>
-                <Text style={styles.tapText}>Tap to leave a review:</Text>
-                <AirbnbRating
+        &lt;View style={styles.container}>
+            &lt;Text style={styles.title}>Recent Reviews:&lt;/Text>
+            &lt;Text style={styles.rating}>{Math.round(props.rating*100)/100} out of 5 ({props.numReviews} Reviews)&lt;/Text>
+            {props.dishid!=null &amp;&amp; 
+            &lt;View style={styles.leaveReviewContainer}>
+                &lt;Text style={styles.tapText}>Tap to leave a review:&lt;/Text>
+                &lt;AirbnbRating
                     defaultRating={0}
                     reviews={[]}
                     count={5}
@@ -68,15 +96,15 @@ function Reviews(props){
                     showRating={false}
                     onFinishRating={ratingTapped}
                 />
-                {leaveReviewVisible && <LeaveReview
+                {leaveReviewVisible &amp;&amp; &lt;LeaveReview
                     dishid={props.dishid}
                     hideModal={hideModal}    
                     rating={leftRating}
                     refresh={props.refresh}
                 />}
-            </View>}
+            &lt;/View>}
             {props.reviews!=null ? props.reviews.map((review, index)=>
-                <Review 
+                &lt;Review 
                     key={index}
                     index={index}
                     reviewer={review.reviewer}
@@ -86,11 +114,11 @@ function Reviews(props){
                     name={review.name!=null ? review.name : null}
                     dishid={review.dishid}
                     navigation={props.navigation}
-                />) : <Text></Text>}
-            {props.reviews!=null && props.reviews.length==0 && <Text style={styles.noReviews}>No Reviews with Comments</Text>}
-            {props.reviews!=null && props.reviews.length>0 && <Button title="More Reviews" type="outline" onPress={allReviewsOnPress} containerStyle={styles.buttonContainer} titleStyle={styles.button} buttonStyle={styles.button}/>}
-            {(props.dishid!=null || props.chefid!=null) && allReviewsVisible && <AllReviews dishid={props.dishid} chefid={props.chefid} visible={allReviewsVisible} hideModal={hideModal} navigation={props.navigation}/>}
-        </View>
+                />) : &lt;Text>&lt;/Text>}
+            {props.reviews!=null &amp;&amp; props.reviews.length==0 &amp;&amp; &lt;Text style={styles.noReviews}>No Reviews with Comments&lt;/Text>}
+            {props.reviews!=null &amp;&amp; props.reviews.length>0 &amp;&amp; &lt;Button title="More Reviews" type="outline" onPress={allReviewsOnPress} containerStyle={styles.buttonContainer} titleStyle={styles.button} buttonStyle={styles.button}/>}
+            {(props.dishid!=null || props.chefid!=null) &amp;&amp; allReviewsVisible &amp;&amp; &lt;AllReviews dishid={props.dishid} chefid={props.chefid} visible={allReviewsVisible} hideModal={hideModal} navigation={props.navigation}/>}
+        &lt;/View>
     );
 }
 
@@ -171,4 +199,26 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Reviews;
+export default Reviews;</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#ChefScreen">ChefScreen</a></li><li><a href="global.html#Review">Review</a></li><li><a href="global.html#Reviews">Reviews</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Fri Mar 05 2021 18:06:49 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

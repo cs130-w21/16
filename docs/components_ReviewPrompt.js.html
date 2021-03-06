@@ -1,4 +1,32 @@
-import React, {useEffect, useState} from 'react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/ReviewPrompt.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/ReviewPrompt.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, {useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, Text, View, Modal, Image} from 'react-native';
 import {Button, Icon,  Header } from 'react-native-elements'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
@@ -37,7 +65,7 @@ export default function ReviewPrompt(props){
         props.refresh();
         props.hideModal();
         removeChef(props.chef);
-        if(global.orders.chefs.length <= 0){
+        if(global.orders.chefs.length &lt;= 0){
             props.closeOpenOrder();
         }
     }
@@ -50,7 +78,7 @@ export default function ReviewPrompt(props){
         setDishidToReview(dishid);
         setLeaveReviewVisible(true);
         var orderTemp = order;
-        for(var i; i<order.length; i++){
+        for(var i; i&lt;order.length; i++){
             if(orderTemp[i].dish.dishid == dishid){
                 orderTemp.splice(i, 1);
                 setOrder(orderTemp);
@@ -60,46 +88,46 @@ export default function ReviewPrompt(props){
     }
 
     return(
-        <Modal
+        &lt;Modal
             animationType="slide"
             transparent={true}
             visible={modalVisible}
             swipeDirection="down"
             onRequestClose={close}
         >
-            <TouchableWithoutFeedback onPress={close}>
-                <View style={styles.modalOverlay}/>
-            </TouchableWithoutFeedback>
-            <View style={styles.modalContainer}>
-                <View style={styles.modalView}>
-                    <Header
+            &lt;TouchableWithoutFeedback onPress={close}>
+                &lt;View style={styles.modalOverlay}/>
+            &lt;/TouchableWithoutFeedback>
+            &lt;View style={styles.modalContainer}>
+                &lt;View style={styles.modalView}>
+                    &lt;Header
                         containerStyle={styles.headerContainer}
-                        centerComponent={<View style={{flexDirection: 'column'}}><Text style={styles.header}>Thank You!</Text><Text style={styles.header2}>Did You Enjoy Your Dishes?</Text></View>}
-                        rightComponent={<Button onPress={close} containerStyle={styles.buttonContainer} buttonStyle={styles.closeButtonStyle} icon={<Icon name='close' size={25} color='black' style={{backgroundColor: 'white', borderRadius:15, outline:"black solid 2px"}}/>} />}
+                        centerComponent={&lt;View style={{flexDirection: 'column'}}>&lt;Text style={styles.header}>Thank You!&lt;/Text>&lt;Text style={styles.header2}>Did You Enjoy Your Dishes?&lt;/Text>&lt;/View>}
+                        rightComponent={&lt;Button onPress={close} containerStyle={styles.buttonContainer} buttonStyle={styles.closeButtonStyle} icon={&lt;Icon name='close' size={25} color='black' style={{backgroundColor: 'white', borderRadius:15, outline:"black solid 2px"}}/>} />}
                     />
-                    <ScrollView style={styles.dishesContainer}>
-                        {order!=null && order.map((dishOrder) =>
-                            <View style={styles.dishReviewContainer}> 
-                                <View style={styles.dishContainer}>
-                                    <Image style={styles.dishImage} source={{uri: dishOrder.dish.primaryImageURL}}/>
-                                    <View style={styles.dishInfo}>
-                                        <Text style={styles.titleText}>{dishOrder.dish.name}</Text>
-                                        <Text style={styles.chefName}>By {dishOrder.dish.Chef.name}</Text>
-                                    </View>
-                                </View>
-                                <Button title="Review This Dish" type="outline" onPress={() => openReview(dishOrder.dish.dishid)} containerStyle={styles.submitButtonContainer} titleStyle={styles.submitButtonTitle} buttonStyle={styles.submitButton}/>
-                            </View>
+                    &lt;ScrollView style={styles.dishesContainer}>
+                        {order!=null &amp;&amp; order.map((dishOrder) =>
+                            &lt;View style={styles.dishReviewContainer}> 
+                                &lt;View style={styles.dishContainer}>
+                                    &lt;Image style={styles.dishImage} source={{uri: dishOrder.dish.primaryImageURL}}/>
+                                    &lt;View style={styles.dishInfo}>
+                                        &lt;Text style={styles.titleText}>{dishOrder.dish.name}&lt;/Text>
+                                        &lt;Text style={styles.chefName}>By {dishOrder.dish.Chef.name}&lt;/Text>
+                                    &lt;/View>
+                                &lt;/View>
+                                &lt;Button title="Review This Dish" type="outline" onPress={() => openReview(dishOrder.dish.dishid)} containerStyle={styles.submitButtonContainer} titleStyle={styles.submitButtonTitle} buttonStyle={styles.submitButton}/>
+                            &lt;/View>
                         )}
-                    </ScrollView> 
-                </View>
-                {leaveReviewVisible && <LeaveReview
+                    &lt;/ScrollView> 
+                &lt;/View>
+                {leaveReviewVisible &amp;&amp; &lt;LeaveReview
                     dishid={dishidToReview}
                     hideModal={hideModal}    
                     rating={0}
                     refresh={hideModal}
                 />}
-            </View>
-        </Modal>
+            &lt;/View>
+        &lt;/Modal>
     )
 }
 
@@ -262,4 +290,26 @@ const styles = StyleSheet.create({
     invalidInputContainer: {
         borderColor: 'red',
     }
-});
+});</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#ChefScreen">ChefScreen</a></li><li><a href="global.html#Review">Review</a></li><li><a href="global.html#Reviews">Reviews</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Fri Mar 05 2021 18:06:49 GMT-0800 (Pacific Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
