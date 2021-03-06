@@ -1,17 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, Text, View, Modal, Image} from 'react-native';
-import {Button, Icon, Divider, Rating, Header, Input} from 'react-native-elements'
-import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import {AirbnbRating} from 'react-native-ratings';
-import Review from './Review';
+import {Button, Icon,  Header } from 'react-native-elements'
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import colors from '../config/colors';
-import { getDishReviews, getChefReviews, getDishInfo, pushNewReview } from '../util/Queries';
-import Dish from '../objects/Dish';
-import { TextInput } from 'react-native';
-import { Alert } from 'react-native';
 import LeaveReview from '../screens/LeaveReview';
 import { removeChef } from './ShoppingCart';
-
 
 export default function ReviewPrompt(props){
     const [modalVisible, setVisible] = useState(false);
@@ -50,7 +43,6 @@ export default function ReviewPrompt(props){
         }
     }
 
-
     return(
         <Modal
             animationType="slide"
@@ -62,37 +54,35 @@ export default function ReviewPrompt(props){
             <TouchableWithoutFeedback onPress={close}>
                 <View style={styles.modalOverlay}/>
             </TouchableWithoutFeedback>
-            
-                <View style={styles.modalContainer}>
-                    <View style={styles.modalView}>
-                        <Header
-                            containerStyle={styles.headerContainer}
-                            centerComponent={<View style={{flexDirection: 'column'}}><Text style={styles.header}>Thank You!</Text><Text style={styles.header2}>Did You Enjoy Your Dishes?</Text></View>}
-                            rightComponent={<Button onPress={close} containerStyle={styles.buttonContainer} buttonStyle={styles.closeButtonStyle} icon={<Icon name='close' size={25} color='black' style={{backgroundColor: 'white', borderRadius:15, outline:"black solid 2px"}}/>} />}
-                        />
-                        <ScrollView style={styles.dishesContainer}>
-                            {order!=null && order.map((dishOrder) =>
-                                <View style={styles.dishReviewContainer}> 
-                                    <View style={styles.dishContainer}>
-                                        <Image style={styles.dishImage} source={{uri: dishOrder.dish.primaryImageURL}}/>
-                                        <View style={styles.dishInfo}>
-                                            <Text style={styles.titleText}>{dishOrder.dish.name}</Text>
-                                            <Text style={styles.chefName}>By {dishOrder.dish.Chef.name}</Text>
-                                        </View>
+            <View style={styles.modalContainer}>
+                <View style={styles.modalView}>
+                    <Header
+                        containerStyle={styles.headerContainer}
+                        centerComponent={<View style={{flexDirection: 'column'}}><Text style={styles.header}>Thank You!</Text><Text style={styles.header2}>Did You Enjoy Your Dishes?</Text></View>}
+                        rightComponent={<Button onPress={close} containerStyle={styles.buttonContainer} buttonStyle={styles.closeButtonStyle} icon={<Icon name='close' size={25} color='black' style={{backgroundColor: 'white', borderRadius:15, outline:"black solid 2px"}}/>} />}
+                    />
+                    <ScrollView style={styles.dishesContainer}>
+                        {order!=null && order.map((dishOrder) =>
+                            <View style={styles.dishReviewContainer}> 
+                                <View style={styles.dishContainer}>
+                                    <Image style={styles.dishImage} source={{uri: dishOrder.dish.primaryImageURL}}/>
+                                    <View style={styles.dishInfo}>
+                                        <Text style={styles.titleText}>{dishOrder.dish.name}</Text>
+                                        <Text style={styles.chefName}>By {dishOrder.dish.Chef.name}</Text>
                                     </View>
-                                    <Button title="Review This Dish" type="outline" onPress={() => openReview(dishOrder.dish.dishid)} containerStyle={styles.submitButtonContainer} titleStyle={styles.submitButtonTitle} buttonStyle={styles.submitButton}/>
                                 </View>
-                            )}
-                        </ScrollView> 
-                    </View>
-                    {leaveReviewVisible && <LeaveReview
-                        dishid={dishidToReview}
-                        hideModal={hideModal}    
-                        rating={0}
-                        refresh={hideModal}
-                    />}
+                                <Button title="Review This Dish" type="outline" onPress={() => openReview(dishOrder.dish.dishid)} containerStyle={styles.submitButtonContainer} titleStyle={styles.submitButtonTitle} buttonStyle={styles.submitButton}/>
+                            </View>
+                        )}
+                    </ScrollView> 
                 </View>
-          
+                {leaveReviewVisible && <LeaveReview
+                    dishid={dishidToReview}
+                    hideModal={hideModal}    
+                    rating={0}
+                    refresh={hideModal}
+                />}
+            </View>
         </Modal>
     )
 }
@@ -247,7 +237,6 @@ const styles = StyleSheet.create({
         color: 'white',
         borderColor: colors.primary,
         borderWidth: 1
-        //backgroundColor: colors.secondary
     },
     submitButtonTitle: {
         color: colors.primary,

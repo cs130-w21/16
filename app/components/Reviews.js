@@ -1,23 +1,17 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
-import {Rating, Divider, Button, Icon,} from "react-native-elements";
+import { Button} from "react-native-elements";
 import PropTypes from 'prop-types';
-import { timeDifference } from '../util/TimeConversion';
 import colors from '../config/colors';
 import AllReviews from '../screens/AllReviews';
 import Review from './Review';
 import {AirbnbRating} from 'react-native-ratings';
 import LeaveReview from '../screens/LeaveReview';
-import { getNDishReviews } from '../util/Queries';
-
-
-
 
 function Reviews(props){
     const [allReviewsVisible, setAllReviewsVisible] = useState(false);
     const [leaveReviewVisible, setLeaveReviewVisible] = useState(false);
     const [leftRating, setLeftRating] = useState(0);
-    const [reviews, setReviews] = useState(props.reviews);
 
     function allReviewsOnPress(){
         setAllReviewsVisible(true);
@@ -32,13 +26,13 @@ function Reviews(props){
         setLeaveReviewVisible(true);
         setLeftRating(rating);
     }
-
     
     return(
         <View style={styles.container}>
             <Text style={styles.title}>Recent Reviews:</Text>
             <Text style={styles.rating}>{Math.round(props.rating*100)/100} out of 5 ({props.numReviews} Reviews)</Text>
-            {props.dishid!=null && <View style={styles.leaveReviewContainer}>
+            {props.dishid!=null && 
+            <View style={styles.leaveReviewContainer}>
                 <Text style={styles.tapText}>Tap to leave a review:</Text>
                 <AirbnbRating
                     defaultRating={0}
@@ -100,7 +94,6 @@ const styles = StyleSheet.create({
         marginBottom: 15
     },
     reviewerText: {
-        //fontWeight: 'bold',
         color: 'black',
         marginBottom: 7,
         fontFamily: 'Avenir',

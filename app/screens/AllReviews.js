@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, Text, View, Modal} from 'react-native';
-import {Button, Icon, Divider, Rating, Header} from 'react-native-elements'
-import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import {Button, Icon, Header} from 'react-native-elements'
 import Review from '../components/Review';
 import colors from '../config/colors';
 import { getDishReviews, getChefReviews } from '../util/Queries';
@@ -36,6 +35,7 @@ export default function AllReviews(props){
         setVisible(false);
         props.hideModal();
     }
+
     return(
         <Modal
             animationType="slide"
@@ -44,7 +44,6 @@ export default function AllReviews(props){
             swipeDirection="down"
             onRequestClose={close}
         >
-
             <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
                     <Header
@@ -67,11 +66,8 @@ export default function AllReviews(props){
                                 navigation={props.navigation}
                             /></View>) : <Text></Text>}
                     </ScrollView>
-
-                </View>
-                
+                </View>   
             </View>
-          
         </Modal>
     )
 }

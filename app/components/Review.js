@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { LogBox } from 'react-native';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import {Rating, Divider} from "react-native-elements";
 import { timeDifference } from '../util/TimeConversion';
@@ -8,7 +7,6 @@ import DishPage from '../screens/DishPage';
 
 
 function Review(props){
-    LogBox.ignoreLogs(['Each child in a list should have a unique "key" prop.']);
     const [dishPageVisible, setDishPageVisible] = useState(false);
 
     function onPressDish(){
@@ -18,6 +16,7 @@ function Review(props){
     function hideModal(){
         setDishPageVisible(false);
     }
+
     return(
         <View style={{minWidth: '100%'}}>
             {props.index != 0 ? <Divider style={styles.divider}/> : <View></View>}
@@ -54,14 +53,12 @@ const styles = StyleSheet.create({
         width: '100%'
     },
     reviewerText: {
-        //fontWeight: 'bold',
         color: 'black',
         marginBottom: 7,
         fontFamily: 'Avenir',
         fontWeight: 'bold'
     },
     dishText: {
-        //fontWeight: 'bold',
         color: colors.secondary,
         marginBottom: 7,
         fontFamily: 'Avenir',
