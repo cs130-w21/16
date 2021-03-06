@@ -18,7 +18,7 @@ import { removeChef } from './ShoppingCart';
  */
 
 /**
- * A modal that prompts the user for reviews for all dishes for a certain chef within an order after completion
+ * A modal screen that prompts the user for reviews for all dishes for a certain chef within an order after completion
  * 
  * @param {ReviewPromptProps} props
  */

@@ -5,7 +5,20 @@ import Review from '../components/Review';
 import colors from '../config/colors';
 import { getDishReviews, getChefReviews } from '../util/Queries';
 
+/**
+ * @typedef AllReviewsProps
+ * @property {boolean} visible - boolean value indicating whether this modal is currently visible or not
+ * @property {function} hideModal - function passed in from parent to close this modal
+ * @property {int} dishid - dishid if component is all reviews for a dish (null if chefid is not null)
+ * @property {int} chefid - chefid if component is all reviews for a chef (null if dishid is not null)
+ * @property {Object} navigation - Stack Navigation object
+ */
 
+/**
+ * A modal screen that lists all reviews for either a given dish or a given chef.
+ * 
+ * @param {AllReviewsProps} props
+ */
 export default function AllReviews(props){
     const [modalVisible, setVisible] = useState(false);
     const [reviews, setReviews] = useState(null);
