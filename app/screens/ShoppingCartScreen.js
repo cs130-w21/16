@@ -5,6 +5,15 @@ import { Card, Button } from "react-native-elements";
 import colors from "../config/colors";
 import ShoppingCart from "../components/ShoppingCart";
 
+/**
+ * 
+ * @typedef ShoppingCartScreenProps
+ * @property {Object} navigation - Stack Navigation object 
+ */
+/**
+ * 
+ * @param {ShoppingCartScreenProps} props 
+ */
 function ShoppingCartScreen(props) {
   const navigation = props.navigation;
   return (
