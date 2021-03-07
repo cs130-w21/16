@@ -8,9 +8,19 @@ import {
 import colors from "../config/colors";
 import PropTypes, { any } from "prop-types"
 
-/*  
-* This is the single recommendation for a chef
-*/
+/**
+ * 
+ * @typedef ChefRecProps
+ * @memberof ChefRec 
+ * @property {Object} navigation - Stack Navigation object
+ * @property {ChefObj} item - The Chef object being displayed
+ */
+
+/**
+ * A component that displays a Chef's name, bio, photo, and rating. 
+ * @class ChefRec
+ * @param {ChefRecProps} props 
+ */
 
 export default function ChefRec(props) {
   function onPressChef() {

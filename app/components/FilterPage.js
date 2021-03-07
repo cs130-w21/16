@@ -14,7 +14,34 @@ const SLIDER_WIDTH = Dimensions.get('window').width
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH)
 
 
+/**
+ * 
+ * @typedef FilterPageProps
+ * @memberof FilterPage
+ * @property {Object} navigation - Stack Navigation object
+ * @property {Set<String>} categoriesSet - Set of all the current categories selected for the categories filter
+ * @property {Function} setCategoriesSet - Function passed from parent to change the Set of categories selected for filter
+ * @property {boolean[]} categoriesArr - Array that represents whether a category button is colored red or green
+ * @property {Function} setCategoriesArr - Function passed from parent that changes which buttons are colored red or green
+ * @property {boolean[]} ratingFilter - Array that represents whether a rating button is colored red or green, and which rating setting the filter is currently in
+ * @property {Function} setRatingFilter - Function passed from parent that changes the raingFilter array to set the ratings filter
+ * @property {boolean[]} timeFilter - Array that represents whether a time filter button is colored red or green
+ * @property {Function} setTimeFilter - Function passed from parent that changes the time filter for which buttons are colored
+ * @property {boolean[]} priceFilter - Array that represents whether a price filter button is red or green
+ * @property {Function} setPriceFilter - Function passed from parent that changes the price filter
+ * @property {Function} update - Function passed from the parent that updates the component based on the filter settings
+ * @property {Function} closeModal - Function passed from the parent that closes the modal
+ * @property {number[]} prices - Array that represents a range of prices that shows up in filtered results
+ * @property {number[]} time - Array that represents a range of times in minutes for filtered results
+ * @property {Function} setPrices - Function passed from the parent that updates the range of acceptable prices in the filtered results
+ * @property {Function} setTime - Function passed from the parent that updates the range of acceptable times in the filtered results
+ */
 
+/**
+ * Modal which opens when user wants to filter the results of their dishes based on ratings, time, price, and category
+ * @class FilterPage 
+ * @param {FilterPageProps} props
+ */
 
 
 function FilterPage(props) {
