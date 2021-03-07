@@ -1,0 +1,18 @@
+{
+  "tags": {
+    "allowUnknownTags": true,
+    "dictionaries": ["jsdoc", "closure"]
+  },
+  "source": {
+    "include": ["app", "backend"],
+    "includePattern": ".+\\.js(doc|x)?$",
+    "excludePattern": "(^|\\/|\\\\)_"
+  },
+  "plugins": ["plugins/markdown"],
+  "opts": {
+    "template": "jsdoc-template",
+    "destination": "docs",
+    "recurse": true,
+    "readme": "README.md"
+  }
+}

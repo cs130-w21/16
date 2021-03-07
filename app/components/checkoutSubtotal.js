@@ -6,6 +6,19 @@ import PropTypes, { any } from "prop-types";
 import { Row } from "react-native-table-component";
 import { dishesPerChef, getLongestTime, getLongestTimeForChef,  isolateChefs, subTotal } from "./ShoppingCart";
 
+/**
+ * 
+ * @typedef CheckoutSubtotalProps
+ * @memberof CheckoutSubtotal
+ * @property  {Function} setComment - Callback function to set the instructions being passed onto the chef
+ */
+
+ /**
+  * A component that takes the global cart and presents it in a List to the user before they checkout. Also allows the user to provide specific instructions for each chef they order from. 
+  * @class CheckoutSubtotal
+  * @param {CheckoutSubtotalProps} props 
+  */
+
 function CheckoutSubtotal(props) {
   const [cart, setCart] = useState(global.cart);
   return (

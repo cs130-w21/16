@@ -1,5 +1,12 @@
-import { getLongestTimeForChef, getLongestTimeForChefinMin } from "../components/ShoppingCart";
+/**
+ * @module objects
+ */
 
+ /**
+ * Order Object
+ * 
+ * @param {Object} dishesByChef
+ */
 function Order(dishesByChef){
     this.chefs = Object.keys(dishesByChef);
     this.order = dishesByChef;

@@ -1,16 +1,29 @@
-import React, {useEffect, useState} from 'react';
-import {ScrollView, StyleSheet, Text, View, Modal, Image} from 'react-native';
-import {Button, Icon, Divider, Rating, Header, Input} from 'react-native-elements'
-import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, Modal, Image } from 'react-native';
+import {Button, Icon, Header, Input} from 'react-native-elements'
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import {AirbnbRating} from 'react-native-ratings';
-import Review from '../components/Review';
 import colors from '../config/colors';
-import { getDishReviews, getChefReviews, getDishInfo, pushNewReview } from '../util/Queries';
+import { getDishInfo, pushNewReview } from '../util/Queries';
 import Dish from '../objects/Dish';
-import { TextInput } from 'react-native';
 import { Alert } from 'react-native';
 
+/**
+ * @typedef LeaveReviewProps
+ * @memberof LeaveReview
+ * @property {boolean} visible - boolean value indicating whether this modal is currently visible or not
+ * @property {function} hideModal - function passed in from parent to close this modal
+ * @property {function} refresh - function passed in from parent to force refresh of parent on close
+ * @property {int} dishid - dishid of dish being reviewed
+ * @property {int} rating - rating from 1 to 5 that user left for dish
+ * @property {Object} navigation - Stack Navigation object
+ */
 
+/**
+ * A modal screen for users to leave a review for a certain dish
+ * @class LeaveReview
+ * @param {LeaveReviewProps} props
+ */
 export default function LeaveReview(props){
     const [modalVisible, setVisible] = useState(false);
     const [dish, setDish] = useState(null);
@@ -103,52 +116,48 @@ export default function LeaveReview(props){
             <TouchableWithoutFeedback onPress={close}>
                 <View style={styles.modalOverlay}/>
             </TouchableWithoutFeedback>
-            
-                <View style={styles.modalContainer}>
-                    <View style={styles.modalView}>
-                        <Header
-                            containerStyle={styles.headerContainer}
-                            centerComponent={<View style={{flexDirection: 'column'}}><Text style={styles.header}>Leave a Review</Text></View>}
-                            rightComponent={<Button onPress={close} containerStyle={styles.buttonContainer} buttonStyle={styles.closeButtonStyle} icon={<Icon name='close' size={25} color='black' style={{backgroundColor: 'white', borderRadius:15, outline:"black solid 2px"}}/>} />}
-                        />
-                        {dish!=null && <View style={styles.dishContainer}>
-                            <Image style={styles.dishImage} source={{uri: dish.primaryImageURL}}/>
-                            <View style={styles.dishInfo}>
-                                <Text style={styles.titleText}>{dish.name}</Text>
-                                <Text style={styles.chefName}>By {chefName}</Text>
-                            </View>
-                        </View>}
-                        <Text style={styles.tapText}>Tap to review:</Text>
-                        <AirbnbRating
-                            defaultRating={props.rating}
-                            showRating={false}
-                            onFinishRating={updateRating}
-                        />
-                        <View style={styles.inputContainer}>
-                            <Input
-                                placeholder="Your Name"
-                                placeholderTextColor={invalid? 'red': 'grey'}
-                                inputStyle={styles.nameInput}
-                                inputContainerStyle = {invalid ? styles.invalidInputContainer : {}}
-                                onChangeText={text => {setReviewer(text); setInvalid(false)}}
-                            />
-                            <Input
-                                placeholder="Comment (optional)"
-                                placeholderTextColor='grey'
-                                multiline={true}
-                                numberOfLines={10}
-                                containerStyle={styles.commentContainer}
-                                inputContainerStyle={styles.commentInputContainer}
-                                inputStyle={styles.commentInput}
-                                onChangeText={text => {setComment(text)}}
-                            />
-                            <Button title="Submit Review" type="solid" onPress={submit} containerStyle={styles.submitButtonContainer} titleStyle={styles.submitButtonTitle} buttonStyle={styles.submitButton}/>
+            <View style={styles.modalContainer}>
+                <View style={styles.modalView}>
+                    <Header
+                        containerStyle={styles.headerContainer}
+                        centerComponent={<View style={{flexDirection: 'column'}}><Text style={styles.header}>Leave a Review</Text></View>}
+                        rightComponent={<Button onPress={close} containerStyle={styles.buttonContainer} buttonStyle={styles.closeButtonStyle} icon={<Icon name='close' size={25} color='black' style={{backgroundColor: 'white', borderRadius:15, outline:"black solid 2px"}}/>} />}
+                    />
+                    {dish!=null && <View style={styles.dishContainer}>
+                        <Image style={styles.dishImage} source={{uri: dish.primaryImageURL}}/>
+                        <View style={styles.dishInfo}>
+                            <Text style={styles.titleText}>{dish.name}</Text>
+                            <Text style={styles.chefName}>By {chefName}</Text>
                         </View>
-                        
-                    </View>
-                    
+                    </View>}
+                    <Text style={styles.tapText}>Tap to review:</Text>
+                    <AirbnbRating
+                        defaultRating={props.rating}
+                        showRating={false}
+                        onFinishRating={updateRating}
+                    />
+                    <View style={styles.inputContainer}>
+                        <Input
+                            placeholder="Your Name"
+                            placeholderTextColor={invalid? 'red': 'grey'}
+                            inputStyle={styles.nameInput}
+                            inputContainerStyle = {invalid ? styles.invalidInputContainer : {}}
+                            onChangeText={text => {setReviewer(text); setInvalid(false)}}
+                        />
+                        <Input
+                            placeholder="Comment (optional)"
+                            placeholderTextColor='grey'
+                            multiline={true}
+                            numberOfLines={10}
+                            containerStyle={styles.commentContainer}
+                            inputContainerStyle={styles.commentInputContainer}
+                            inputStyle={styles.commentInput}
+                            onChangeText={text => {setComment(text)}}
+                        />
+                        <Button title="Submit Review" type="solid" onPress={submit} containerStyle={styles.submitButtonContainer} titleStyle={styles.submitButtonTitle} buttonStyle={styles.submitButton}/>
+                    </View> 
                 </View>
-          
+            </View>
         </Modal>
     )
 }

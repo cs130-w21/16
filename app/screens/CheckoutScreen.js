@@ -9,6 +9,19 @@ import { sendTextMessage } from "../util/Queries";
 import Order from '../objects/Order';
 const secrets = require("../../backend/secrets");
 
+/**
+ * 
+ * @typedef CheckoutScreenProps
+ * @memberof CheckoutScreen 
+ * @property {Object} navigation - Stack Navigation object
+ */
+
+/**
+ * Page component for checking out the cart and initiating payment.
+ * @class CheckoutScreen
+ * @param {CheckoutScreenProps} props 
+ */
+
 function CheckoutScreen(props) {
   const [comment, setComment] = useState({});
   const navigation = props.navigation;

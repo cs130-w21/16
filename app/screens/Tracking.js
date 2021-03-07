@@ -3,13 +3,11 @@ import { Dimensions, View, Text, SafeAreaView, ScrollView } from "react-native";
 import { StyleSheet } from "react-native";
 import Carousel, {Pagination} from 'react-native-snap-carousel';
 import { Card, Button } from "react-native-elements";
-import CheckoutSubtotal from "../components/checkoutSubtotal";
 import colors from "../config/colors";
 import * as Progress from 'react-native-progress';
 import { Icon } from 'react-native-elements';
 import { dishesPerChef, getLongestTimeForChef } from "../components/ShoppingCart";
 import ReviewPrompt from "../components/ReviewPrompt";
-
 
 const SLIDER_WIDTH = Dimensions.get('window').width
 const SLIDER_HEIGHT = Dimensions.get('window').height
@@ -62,7 +60,18 @@ function icon(progress){
         )
     }
 }
+/**
+ * 
+ * @typedef TrackingProps
+ * @memberof TrackingElement
+ * @property {Object} navigation - Stack navigation object
+ */
 
+/**
+ * A page where you can track the status of your orders. Sliding between the different chefs.
+ * @class TrackingElement
+ * @param {TrackingProps} props
+ */
 function TrackingElement(props){
     const chef=props.item;
     const [reviewVisible, setReviewVisible] = useState(false);

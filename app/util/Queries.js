@@ -7,8 +7,14 @@ const ip = "http://3.141.20.190";
 ////////////
 // DISHES //
 ///////////
+/**
+ * @module queries
+ */
 
-// ALL Dish entries in the Dish table
+/**
+ * return all Dish entries in the Dish Table
+ * @return {Object[]} - array of JSON Objects containing the attributes for each dish
+ */
 async function getDishes() {
   const response = await fetch(ip + ":" + port + "/AllDishes");
   const data = await response.json();
@@ -16,7 +22,11 @@ async function getDishes() {
 }
 module.exports.getDishes = getDishes;
 
-// Dish information for specific dish
+/**
+ * return information on a specific dish specifid by dishid
+ * @param {int} dishid - dishid of desired dish
+ * @return {Object[]} - array of length 1 of the JSON Object containing the attributes for the given dish
+ */
 async function getDishInfo(dishid) {
   const response = await fetch(ip + ":" + port + "/DishInfo?dishid=" + dishid);
   const data = await response.json();
@@ -24,7 +34,10 @@ async function getDishInfo(dishid) {
 }
 module.exports.getDishInfo = getDishInfo;
 
-// All Dish entries of currently available dishes
+/**
+ * return all Dish entries in the Dish Table of currently available dishes
+ * @return {Object[]} - array of JSON Objects containing the attributes for each dish
+ */
 async function getAvailableDishes() {
   const response = await fetch(ip + ":" + port + "/AvailableDishes");
   const data = await response.json();
@@ -32,7 +45,11 @@ async function getAvailableDishes() {
 }
 module.exports.getAvailableDishes = getAvailableDishes;
 
-// All Dish Primary Images for a specified chef ordered by dish rating
+/**
+ * return all primary image URLs of the dishes of a specified chef ordered by dish rating
+ * @param {int} chefid - chefid of desired chef
+ * @return {Object[]} - array of JSON Objects containing the primaryImage URLs for a the given chef
+ */
 async function getCoverPhotos(chefid) {
   const response = await fetch(ip + ":" + port + "/CoverPhotos?id=" + chefid);
   const data = await response.json();
@@ -40,7 +57,11 @@ async function getCoverPhotos(chefid) {
 }
 module.exports.getCoverPhotos = getCoverPhotos;
 
-// All Dish entries for a given chef
+/**
+ * return all Dish entries for a given chef
+ * @param {int} id - chefid of desired chef
+ * @return {Object[]} - array of JSON Objects containing the attributes for each dish
+ */
 async function getChefsDishes(id) {
   const response = await fetch(ip + ":" + port + "/ChefsDishes?id=" + id);
   const data = await response.json();
@@ -52,7 +73,11 @@ module.exports.getChefsDishes = getChefsDishes;
 // CHEFS //
 //////////
 
-// Table Entry for a specified chef
+/**
+ * return information on a specific chef specifid by chefid
+ * @param {int} id - chefid of desired chef
+ * @return {Object[]} - array of length 1 of the JSON Object containing the attributes for the given chef
+ */
 async function getChefInfo(id) {
   const response = await fetch(ip + ":" + port + "/ChefInfo?id=" + id);
   const data = await response.json();
@@ -60,7 +85,10 @@ async function getChefInfo(id) {
 }
 module.exports.getChefInfo = getChefInfo;
 
-// All Chef entries in Chef table
+/**
+ * return all Chef entries in the Chef Table
+ * @return {Object[]} - array of JSON Objects containing the attributes for each chef
+ */
 async function getChefs() {
   const response = await fetch(ip + ":" + port + "/Chefs");
   const data = await response.json();
@@ -72,6 +100,15 @@ module.exports.getChefs = getChefs;
 // Reviews //
 /////////////
 
+/**
+ * pushes a new review to the Review table in the database
+ * @param {int} dishid - dishid of dish being reviewed
+ * @param {int} chefid - chefid of the chef of the dish being reviewed
+ * @param {String} reviewer - name of who left the review
+ * @param {rating} int - star rating of 1 to 5 left for the dish
+ * @param {String} comment - optional comment left for the dish (null if no comment)
+ * @param {BigInt} timestamp - timestamp of when the review was left in milliseconds
+ */
 async function pushNewReview(
   dishid,
   chefid,
@@ -119,10 +156,14 @@ async function pushNewReview(
       rating
   );
   const data3 = await response3.json();
-  return [data, data2, data3];
 }
 module.exports.pushNewReview = pushNewReview;
 
+/**
+ * return all reviews with comments left for a specific dish specified by dishid
+ * @param {int} dishid - dishid of specified dish
+ * @return {Object[]} - array of length JSON Objects containing the attributes for each review
+ */
 async function getDishReviews(dishid) {
   const response = await fetch(
     ip + ":" + port + "/getDishReviews?dishid=" + dishid
@@ -132,6 +173,11 @@ async function getDishReviews(dishid) {
 }
 module.exports.getDishReviews = getDishReviews;
 
+/**
+ * return all reviews with comments left for a specific chef specified by chefid
+ * @param {int} chefid - chefid of specified chef
+ * @return {Object[]} - array of length JSON Objects containing the attributes for each review
+ */
 async function getChefReviews(chefid) {
   const response = await fetch(
     ip + ":" + port + "/getChefReviews?chefid=" + chefid
@@ -141,6 +187,12 @@ async function getChefReviews(chefid) {
 }
 module.exports.getChefReviews = getChefReviews;
 
+/**
+ * return the latest n reviews with comments left for a specific dish specified by dishid
+ * @param {int} dishid - dishid of specified dish
+ * @param {int} n - number of reviews to pull
+ * @return {Object[]} - array of length JSON Objects containing the attributes for each review
+ */
 async function getNDishReviews(dishid, n) {
   const response = await fetch(
     ip + ":" + port + "/getNDishReviews?dishid=" + dishid + "&n=" + n
@@ -150,6 +202,12 @@ async function getNDishReviews(dishid, n) {
 }
 module.exports.getNDishReviews = getNDishReviews;
 
+/**
+ * return the latest n reviews with comments left for a specific chef specified by chefid
+ * @param {int} chefid - chefid of specified chef
+ * @param {int} n - number of reviews to pull
+ * @return {Object[]} - array of length JSON Objects containing the attributes for each review
+ */
 async function getNChefReviews(chefid, n) {
   const response = await fetch(
     ip + ":" + port + "/getNChefReviews?chefid=" + chefid + "&n=" + n
@@ -159,6 +217,10 @@ async function getNChefReviews(chefid, n) {
 }
 module.exports.getNChefReviews = getNChefReviews;
 
+/**
+ * return ALL reviews
+ * @return {Object[]} - array of length JSON Objects containing the attributes for each review
+ */
 async function getAllReviews() {
   const response = await fetch(ip + ":" + port + "/AllReviews");
   const data = await response.json();
@@ -176,6 +238,13 @@ var requestOptions = {
   "Content-Type": "application/json"
 };
 
+/**
+ * perform post request to send text messages to chefs
+ * @param {String} dishes - dishes in order
+ * @param {String} instructions - special instructions left by customer
+ * @param {int} phone - phone number of chef to send to
+ * @param {String} method - GET or POST method
+ */
 async function sendTextMessage(dishes, instructions, phone, method) {
   const response = await fetch(
     ip +

@@ -6,3 +6,4 @@ backend/secrets.js
 *secrets.js
 backend/potluck.pem
 .travis/id_rsa
+docs/

@@ -42,6 +42,19 @@ class Cards extends Component{
     }
 }
 
+/**
+ * 
+ * @typedef ChefRecListProps
+ * @memberof ChefRecList 
+ * @property {Object} navigation - Stack Navigation object
+ */
+
+/**
+ * A component that displays all the chefs in a horizontal list.
+ * @class ChefRecList
+ * @param {ChefRecListProps} props 
+ */
+
 export default function ChefRecList(props) {
     const [chefs, setChefs] = useState(null);
 

@@ -1,14 +1,30 @@
 import React, { useState } from 'react';
-import { LogBox } from 'react-native';
 import {StyleSheet, View, Text, TouchableOpacity} from 'react-native';
 import {Rating, Divider} from "react-native-elements";
 import { timeDifference } from '../util/TimeConversion';
 import colors from "../config/colors";
 import DishPage from '../screens/DishPage';
 
+/**
+ * 
+ * @typedef ReviewProps
+ * @memberof Review
+ * @property {int} index - index of review within the larger list of reviews
+ * @property {String} reviewer - name of the person who left the review
+ * @property {String} name - dish name
+ * @property {int} dishid - dishid of dish being reviewed
+ * @property {int} rating - star rating of review from 1 to 5
+ * @property {BigInt} timestamp - timestamp of review in milliseconds 
+ * @property {String} comment - comment of review 
+ * @property {Object} navigation - Stack Navigation object   
+ */
 
+/**
+ * A component for a single review with name, timestamp, rating, comment
+ * @class Review
+ * @param {ReviewProps} props
+ */
 function Review(props){
-    LogBox.ignoreLogs(['Each child in a list should have a unique "key" prop.']);
     const [dishPageVisible, setDishPageVisible] = useState(false);
 
     function onPressDish(){
@@ -18,6 +34,7 @@ function Review(props){
     function hideModal(){
         setDishPageVisible(false);
     }
+    
     return(
         <View style={{minWidth: '100%'}}>
             {props.index != 0 ? <Divider style={styles.divider}/> : <View></View>}
@@ -54,14 +71,12 @@ const styles = StyleSheet.create({
         width: '100%'
     },
     reviewerText: {
-        //fontWeight: 'bold',
         color: 'black',
         marginBottom: 7,
         fontFamily: 'Avenir',
         fontWeight: 'bold'
     },
     dishText: {
-        //fontWeight: 'bold',
         color: colors.secondary,
         marginBottom: 7,
         fontFamily: 'Avenir',

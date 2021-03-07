@@ -1,13 +1,26 @@
 import React, {useEffect, useState} from 'react';
 import {ScrollView, StyleSheet, Text, View, Modal} from 'react-native';
-import {Button, Icon, Divider, Rating, Header} from 'react-native-elements'
-import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import {Button, Icon, Header} from 'react-native-elements'
 import Review from '../components/Review';
 import colors from '../config/colors';
 import { getDishReviews, getChefReviews } from '../util/Queries';
 
+/**
+ * @typedef AllReviewsProps
+ * @memberof AllReviews
+ * @property {boolean} visible - boolean value indicating whether this modal is currently visible or not
+ * @property {function} hideModal - function passed in from parent to close this modal
+ * @property {int} dishid - dishid if component is all reviews for a dish (null if chefid is not null)
+ * @property {int} chefid - chefid if component is all reviews for a chef (null if dishid is not null)
+ * @property {Object} navigation - Stack Navigation object
+ */
 
-export default function AllReviews(props){
+/**
+ * A modal screen that lists all reviews for either a given dish or a given chef.
+ * @class AllReviews
+ * @param {AllReviewsProps} props
+ */
+function AllReviews(props){
     const [modalVisible, setVisible] = useState(false);
     const [reviews, setReviews] = useState(null);
 
@@ -36,6 +49,7 @@ export default function AllReviews(props){
         setVisible(false);
         props.hideModal();
     }
+
     return(
         <Modal
             animationType="slide"
@@ -44,7 +58,6 @@ export default function AllReviews(props){
             swipeDirection="down"
             onRequestClose={close}
         >
-
             <View style={styles.modalContainer}>
                 <View style={styles.modalView}>
                     <Header
@@ -67,11 +80,8 @@ export default function AllReviews(props){
                                 navigation={props.navigation}
                             /></View>) : <Text></Text>}
                     </ScrollView>
-
-                </View>
-                
+                </View>   
             </View>
-          
         </Modal>
     )
 }
@@ -140,3 +150,5 @@ const styles = StyleSheet.create({
         fontFamily: 'Avenir',
     }
 });
+
+export default AllReviews;

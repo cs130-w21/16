@@ -9,15 +9,20 @@ import Chef from "../objects/Chef";
 import Dish from "../objects/Dish";
 import DishPage from "../screens/DishPage";
 
-// general design/architecture notes:
-// from the landing page, make query to get all of the dishes
-// map those results to this card (each dish gets a card) with the columns as props
-// pass in all columns for dish into the MenuCard function
-// --> for the dish page navigation, pass in the dish's id parameter
-// to do another query call for the dish page
-//
+/**
+ * @typedef MenuCardProps
+ * @memberof MenuCard
+ * @property {Dish} Dish - dish object
+ * @property {Object} navigation - stack navigation object
+ * @property {any} inChefMenu - if in chef's menu
+ */
 
-export default function MenuCard(props) {
+/**
+ * MenuCard component to show dishes in a compact way
+ * @class MenuCard
+ * @param {MenuCardProps} props - Props of Menu Card
+ */
+function MenuCard(props) {
   const [ChefObject, setChefObject] = useState(null);
   const [dishPageVisible, setDishPageVisible] = useState(false);
   
@@ -166,3 +171,4 @@ const styles = StyleSheet.create({
     position: 'absolute'
   }
 });
+export default MenuCard;

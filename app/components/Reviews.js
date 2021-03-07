@@ -1,23 +1,45 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, Text} from 'react-native';
-import {Rating, Divider, Button, Icon,} from "react-native-elements";
+import { Button} from "react-native-elements";
 import PropTypes from 'prop-types';
-import { timeDifference } from '../util/TimeConversion';
 import colors from '../config/colors';
 import AllReviews from '../screens/AllReviews';
 import Review from './Review';
 import {AirbnbRating} from 'react-native-ratings';
 import LeaveReview from '../screens/LeaveReview';
-import { getNDishReviews } from '../util/Queries';
 
+/**
+ * @typedef ReviewJSON
+ * @memberof Reviews
+ * @property {String} reviewer - name of the person who left the review
+ * @property {int} rating - star rating of review from 1 to 5
+ * @property {BigInt} timestamp - timestamp of review in milliseconds 
+ * @property {String} comment - comment of review 
+ * @property {String} name - dish name
+ * @property {int} dishid - dishid of dish being reviewed
+ */
+/**
+ * 
+ * @typedef ReviewsProps
+ * @memberof Reviews
+ * @property {float} rating - average rating of dish/chef
+ * @property {int} numReviews - total number of ratings left for dish/chef
+ * @property {int} dishid - dishid if component is reviews for a dish (null if chefid is not null)
+ * @property {int} chefid - chefid if component is reviews for a chef (null if dishid is not null)
+ * @property {function} refresh - function passed in from parent to force refresh of parent on close
+ * @property {ReviewJSON[]} reviews - array of JSON objects containing informations for the first 5 reviews
+ * @property {Object} navigation - Stack Navigation object
+ */
 
-
-
+/**
+ * A component that lists the first few reviews for either a dish or a chef, a button to open all reviews. If reviews are for a dish, a leave review option is available. 
+ * @class Reviews
+ * @param {ReviewsProps} props
+ */
 function Reviews(props){
     const [allReviewsVisible, setAllReviewsVisible] = useState(false);
     const [leaveReviewVisible, setLeaveReviewVisible] = useState(false);
     const [leftRating, setLeftRating] = useState(0);
-    const [reviews, setReviews] = useState(props.reviews);
 
     function allReviewsOnPress(){
         setAllReviewsVisible(true);
@@ -32,13 +54,13 @@ function Reviews(props){
         setLeaveReviewVisible(true);
         setLeftRating(rating);
     }
-
     
     return(
         <View style={styles.container}>
             <Text style={styles.title}>Recent Reviews:</Text>
             <Text style={styles.rating}>{Math.round(props.rating*100)/100} out of 5 ({props.numReviews} Reviews)</Text>
-            {props.dishid!=null && <View style={styles.leaveReviewContainer}>
+            {props.dishid!=null && 
+            <View style={styles.leaveReviewContainer}>
                 <Text style={styles.tapText}>Tap to leave a review:</Text>
                 <AirbnbRating
                     defaultRating={0}
@@ -100,7 +122,6 @@ const styles = StyleSheet.create({
         marginBottom: 15
     },
     reviewerText: {
-        //fontWeight: 'bold',
         color: 'black',
         marginBottom: 7,
         fontFamily: 'Avenir',
