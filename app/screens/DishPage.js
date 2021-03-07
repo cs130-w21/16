@@ -28,6 +28,21 @@ import coordDist from "../util/CoordDist";
 const SLIDER_WIDTH = Dimensions.get("window").width;
 const ITEM_WIDTH = Math.round(SLIDER_WIDTH);
 
+/**
+ * 
+ * @typedef DishPageProps
+ * @property {Dish} Dish - dish object defined in Dish.js
+ * @property {boolean} visible - set visibility of modal
+ * @property {int} dishid - dishid of the given dish 
+ * @property {function} hideModal - function to hide the given component
+ * @property {Object} navigation - Stack Navigation Object
+ * 
+ */
+/**
+ * A page to view aa dish and its information, reviews and chef
+ * 
+ * @param {DishPageProps} props 
+ */
 function remove(count, setCount) {
   if (count > 0) {
     setCount(count - 1);
