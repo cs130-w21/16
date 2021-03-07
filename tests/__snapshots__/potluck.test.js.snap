@@ -1,5 +1,317 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`GET /testObject 1`] = `
+<View
+  style={
+    Object {
+      "width": "100%",
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "alignContent": "stretch",
+        "alignItems": "flex-end",
+        "backgroundColor": "#ffffff",
+        "borderColor": "#e1e8ee",
+        "borderWidth": 1,
+        "height": 225,
+        "margin": 15,
+        "marginBottom": 0,
+        "padding": 15,
+        "shadowColor": "rgba(0,0,0, .2)",
+        "shadowOffset": Object {
+          "height": 0,
+          "width": 0,
+        },
+        "shadowOpacity": 1,
+        "shadowRadius": 1,
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "backgroundColor": "transparent",
+        }
+      }
+    >
+      <View
+        accessible={true}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+      >
+        <Text
+          style={
+            Object {
+              "color": "#43484d",
+              "fontSize": 18,
+              "fontWeight": "bold",
+              "marginBottom": 15,
+              "textAlign": "center",
+            }
+          }
+          testID="cardTitle"
+        >
+          <Text
+            style={
+              Object {
+                "fontSize": 16,
+                "fontWeight": "bold",
+                "textAlign": "center",
+              }
+            }
+          >
+            Test Dish 2
+          </Text>
+        </Text>
+        <View
+          style={
+            Object {
+              "backgroundColor": "#bcbbc1",
+              "height": 0.5,
+              "marginBottom": 15,
+            }
+          }
+        />
+        <View
+          style={
+            Object {
+              "flex": 1,
+              "flexDirection": "row",
+              "flexWrap": "wrap",
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "alignItems": "stretch",
+                "justifyContent": "space-around",
+                "padding": 8,
+                "width": "50%",
+              }
+            }
+          >
+            <View
+              accessibilityIgnoresInvertColors={true}
+              style={
+                Object {
+                  "backgroundColor": "transparent",
+                  "overflow": "hidden",
+                  "position": "relative",
+                }
+              }
+            >
+              <Image
+                onLoad={[Function]}
+                source={
+                  Object {
+                    "uri": "https://mk0tamingofthes3a5vy.kinstacdn.com/wp-content/uploads/2014/05/Chocolate-Souffle%CC%81-R3-1.jpg",
+                  }
+                }
+                style={
+                  Object {
+                    "bottom": 0,
+                    "height": 150,
+                    "left": 0,
+                    "position": "absolute",
+                    "right": 0,
+                    "top": 0,
+                    "width": null,
+                  }
+                }
+                testID="RNE__Image"
+                theme={
+                  Object {
+                    "colors": Object {
+                      "black": "#242424",
+                      "disabled": "hsl(208, 8%, 90%)",
+                      "divider": "#bcbbc1",
+                      "error": "#ff190c",
+                      "grey0": "#393e42",
+                      "grey1": "#43484d",
+                      "grey2": "#5e6977",
+                      "grey3": "#86939e",
+                      "grey4": "#bdc6cf",
+                      "grey5": "#e1e8ee",
+                      "greyOutline": "#bbb",
+                      "platform": Object {
+                        "android": Object {
+                          "error": "#f44336",
+                          "grey": "rgba(0, 0, 0, 0.54)",
+                          "primary": "#2196f3",
+                          "secondary": "#9C27B0",
+                          "success": "#4caf50",
+                          "warning": "#ffeb3b",
+                        },
+                        "default": Object {
+                          "error": "#ff3b30",
+                          "grey": "#7d7d7d",
+                          "primary": "#007aff",
+                          "searchBg": "#dcdce1",
+                          "secondary": "#5856d6",
+                          "success": "#4cd964",
+                          "warning": "#ffcc00",
+                        },
+                        "ios": Object {
+                          "error": "#ff3b30",
+                          "grey": "#7d7d7d",
+                          "primary": "#007aff",
+                          "searchBg": "#dcdce1",
+                          "secondary": "#5856d6",
+                          "success": "#4cd964",
+                          "warning": "#ffcc00",
+                        },
+                        "web": Object {
+                          "error": "#ff190c",
+                          "grey": "#393e42",
+                          "primary": "#2089dc",
+                          "searchBg": "#303337",
+                          "secondary": "#ca71eb",
+                          "success": "#52c41a",
+                          "warning": "#faad14",
+                        },
+                      },
+                      "primary": "#2089dc",
+                      "searchBg": "#303337",
+                      "secondary": "#ca71eb",
+                      "success": "#52c41a",
+                      "warning": "#faad14",
+                      "white": "#ffffff",
+                    },
+                  }
+                }
+                transition={true}
+                transitionDuration={360}
+              />
+              <View
+                accessibilityElementsHidden={true}
+                importantForAccessibility="no-hide-descendants"
+                pointerEvents="none"
+                style={
+                  Object {
+                    "bottom": 0,
+                    "left": 0,
+                    "opacity": 1,
+                    "position": "absolute",
+                    "right": 0,
+                    "top": 0,
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "alignItems": "center",
+                      "backgroundColor": "#bdbdbd",
+                      "height": 150,
+                      "justifyContent": "center",
+                      "width": null,
+                    }
+                  }
+                  testID="RNE__Image__placeholder"
+                />
+              </View>
+              <View
+                style={
+                  Object {
+                    "height": 150,
+                    "width": null,
+                  }
+                }
+              />
+            </View>
+          </View>
+          <View
+            style={
+              Object {
+                "alignItems": "stretch",
+                "justifyContent": "space-around",
+                "padding": 8,
+                "width": "50%",
+              }
+            }
+          >
+            <Text
+              style={
+                Object {
+                  "fontSize": 12,
+                  "textAlign": "center",
+                }
+              }
+            >
+              Test Dish Card 2
+            </Text>
+            <Text
+              style={
+                Object {
+                  "alignSelf": "center",
+                  "color": "#000",
+                  "fontSize": 10,
+                  "fontWeight": "bold",
+                  "paddingVertical": 4,
+                }
+              }
+            >
+              $
+              10
+            </Text>
+            <View
+              style={
+                Object {
+                  "alignContent": "center",
+                  "alignItems": "center",
+                  "flexDirection": "row",
+                  "justifyContent": "center",
+                  "width": "100%",
+                }
+              }
+            >
+              <Text
+                style={
+                  Object {
+                    "color": "grey",
+                    "fontSize": 12,
+                    "left": 45,
+                    "marginLeft": 5,
+                  }
+                }
+              >
+                (
+                12
+                )
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+    </View>
+  </View>
+  <View
+    style={
+      Object {
+        "alignItems": "center",
+        "flex": 1,
+        "justifyContent": "center",
+      }
+    }
+  />
+</View>
+`;
+
 exports[`Renders chef card 1`] = `
 <View
   style={
@@ -567,6 +879,537 @@ exports[`Renders main dish card 1`] = `
   />
 </View>
 `;
+
+exports[`Renders shopping cart page 1`] = `
+<View
+  style={
+    Object {
+      "backgroundColor": "#F9F6F0",
+      "height": "100%",
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "width": "100%",
+      }
+    }
+  >
+    <RCTScrollView
+      style={
+        Object {
+          "width": "100%",
+        }
+      }
+    >
+      <View>
+        <Text
+          style={
+            Object {
+              "fontSize": 16,
+              "fontWeight": "bold",
+              "padding": 20,
+              "textAlign": "center",
+            }
+          }
+        >
+          No items yet!
+        </Text>
+        <View
+          style={
+            Object {
+              "height": 150,
+            }
+          }
+        />
+      </View>
+    </RCTScrollView>
+  </View>
+  <RCTSafeAreaView
+    emulateUnlessSupported={true}
+    style={
+      Object {
+        "alignContent": "center",
+        "alignItems": "center",
+        "bottom": 0,
+        "flex": 1,
+        "flexDirection": "row",
+        "justifyContent": "space-evenly",
+        "position": "absolute",
+        "width": "100%",
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "borderRadius": 20,
+          "marginBottom": 20,
+          "overflow": "hidden",
+          "width": "50%",
+        }
+      }
+    >
+      <View
+        accessibilityRole="button"
+        accessibilityState={
+          Object {
+            "busy": false,
+            "disabled": false,
+          }
+        }
+        accessible={true}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "#ACBD89",
+              "borderColor": "#2089dc",
+              "borderRadius": 20,
+              "borderWidth": 0,
+              "flexDirection": "row",
+              "justifyContent": "center",
+              "padding": 8,
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "white",
+                "fontFamily": "Avenir",
+                "fontSize": 18,
+                "fontWeight": "bold",
+                "paddingVertical": 1,
+                "textAlign": "center",
+              }
+            }
+          >
+            Checkout
+          </Text>
+        </View>
+      </View>
+    </View>
+  </RCTSafeAreaView>
+</View>
+`;
+
+exports[`Renders shopping cart page update 1`] = `
+<View
+  style={
+    Object {
+      "backgroundColor": "#F9F6F0",
+      "height": "100%",
+    }
+  }
+>
+  <View
+    style={
+      Object {
+        "width": "100%",
+      }
+    }
+  >
+    <RCTScrollView
+      style={
+        Object {
+          "width": "100%",
+        }
+      }
+    >
+      <View>
+        <View
+          style={
+            Object {
+              "width": "100%",
+            }
+          }
+        >
+          <View
+            style={
+              Object {
+                "alignContent": "stretch",
+                "alignItems": "flex-end",
+                "backgroundColor": "#ffffff",
+                "borderColor": "#e1e8ee",
+                "borderWidth": 1,
+                "height": 125,
+                "margin": 15,
+                "marginBottom": 0,
+                "padding": 15,
+                "shadowColor": "rgba(0,0,0, .2)",
+                "shadowOffset": Object {
+                  "height": 0,
+                  "width": 0,
+                },
+                "shadowOpacity": 1,
+                "shadowRadius": 1,
+              }
+            }
+          >
+            <View
+              style={
+                Object {
+                  "backgroundColor": "transparent",
+                }
+              }
+            >
+              <Text
+                style={
+                  Object {
+                    "color": "#43484d",
+                    "fontSize": 18,
+                    "fontWeight": "bold",
+                    "marginBottom": 15,
+                    "textAlign": "center",
+                  }
+                }
+                testID="cardTitle"
+              >
+                <Text
+                  style={
+                    Object {
+                      "fontSize": 16,
+                      "fontWeight": "bold",
+                      "textAlign": "center",
+                    }
+                  }
+                >
+                  Test Dish
+                </Text>
+              </Text>
+              <View
+                style={
+                  Object {
+                    "backgroundColor": "#bcbbc1",
+                    "height": 0.5,
+                    "marginBottom": 15,
+                  }
+                }
+              />
+              <View
+                style={
+                  Object {
+                    "flex": 1,
+                    "flexDirection": "row",
+                    "flexWrap": "wrap",
+                  }
+                }
+              >
+                <View
+                  style={
+                    Object {
+                      "alignItems": "stretch",
+                      "justifyContent": "space-around",
+                      "width": "50%",
+                    }
+                  }
+                >
+                  <View
+                    style={
+                      Object {
+                        "alignItems": "center",
+                        "flex": 1,
+                        "flexDirection": "row",
+                        "justifyContent": "flex-start",
+                      }
+                    }
+                  >
+                    <View
+                      style={
+                        Object {
+                          "borderRadius": 3,
+                          "overflow": "hidden",
+                        }
+                      }
+                    >
+                      <View
+                        accessibilityRole="button"
+                        accessibilityState={
+                          Object {
+                            "busy": false,
+                            "disabled": false,
+                          }
+                        }
+                        accessible={true}
+                        focusable={true}
+                        onClick={[Function]}
+                        onResponderGrant={[Function]}
+                        onResponderMove={[Function]}
+                        onResponderRelease={[Function]}
+                        onResponderTerminate={[Function]}
+                        onResponderTerminationRequest={[Function]}
+                        onStartShouldSetResponder={[Function]}
+                        style={
+                          Object {
+                            "opacity": 1,
+                          }
+                        }
+                      >
+                        <View
+                          style={
+                            Object {
+                              "alignItems": "center",
+                              "backgroundColor": "#ACBD89",
+                              "borderBottomLeftRadius": 20,
+                              "borderColor": "#2089dc",
+                              "borderRadius": 3,
+                              "borderTopLeftRadius": 20,
+                              "borderWidth": 0,
+                              "flexDirection": "row",
+                              "justifyContent": "center",
+                              "padding": 8,
+                            }
+                          }
+                        >
+                          <Text
+                            style={
+                              Object {
+                                "color": "white",
+                                "fontSize": 18,
+                                "fontWeight": "bold",
+                                "paddingVertical": 1,
+                                "textAlign": "center",
+                              }
+                            }
+                          >
+                             - 
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                    <Text
+                      style={
+                        Object {
+                          "fontSize": 20,
+                          "fontWeight": "800",
+                          "paddingHorizontal": 8,
+                          "paddingVertical": 0,
+                          "textAlign": "center",
+                        }
+                      }
+                    >
+                      2
+                    </Text>
+                    <View
+                      style={
+                        Object {
+                          "borderRadius": 3,
+                          "overflow": "hidden",
+                        }
+                      }
+                    >
+                      <View
+                        accessibilityRole="button"
+                        accessibilityState={
+                          Object {
+                            "busy": false,
+                            "disabled": false,
+                          }
+                        }
+                        accessible={true}
+                        focusable={true}
+                        onClick={[Function]}
+                        onResponderGrant={[Function]}
+                        onResponderMove={[Function]}
+                        onResponderRelease={[Function]}
+                        onResponderTerminate={[Function]}
+                        onResponderTerminationRequest={[Function]}
+                        onStartShouldSetResponder={[Function]}
+                        style={
+                          Object {
+                            "opacity": 1,
+                            "paddingRight": 10,
+                          }
+                        }
+                      >
+                        <View
+                          style={
+                            Object {
+                              "alignItems": "center",
+                              "backgroundColor": "#ACBD89",
+                              "borderBottomRightRadius": 20,
+                              "borderColor": "#2089dc",
+                              "borderRadius": 3,
+                              "borderTopRightRadius": 20,
+                              "borderWidth": 0,
+                              "flexDirection": "row",
+                              "justifyContent": "center",
+                              "padding": 8,
+                            }
+                          }
+                        >
+                          <Text
+                            style={
+                              Object {
+                                "color": "white",
+                                "fontSize": 18,
+                                "fontWeight": "bold",
+                                "paddingVertical": 1,
+                                "textAlign": "center",
+                              }
+                            }
+                          >
+                             + 
+                          </Text>
+                        </View>
+                      </View>
+                    </View>
+                  </View>
+                </View>
+                <View
+                  style={
+                    Object {
+                      "alignItems": "stretch",
+                      "justifyContent": "space-around",
+                      "width": "50%",
+                    }
+                  }
+                >
+                  <Text
+                    style={
+                      Object {
+                        "color": "#C97062",
+                        "paddingVertical": 4,
+                        "textAlign": "center",
+                      }
+                    }
+                  >
+                    2
+                     x $
+                    10
+                     each =
+                  </Text>
+                  <Text
+                    style={
+                      Object {
+                        "alignSelf": "center",
+                        "color": "#000",
+                        "fontSize": 20,
+                        "fontWeight": "bold",
+                        "paddingVertical": 2,
+                      }
+                    }
+                  >
+                    $
+                    10
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </View>
+        <View
+          style={
+            Object {
+              "height": 150,
+            }
+          }
+        />
+      </View>
+    </RCTScrollView>
+  </View>
+  <RCTSafeAreaView
+    emulateUnlessSupported={true}
+    style={
+      Object {
+        "alignContent": "center",
+        "alignItems": "center",
+        "bottom": 0,
+        "flex": 1,
+        "flexDirection": "row",
+        "justifyContent": "space-evenly",
+        "position": "absolute",
+        "width": "100%",
+      }
+    }
+  >
+    <View
+      style={
+        Object {
+          "borderRadius": 20,
+          "marginBottom": 20,
+          "overflow": "hidden",
+          "width": "50%",
+        }
+      }
+    >
+      <View
+        accessibilityRole="button"
+        accessibilityState={
+          Object {
+            "busy": false,
+            "disabled": false,
+          }
+        }
+        accessible={true}
+        focusable={true}
+        onClick={[Function]}
+        onResponderGrant={[Function]}
+        onResponderMove={[Function]}
+        onResponderRelease={[Function]}
+        onResponderTerminate={[Function]}
+        onResponderTerminationRequest={[Function]}
+        onStartShouldSetResponder={[Function]}
+        style={
+          Object {
+            "opacity": 1,
+          }
+        }
+      >
+        <View
+          style={
+            Object {
+              "alignItems": "center",
+              "backgroundColor": "#ACBD89",
+              "borderColor": "#2089dc",
+              "borderRadius": 20,
+              "borderWidth": 0,
+              "flexDirection": "row",
+              "justifyContent": "center",
+              "padding": 8,
+            }
+          }
+        >
+          <Text
+            style={
+              Object {
+                "color": "white",
+                "fontFamily": "Avenir",
+                "fontSize": 18,
+                "fontWeight": "bold",
+                "paddingVertical": 1,
+                "textAlign": "center",
+              }
+            }
+          >
+            Checkout
+          </Text>
+        </View>
+      </View>
+    </View>
+  </RCTSafeAreaView>
+</View>
+`;
+
+exports[`Test objects 1`] = `null`;
+
+exports[`Test objects 2`] = `null`;
 
 exports[`renders test component 1`] = `
 <View
