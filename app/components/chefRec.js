@@ -11,7 +11,7 @@ import PropTypes, { any } from "prop-types"
 /**
  * 
  * @typedef ChefRecProps
- * @memberof ChefRecs 
+ * @memberof ChefRec 
  * @property {Object} navigation - Stack Navigation object
  * @property {ChefObj} item - The Chef object being displayed
  */

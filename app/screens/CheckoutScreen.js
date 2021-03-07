@@ -12,7 +12,7 @@ const secrets = require("../../backend/secrets");
 /**
  * 
  * @typedef CheckoutScreenProps
- * @memberof Checkout 
+ * @memberof CheckoutScreen 
  * @property {Object} navigation - Stack Navigation object
  */
 

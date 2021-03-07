@@ -45,7 +45,7 @@ class Cards extends Component{
 /**
  * 
  * @typedef ChefRecListProps
- * @memberof ChefRecs 
+ * @memberof ChefRecList 
  * @property {Object} navigation - Stack Navigation object
  */
 

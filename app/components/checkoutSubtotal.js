@@ -9,7 +9,7 @@ import { dishesPerChef, getLongestTime, getLongestTimeForChef,  isolateChefs, su
 /**
  * 
  * @typedef CheckoutSubtotalProps
- * @memberof Checkout
+ * @memberof CheckoutSubtotal
  * @property  {Function} setComment - Callback function to set the instructions being passed onto the chef
  */
 
