@@ -15,7 +15,18 @@ import Chef from "../objects/Chef";
 import ChefRec from "../components/chefRec"
 import { set } from 'react-native-reanimated';
 
+/**
+ * 
+ * @typedef MapScreenProps
+ * @memberof MapScreen
+ * @property {Object} navigation - Stack Navigation object
+ */
 
+/**
+ * A screen that displays a map which has the user's current location as well as a pin for all the chef's on potluck, which can direct to each chef's page.
+ * @class MapScreen
+ * @param {MapScreenProps} props
+ */
 
 function MapScreen(props){
     const [refreshing, setRefreshing] = useState(false);

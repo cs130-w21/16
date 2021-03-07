@@ -13,7 +13,15 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 import FilterPage from '../components/FilterPage'
 import { Modal } from 'react-native';
 
+/**
 
+
+/**
+ * A dish card component that displays information about a dish
+ * @class dishCard
+ * @param {Dish} content
+ * @property {Object} navigation - Stack Navigation object
+ */
 function dishCard(content, navigation){
     return <MenuCard
                 key={content.dishid}
@@ -21,9 +29,20 @@ function dishCard(content, navigation){
                 navigation={navigation}/>
 }
 
-function chefRecListCard(content, navigation) {
-    return <ChefRecList data={content}/>
-}
+
+/**
+ * 
+ * @typedef CardsProps
+ * @memberof Cards
+ * @property {Object} navigation - Stack Navigation object
+ * @property {Array<Dish>} dishes - Array of all dishes in the database
+ */
+
+/**
+ * Component that displays a dish card for each dish in the database
+ * @class Cards
+ * @param {CardsProps} props
+ */
 
 class Cards extends Component{
     constructor(props){
@@ -41,6 +60,19 @@ class Cards extends Component{
         }
     }
 }
+
+/**
+ * 
+ * @typedef FeaturedMenuScreenProps
+ * @memberof FeaturedMenuScreen
+ * @property {Object} navigation - Stack Navigation object
+ */
+
+/**
+ * Main page component of the app that shows availible dishes along with chefs, with options to filter results
+ * @class FeaturedMenuScreen
+ * @param {FeaturedMenuScreenProps} props
+ */
 
 function FeaturedMenuScreen(props){
     const [dishes, setDishes] = useState(null);
