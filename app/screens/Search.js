@@ -11,17 +11,7 @@ import Dish from '../objects/Dish';
 import { SearchBar } from 'react-native-elements';
 import Fuse from 'fuse.js'
 
-/**
- * 
- * @typedef SearchProps 
- * @param {Object} navigation - Stack Navigation object
- */
 
-/**
- * A page for searching for dishes based on keywords
- * 
- * @param {SearchProps} props
- */
 
 function dishCard(content, navigation){
     return <MenuCard
@@ -64,6 +54,20 @@ function filter(search, searchChange, dishes, setDishes) {
     fuseOut.forEach((item) => (output.push(item["item"])))
     setDishes(output);
 }
+
+
+/**
+ * 
+ * @typedef SearchProps 
+ * @memberof Search
+ * @param {Object} navigation - Stack Navigation object
+ */
+
+/**
+ * A page for searching for dishes based on keywords
+ * @class Search
+ * @param {SearchProps} props
+ */
 function Search(props){
     const [dishes, setDishes] = useState(null);
     const [showDishes, setShownDishes] = useState(null);

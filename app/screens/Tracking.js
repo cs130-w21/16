@@ -9,18 +9,6 @@ import { Icon } from 'react-native-elements';
 import { dishesPerChef, getLongestTimeForChef } from "../components/ShoppingCart";
 import ReviewPrompt from "../components/ReviewPrompt";
 
-/**
- * 
- * @typedef TrackingProps
- * @property {Object} navigation - Stack navigation object
- */
-
-/**
- * A page where you can track the status of your orders. Sliding between the different chefs.
- * 
- * @param {TrackingProps} props
- */
-
 const SLIDER_WIDTH = Dimensions.get('window').width
 const SLIDER_HEIGHT = Dimensions.get('window').height
 const ICON_SIZE = SLIDER_HEIGHT*0.2;
@@ -72,7 +60,18 @@ function icon(progress){
         )
     }
 }
+/**
+ * 
+ * @typedef TrackingProps
+ * @memberof TrackingElement
+ * @property {Object} navigation - Stack navigation object
+ */
 
+/**
+ * A page where you can track the status of your orders. Sliding between the different chefs.
+ * @class TrackingElement
+ * @param {TrackingProps} props
+ */
 function TrackingElement(props){
     const chef=props.item;
     const [reviewVisible, setReviewVisible] = useState(false);
