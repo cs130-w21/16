@@ -52,6 +52,8 @@ The routes.js server process is continuously running on port 8888 of the AWS ser
 - Ensure [Queries.js](https://github.com/cs130-w21/16/blob/master/app/util/Queries.js) is configured to have `const ip='http://3.141.20.190` and `const port=8080` to communicate via the test port.
 - On any push to a non-master branch (master, dev, or CICD), Travis CI and the CICD pipeline will check to see if you have made changes to the backend code and run a test server instance with the pushed development code on port 8080 of the server automatically.
 
+## [API Documentation](https://cs130-w21.github.io/16/)
+
 ## Testing
 Testing done via Travis CI and Jest can be run in the following ways
 - To test, run `npm test` to run the Jest framework
