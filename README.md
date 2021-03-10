@@ -15,7 +15,6 @@ Welcome to Potluck, a platform to connect home chefs with customers.
 
 ### To Build the App
 
-- Ensure that the propser secrets.js file is located in the backend/ directory
 - Run `npm start` from the home directory of the App repo to trigger Expo's build process
 - Expo will open a Metro Bundler interface on your command line AND in a browser at http://localhost:19002/ with instructions on how to run the app on various platforms.
 
@@ -40,6 +39,7 @@ https://youtu.be/0-S5a0eXPoc?t=1087
 #### To Run Server Locally (for testing purposes)
 
 Only works for testing on simulators being run on the same device as development
+- Ensure that the propser secrets.js file is located in the backend/ directory
 - run `backend/run_server.sh` to start the server with the master routes.js file from dev/master branch.
 - if you have made any changes to route.js or any backend code, run `backend/run_server.sh <yourbranchname in github>` to create a local Docker container with your branch's backend code.
 - Configure [Queries.js](https://github.com/cs130-w21/16/blob/master/app/util/Queries.js) to have `const ip='http://localhost` and `const port=8888` if running master routes.js or `const port=8080` if running new/changed backend code.
